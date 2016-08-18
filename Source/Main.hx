@@ -23,7 +23,6 @@ class Main extends Sprite
 		graphics.endFill();
 
 		var path = Path.shortestBetween(new gbm.Point(0, 0), new gbm.Point(9, 5), Distance.manhattan, smallSquare);
-		trace(path.length);
 
 		graphics.beginFill(0xffffff);
 		for (step in path)

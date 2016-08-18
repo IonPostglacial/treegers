@@ -71,13 +71,11 @@ class Path
     {
         var path = [];
         var currentPoint = goal;
+
         while (currentPoint.x != start.x || currentPoint.y != start.y)
         {
             path.push(currentPoint);
-            var currentNode = nodes.get(currentPoint);
-            if (currentNode == null)
-                return [];
-            currentPoint = currentNode.previousPoint;
+            currentPoint = nodes.get(currentPoint).previousPoint;
         }
         path.push(start);
         return path;
@@ -96,11 +94,10 @@ class Path
         {
             var currentNode = frontier.pop();
             var currentPoint = currentNode.point;
-            if (currentPoint.x == goal.x && currentPoint.y == goal.y)
-                break;
-            var neighbors = getNeighbors(currentPoint, isWalkable);
 
-            for (neighbor in neighbors)
+            if (currentPoint.x == goal.x && currentPoint.y == goal.y)
+                return reconstructPath(nodes, start, goal);
+            for (neighbor in getNeighbors(currentPoint, isWalkable))
             {
                 var costToNeighbor = currentNode.costSoFar + distance(currentPoint, neighbor);
                 var heuristic = distance(neighbor, goal);
@@ -115,6 +112,6 @@ class Path
                 }
             }
         }
-        return reconstructPath(nodes, start, goal);
+        return [];
     }
 }
