@@ -1,0 +1,1 @@
+This is intended to be a real time strategy game that I'm developing to try OpenFL.

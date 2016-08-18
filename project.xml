@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+
+	<meta title="Haxehex" package="com.sample.haxehex" version="1.0.0" company="Nicolas Galipot" />
+	<app main="Main" path="Export" file="Haxehex" />
+
+	<source path="Source" />
+
+	<haxelib name="openfl" />
+	<haxelib name="polygonal-ds" />
+
+	<assets path="Assets" rename="assets" />
+
+</project>
