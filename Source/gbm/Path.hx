@@ -25,16 +25,16 @@ import de.polygonal.ds.Heapable;
 
 class Node implements Heapable<Node>
 {
-    public var point:Point;
-    public var previousPoint:Point;
+    public var Position:Position;
+    public var previousPosition:Position;
     public var costSoFar:Int;
     public var estimatedCost:Int;
     public var position:Int;
 
-    public function new(point:Point, previousPoint:Point, costSoFar:Int, heuristic:Int)
+    public function new(Position:Position, previousPosition:Position, costSoFar:Int, heuristic:Int)
     {
-        this.point = point;
-        this.previousPoint = previousPoint;
+        this.Position = Position;
+        this.previousPosition = previousPosition;
         this.costSoFar = costSoFar;
         this.estimatedCost = costSoFar + heuristic;
     }
@@ -47,18 +47,18 @@ class Node implements Heapable<Node>
 
 class Path
 {
-    static function getNeighbors(p:Point, isWalkable:Point->Bool):Array<Point>
+    static function getNeighbors(p:Position, isWalkable:Position->Bool):Array<Position>
     {
         var neighbors = [];
         for (dy in -1...2)
         {
             for (dx in -1...2)
             {
-                var neighbor = new Point(p.x + dx, p.y + dy);
+                var neighbor = new Position(p.x + dx, p.y + dy);
                 if ((dx != 0 || dy != 0) && isWalkable(neighbor)
                     // crossing an obstacle in diagonal is forbidden
-                    && isWalkable(new Point(p.x, p.y + dy))
-                    && isWalkable(new Point(p.x + dx, p.y)))
+                    && isWalkable(new Position(p.x, p.y + dy))
+                    && isWalkable(new Position(p.x + dx, p.y)))
                 {
                     neighbors.push(neighbor);
                 }
@@ -67,23 +67,23 @@ class Path
         return neighbors;
     }
 
-    static function reconstructPath(nodes:HashMap<Point, Node>, start:Point, goal:Point):Array<Point>
+    static function reconstructPath(nodes:HashMap<Position, Node>, start:Position, goal:Position):Array<Position>
     {
         var path = [];
-        var currentPoint = goal;
+        var currentPosition = goal;
 
-        while (currentPoint.x != start.x || currentPoint.y != start.y)
+        while (currentPosition.x != start.x || currentPosition.y != start.y)
         {
-            path.push(currentPoint);
-            currentPoint = nodes.get(currentPoint).previousPoint;
+            path.push(currentPosition);
+            currentPosition = nodes.get(currentPosition).previousPosition;
         }
         path.push(start);
         return path;
     }
 
-    public static function shortestBetween(start:Point, goal:Point, distance:Point->Point->Int, isWalkable:Point->Bool):Array<Point>
+    public static function shortestBetween(start:Position, goal:Position, distance:Position->Position->Int, isWalkable:Position->Bool):Array<Position>
     {
-        var nodes = new HashMap<Point, Node>();
+        var nodes = new HashMap<Position, Node>();
         var frontier = new Heap<Node>();
         var firstNode = new Node(start, null, 0, distance(start, goal));
 
@@ -93,19 +93,19 @@ class Path
         while (!frontier.isEmpty())
         {
             var currentNode = frontier.pop();
-            var currentPoint = currentNode.point;
+            var currentPosition = currentNode.Position;
 
-            if (currentPoint.x == goal.x && currentPoint.y == goal.y)
+            if (currentPosition.x == goal.x && currentPosition.y == goal.y)
                 return reconstructPath(nodes, start, goal);
-            for (neighbor in getNeighbors(currentPoint, isWalkable))
+            for (neighbor in getNeighbors(currentPosition, isWalkable))
             {
-                var costToNeighbor = currentNode.costSoFar + distance(currentPoint, neighbor);
+                var costToNeighbor = currentNode.costSoFar + distance(currentPosition, neighbor);
                 var heuristic = distance(neighbor, goal);
                 var previousEvaluation = nodes.get(neighbor);
 
                 if (previousEvaluation == null || costToNeighbor < previousEvaluation.costSoFar)
                 {
-                    var neighborNode = new Node(neighbor, currentPoint, costToNeighbor, heuristic);
+                    var neighborNode = new Node(neighbor, currentPosition, costToNeighbor, heuristic);
 
                     nodes.set(neighbor, neighborNode);
                     frontier.add(neighborNode);

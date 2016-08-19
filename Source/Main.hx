@@ -2,7 +2,7 @@ package;
 
 import openfl.display.Sprite;
 import gbm.Path;
-import gbm.Point;
+import gbm.Position;
 import gbm.Distance;
 
 class Main extends Sprite
@@ -10,7 +10,7 @@ class Main extends Sprite
 	static var TILE_SIZE = 32;
 	static var SQUARE_SIZE = 10;
 
-	static function smallSquare(step:gbm.Point):Bool
+	static function smallSquare(step:gbm.Position):Bool
 	{
 		return step.x >= 0 && step.x < SQUARE_SIZE && step.y >= 0 && step.y < SQUARE_SIZE;
 	}
@@ -22,7 +22,9 @@ class Main extends Sprite
 		graphics.drawRect(0, 0, SQUARE_SIZE * TILE_SIZE, SQUARE_SIZE * TILE_SIZE);
 		graphics.endFill();
 
-		var path = Path.shortestBetween(new gbm.Point(0, 0), new gbm.Point(9, 5), Distance.manhattan, smallSquare);
+		trace(new Hexagon(new Point(0, 0), 5).corners);
+
+		var path = Path.shortestBetween(new gbm.Position(0, 0), new gbm.Position(9, 5), Distance.manhattan, smallSquare);
 
 		graphics.beginFill(0xffffff);
 		for (step in path)
