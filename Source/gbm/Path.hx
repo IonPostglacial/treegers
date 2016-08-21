@@ -25,15 +25,15 @@ import de.polygonal.ds.Heapable;
 
 class Node implements Heapable<Node>
 {
-    public var Position:Position;
+    public var currentPosition:Position;
     public var previousPosition:Position;
     public var costSoFar:Int;
     public var estimatedCost:Int;
     public var position:Int;
 
-    public function new(Position:Position, previousPosition:Position, costSoFar:Int, heuristic:Int)
+    public function new(currentPosition:Position, previousPosition:Position, costSoFar:Int, heuristic:Int)
     {
-        this.Position = Position;
+        this.currentPosition = currentPosition;
         this.previousPosition = previousPosition;
         this.costSoFar = costSoFar;
         this.estimatedCost = costSoFar + heuristic;
@@ -93,7 +93,7 @@ class Path
         while (!frontier.isEmpty())
         {
             var currentNode = frontier.pop();
-            var currentPosition = currentNode.Position;
+            var currentPosition = currentNode.currentPosition;
 
             if (currentPosition.x == goal.x && currentPosition.y == goal.y)
                 return reconstructPath(nodes, start, goal);

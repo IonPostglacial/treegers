@@ -22,7 +22,7 @@ class Main extends Sprite
 		graphics.drawRect(0, 0, SQUARE_SIZE * TILE_SIZE, SQUARE_SIZE * TILE_SIZE);
 		graphics.endFill();
 
-		trace(new Hexagon(new Point(0, 0), 5).corners);
+		trace(new gbm.Hexagon(new openfl.geom.Point(0, 0), 5).corners);
 
 		var path = Path.shortestBetween(new gbm.Position(0, 0), new gbm.Position(9, 5), Distance.manhattan, smallSquare);
 
