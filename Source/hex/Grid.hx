@@ -1,43 +1,14 @@
-package gbm;
+/*
+ * Author Nicolas Galipot
+ * This file is part of the haxehex project, licensed under a 3-Clause BSD license.
+ * See LICENSE.txt in the root folder for more information.
+ */
+package hex;
 
-import openfl.geom.Point;
+import graph.Pathfindable;
+import graph.Position;
 
-class Hexagon
-{
-    static var SQRT3 = Math.sqrt(3);
-    public var center:Point;
-    public var radius:Float;
-    public var area(get, null):Float;
-    public var corners(get, null):Array<Point>;
-
-    public function new(center:Point, radius:Float)
-    {
-        this.center = center;
-        this.radius = radius;
-    }
-
-    public function get_area():Float
-    {
-        return 1.5 * SQRT3 * radius * radius;
-    }
-
-    public function get_corners():Array<Point>
-    {
-        var H_OFFSET = SQRT3 * 0.5 * radius;
-        var V_OFFSET = radius * 0.5;
-        return
-        [
-            new Point(center.x - H_OFFSET, center.y - V_OFFSET),
-            new Point(center.x, center.y - radius),
-            new Point(center.x + H_OFFSET, center.y - V_OFFSET),
-            new Point(center.x + H_OFFSET, center.y + V_OFFSET),
-            new Point(center.x, center.y + radius),
-            new Point(center.x - H_OFFSET, center.y + V_OFFSET)
-        ];
-    }
-}
-
-class Grid
+class Grid implements Pathfindable
 {
     public var width(default, null):Int;
     public var height(default, null):Int;
@@ -45,6 +16,7 @@ class Grid
     public var cellsNumber(get, null):Int;
     public var positions(get, null):Iterable<Position>;
 
+    static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
     var posCache:Array<Position>;
 
     public function new(width, height, radius)
@@ -80,5 +52,27 @@ class Grid
     public function contains(x:Int, y:Int):Bool
     {
         return x + Std.int(y / 2) >= 0 && x + Std.int((y + 1) / 2) < width && y >= 0 && y < height;
+    }
+
+    inline function abs(n:Int):Int
+    {
+        return n >= 0 ? n : -n;
+    }
+
+    public function distanceBetween(p1:Position, p2:Position):Int
+    {
+        return Std.int((abs(p1.x - p2.x) + abs(p1.x + p1.y - p2.x - p2.y) + abs(p1.y - p2.y)) / 2);
+    }
+
+    public function neighborsOf(p:Position):Iterable<Position>
+    {
+        var neighbors = [];
+        for (i in 0...6) 
+        {
+            var x = p.x + deltas[i];
+            var y = p.y + deltas[i + 1];
+            neighbors.push(new Position(x, y));
+        }
+        return neighbors;
     }
 }
