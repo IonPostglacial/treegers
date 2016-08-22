@@ -38,7 +38,7 @@ class Path
         var path = [];
         var currentPosition = goal;
 
-        while (currentPosition.x != start.x || currentPosition.y != start.y)
+        while (!currentPosition.equals(start))
         {
             path.push(currentPosition);
             currentPosition = nodes.get(currentPosition).previousPosition;

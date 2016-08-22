@@ -16,7 +16,14 @@ class Grid implements Pathfindable
     public var cellsNumber(get, null):Int;
     public var positions(get, null):Iterable<Position>;
 
-    static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
+    static var deltas = [
+        -1, 0, 
+        -1, 1, 
+        0, -1, 
+        0, 1, 
+        1, -1, 
+        1, 0
+    ];
     var posCache:Array<Position>;
 
     public function new(width, height, radius)
@@ -54,7 +61,7 @@ class Grid implements Pathfindable
         return x + Std.int(y / 2) >= 0 && x + Std.int((y + 1) / 2) < width && y >= 0 && y < height;
     }
 
-    inline function abs(n:Int):Int
+    static function abs(n:Int):Int
     {
         return n >= 0 ? n : -n;
     }
@@ -69,8 +76,8 @@ class Grid implements Pathfindable
         var neighbors = [];
         for (i in 0...6) 
         {
-            var x = p.x + deltas[i];
-            var y = p.y + deltas[i + 1];
+            var x = p.x + deltas[2 * i];
+            var y = p.y + deltas[2 * i + 1];
             neighbors.push(new Position(x, y));
         }
         return neighbors;
