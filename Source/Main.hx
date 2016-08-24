@@ -19,9 +19,9 @@ class Main extends Sprite
 		graphics.endFill();
 
 		var grid = new hex.Grid(14, 11, TILE_SIZE);
-		var path = graph.Path.between(new graph.Position(0, 0), new graph.Position(3, 6), grid);
+		var path = graph.Path.find(grid, new hex.Position(0, 0), new hex.Position(3, 6));
 
-        graphics.lineStyle(2, 0xffa200);
+		graphics.lineStyle(2, 0xffa200);
 		drawing.Shape.hexagonGrid(graphics, grid);
 
 		graphics.beginFill(0xffcb40);
