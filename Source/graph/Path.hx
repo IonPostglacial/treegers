@@ -9,29 +9,29 @@ import haxe.ds.HashMap;
 import de.polygonal.ds.Heap;
 import de.polygonal.ds.Heapable;
 
-interface Step<T>
+interface Node<T>
 {
 	function equals(other:T):Bool;
 	function hashCode():Int;
 }
 
-class Node<Step_t:Step<Step_t>> implements Heapable<Node<Step_t>>
+class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>>
 {
-	public var currentStep:Step_t;
-	public var previousStep:Step_t;
+	public var currentNode:Node_t;
+	public var previousNode:Node_t;
 	public var costSoFar:Int;
 	public var estimatedCost:Int;
 	public var position:Int;
 
-	public function new(currentStep:Step_t, previousStep:Step_t, costSoFar:Int, heuristic:Int)
+	public function new(currentNode, previousNode, costSoFar, heuristic)
 	{
-		this.currentStep = currentStep;
-		this.previousStep = previousStep;
+		this.currentNode = currentNode;
+		this.previousNode = previousNode;
 		this.costSoFar = costSoFar;
 		this.estimatedCost = costSoFar + heuristic;
 	}
 
-	public function compare(other:Node<Step_t>):Int
+	public function compare(other:Score<Node_t>):Int
 	{
 		return other.estimatedCost - this.estimatedCost;
 	}
@@ -39,48 +39,48 @@ class Node<Step_t:Step<Step_t>> implements Heapable<Node<Step_t>>
 
 class Path
 {
-	static inline function reconstructPath<Step_t:Step<Step_t>>(nodes:HashMap<Step_t, Node<Step_t>>, start:Step_t, goal:Step_t):Array<Step_t>
+	static inline function reconstructPath<Node_t:Node<Node_t>>(nodes:HashMap<Node_t, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t>
 	{
 		var path = [];
-		var currentStep = goal;
+		var currentNode = goal;
 
-		while (!currentStep.equals(start))
+		while (!currentNode.equals(start))
 		{
-			path.push(currentStep);
-			currentStep = nodes.get(currentStep).previousStep;
+			path.push(currentNode);
+			currentNode = nodes.get(currentNode).previousNode;
 		}
 		path.push(start);
 		return path;
 	}
 
-	public static function find<Step_t:Step<Step_t>>(graph:Pathfindable<Step_t>, start:Step_t, goal:Step_t):Array<Step_t>
+	public static function find<Node_t:Node<Node_t>>(graph:Pathfindable<Node_t>, start:Node_t, goal:Node_t):Array<Node_t>
 	{
-		var nodes = new HashMap<Step_t, Node<Step_t>>();
-		var frontier = new Heap<Node<Step_t>>();
-		var firstNode = new Node(start, null, 0, graph.distanceBetween(start, goal));
+		var scores = new HashMap<Node_t, Score<Node_t>>();
+		var frontier = new Heap<Score<Node_t>>();
+		var firstScore = new Score(start, null, 0, graph.distanceBetween(start, goal));
 
-		nodes.set(start, firstNode);
-		frontier.add(firstNode);
+		scores.set(start, firstScore);
+		frontier.add(firstScore);
 
 		while (!frontier.isEmpty())
 		{
-			var currentNode = frontier.pop();
-			var currentStep = currentNode.currentStep;
+			var currentScore = frontier.pop();
+			var currentNode = currentScore.currentNode;
 
-			if (currentStep.equals(goal))
-				return reconstructPath(nodes, start, goal);
-			for (neighbor in graph.neighborsOf(currentStep))
+			if (currentNode.equals(goal))
+				return reconstructPath(scores, start, goal);
+			for (neighbor in graph.neighborsOf(currentNode))
 			{
-				var costToNeighbor = currentNode.costSoFar + graph.distanceBetween(currentStep, neighbor);
+				var costToNeighbor = currentScore.costSoFar + graph.distanceBetween(currentNode, neighbor);
 				var heuristic = graph.distanceBetween(neighbor, goal);
-				var previousEvaluation = nodes.get(neighbor);
+				var previousEvaluation = scores.get(neighbor);
 
 				if (previousEvaluation == null || costToNeighbor < previousEvaluation.costSoFar)
 				{
-					var neighborNode = new Node(neighbor, currentStep, costToNeighbor, heuristic);
+					var neighborScore = new Score(neighbor, currentNode, costToNeighbor, heuristic);
 
-					nodes.set(neighbor, neighborNode);
-					frontier.add(neighborNode);
+					scores.set(neighbor, neighborScore);
+					frontier.add(neighborScore);
 				}
 			}
 		}

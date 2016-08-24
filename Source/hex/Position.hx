@@ -5,18 +5,18 @@
  */
 package hex;
 
-class Position implements graph.Path.Step<Position>
+class Position implements graph.Path.Node<Position>
 {
 	public var x(default, null):Int;
 	public var y(default, null):Int;
 
-	public function new(x:Int, y:Int)
+	public function new(x, y)
 	{
 		this.x = x;
 		this.y = y;
 	}
 
-	public function equals(other:Position):Bool
+	public function equals(other):Bool
 	{
 		return this.x == other.x && this.y == other.y;
 	}
