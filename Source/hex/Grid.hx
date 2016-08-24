@@ -5,10 +5,10 @@
  */
 package hex;
 
-import graph.Pathfindable;
+import graph.Path;
 import hex.Position;
 
-class Grid implements Pathfindable<Position>
+class Grid implements Path.Findable<Position>
 {
 	public var width(default, null):Int;
 	public var height(default, null):Int;

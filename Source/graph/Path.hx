@@ -37,6 +37,12 @@ class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>>
 	}
 }
 
+interface Findable<T>
+{
+	public function neighborsOf(position:T):Iterable<T>;
+	public function distanceBetween(start:T, goal:T):Int;
+}
+
 class Path
 {
 	static inline function reconstructPath<Node_t:Node<Node_t>>(nodes:HashMap<Node_t, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t>
@@ -53,7 +59,7 @@ class Path
 		return path;
 	}
 
-	public static function find<Node_t:Node<Node_t>>(graph:Pathfindable<Node_t>, start:Node_t, goal:Node_t):Array<Node_t>
+	public static function find<Node_t:Node<Node_t>>(graph:Findable<Node_t>, start:Node_t, goal:Node_t):Array<Node_t>
 	{
 		var scores = new HashMap<Node_t, Score<Node_t>>();
 		var frontier = new Heap<Score<Node_t>>();
