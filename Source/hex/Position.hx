@@ -5,7 +5,7 @@
  */
 package hex;
 
-class Position implements graph.Step<Position>
+class Position implements graph.Path.Step<Position>
 {
 	public var x(default, null):Int;
 	public var y(default, null):Int;
