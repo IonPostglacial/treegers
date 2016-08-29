@@ -13,8 +13,8 @@ class Grid implements Path.Findable<Position>
 	public var width(default, null):Int;
 	public var height(default, null):Int;
 	public var radius(default, null):Int;
-	public var cellsNumber(get, null):Int;
-	public var positions(get, null):Iterable<Position>;
+	public var cellsNumber(get, never):Int;
+	public var positions(get, never):Iterable<Position>;
 
 	static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
 	var posCache:Array<Position>;

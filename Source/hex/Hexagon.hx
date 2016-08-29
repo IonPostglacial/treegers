@@ -12,8 +12,8 @@ class Hexagon
 	static var SQRT3 = Math.sqrt(3);
 	public var center:Point;
 	public var radius:Float;
-	public var area(get, null):Float;
-	public var corners(get, null):Array<Point>;
+	public var area(get, never):Float;
+	public var corners(get, never):Array<Point>;
 
 	public function new(center:Point, radius:Float)
 	{
