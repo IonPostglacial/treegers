@@ -6,29 +6,54 @@
 package;
 
 import openfl.display.Sprite;
+import openfl.events.MouseEvent;
 
 class Main extends Sprite
 {
-	static var TILE_SIZE = 32;
+	var grid = new hex.Grid(14, 11, 32);
+	var start = new hex.Position(0, 0);
+	var goal = new hex.Position(3, 6);
+	var overlay = new openfl.display.Sprite();
 
-	public function new()
+	function drawBackground()
 	{
-		super();
 		graphics.beginFill(0xbd7207);
 		graphics.drawRect(0, 0, 800, 600);
 		graphics.endFill();
 
-		var grid = new hex.Grid(14, 11, TILE_SIZE);
-		var path = graph.Path.find(grid, new hex.Position(0, 0), new hex.Position(3, 6));
-
 		graphics.lineStyle(2, 0xffa200);
 		drawing.Shape.hexagonGrid(graphics, grid);
+	}
 
-		graphics.beginFill(0xffcb40);
-		for (step in path)
+	function drawPath(path:Iterable<hex.Position>)
+	{
+		overlay.graphics.clear();
+		overlay.graphics.beginFill(0xffcb40);
+		for (point in path)
 		{
-			drawing.Shape.hexagon(graphics, new hex.Hexagon(drawing.Shape.positionToPoint(step, TILE_SIZE), TILE_SIZE));
+			drawing.Shape.hexagon(overlay.graphics, new hex.Hexagon(drawing.Shape.positionToPoint(point, grid.radius), grid.radius));
 		}
-		graphics.endFill();
+		overlay.graphics.endFill();
+	}
+
+	public function new()
+	{
+		super();
+		addChild(overlay);
+
+		drawBackground();
+
+		var path = graph.Path.find(grid, start, goal);
+		drawPath(path);
+
+		addEventListener(MouseEvent.MOUSE_MOVE, function(e)
+		{
+			var mousePosition = drawing.Shape.pointToPosition(new openfl.geom.Point(e.localX, e.localY), grid.radius);
+			if (mousePosition.equals(goal))
+				return;
+			goal = mousePosition;
+			path = graph.Path.find(grid, start, goal);
+			drawPath(path);
+		});
 	}
 }
