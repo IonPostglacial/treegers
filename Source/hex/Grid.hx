@@ -6,7 +6,6 @@
 package hex;
 
 import graph.Path;
-import hex.Position;
 
 class Grid implements Path.Findable<Position>
 {

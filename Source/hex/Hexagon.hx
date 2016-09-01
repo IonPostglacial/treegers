@@ -10,14 +10,16 @@ import openfl.geom.Point;
 class Hexagon
 {
 	static var SQRT3 = Math.sqrt(3);
-	public var center:Point;
+	public var centerX:Float;
+	public var centerY:Float;
 	public var radius:Float;
 	public var area(get, never):Float;
 	public var corners(get, never):Array<Point>;
 
-	public function new(center:Point, radius:Float)
+	public function new(centerX:Float, centerY:Float, radius:Float)
 	{
-		this.center = center;
+		this.centerX = centerX;
+		this.centerY = centerY;
 		this.radius = radius;
 	}
 
@@ -32,12 +34,12 @@ class Hexagon
 		var V_OFFSET = radius * 0.5;
 		return
 		[
-			new Point(center.x - H_OFFSET, center.y - V_OFFSET),
-			new Point(center.x, center.y - radius),
-			new Point(center.x + H_OFFSET, center.y - V_OFFSET),
-			new Point(center.x + H_OFFSET, center.y + V_OFFSET),
-			new Point(center.x, center.y + radius),
-			new Point(center.x - H_OFFSET, center.y + V_OFFSET)
+			new Point(centerX - H_OFFSET, centerY - V_OFFSET),
+			new Point(centerX, centerY - radius),
+			new Point(centerX + H_OFFSET, centerY - V_OFFSET),
+			new Point(centerX + H_OFFSET, centerY + V_OFFSET),
+			new Point(centerX, centerY + radius),
+			new Point(centerX - H_OFFSET, centerY + V_OFFSET)
 		];
 	}
 }

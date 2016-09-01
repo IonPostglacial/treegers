@@ -5,7 +5,9 @@
  */
 package hex;
 
-class Position implements graph.Path.Node<Position>
+import graph.Path.Node;
+
+class Position implements Node<Position>
 {
 	public var x(default, null):Int;
 	public var y(default, null):Int;

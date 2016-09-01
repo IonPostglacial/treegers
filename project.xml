@@ -8,6 +8,7 @@
 
 	<haxelib name="openfl" />
 	<haxelib name="polygonal-ds" />
+	<haxelib name="ash" />
 
 	<assets path="Assets" rename="assets" />
 
