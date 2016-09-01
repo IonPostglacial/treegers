@@ -1,6 +1,6 @@
-package components;
+package game.components;
 
-import orders.Order;
+import game.orders.Order;
 
 class Controled
 {

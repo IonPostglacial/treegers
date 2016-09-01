@@ -7,16 +7,17 @@ package;
 
 import openfl.display.Sprite;
 
+import game.GameStage;
+
 class Main extends Sprite
 {
-	var grid = new hex.Grid(14, 11, Conf.HEX_RADIUS);
 	var game:GameStage;
 
 
 	public function new()
 	{
 		super();
-		game = new GameStage(this, grid.width, grid.height);
+		game = new GameStage(this, 14, 11);
 		game.start();
 	}
 }

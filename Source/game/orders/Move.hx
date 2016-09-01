@@ -1,7 +1,9 @@
-package orders;
+package game.orders;
 
 import ash.core.Entity;
-import components.Speed;
+
+import game.components.Speed;
+import game.nodes.ControledNode;
 
 class Move implements Order {
 	var path:Array<hex.Position>;
@@ -23,14 +25,14 @@ class Move implements Order {
 		return updatedPosition;
 	}
 
-	public function take(stage:GameStage, entity:Entity, deltaTime:Float):Bool
+	public function take(stage:GameStage, node:ControledNode, deltaTime:Float):Bool
 	{
 		if (path.length > 0)
 		{
-			var newPosition = processMovement(entity.get(Speed), deltaTime);
+			var newPosition = processMovement(node.speed, deltaTime);
 			if (newPosition != null)
 			{
-				entity.add(newPosition);
+				node.position.assign(newPosition);
 			}
 			return false;
 		}

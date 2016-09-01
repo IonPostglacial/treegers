@@ -23,6 +23,12 @@ class Position implements Node<Position>
 		return this.x == other.x && this.y == other.y;
 	}
 
+	public function assign(other:Position)
+	{
+		this.x = other.x;
+		this.y = other.y;
+	}
+
 	public inline function hashCode():Int
 	{
 		return x + 31 * y;

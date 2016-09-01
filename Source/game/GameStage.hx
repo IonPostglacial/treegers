@@ -1,4 +1,4 @@
-package;
+package game;
 
 import openfl.display.Sprite;
 
@@ -7,28 +7,30 @@ import ash.tick.FrameTickProvider;
 import ash.core.Engine;
 import ash.core.Entity;
 
-import systems.GraphicsSystem;
-import systems.OrderSystem;
+import game.systems.GraphicsSystem;
+import game.systems.OrderSystem;
 
 import drawing.Shape;
 import hex.Hexagon;
 import hex.Position;
-import components.Controled;
-import components.EyeCandy;
-import components.Speed;
-import orders.Move;
+import game.components.Controled;
+import game.components.EyeCandy;
+import game.components.Speed;
+import game.orders.Move;
 
 class GameStage
 {
-	public var grid = new hex.Grid(14, 11, Conf.HEX_RADIUS);
+	public var grid:hex.Grid;
 	public var grunt:Entity;
+
 	var scene:Sprite;
     var engine = new Engine();
     var tickProvider:ITickProvider;
 
-    public function new(scene:Sprite, width:Float, height:Float)
+    public function new(scene:Sprite, width:Int, height:Int)
     {
 		this.scene = scene;
+		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
         prepare(scene, width, height);
     }
 

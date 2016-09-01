@@ -1,30 +1,23 @@
-package systems;
+package game.systems;
 
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
 import openfl.display.Sprite;
 
-import components.EyeCandy;
-import components.Controled;
+import game.Conf;
+import game.nodes.MovingGraphicalNode;
 import drawing.Shape;
 import hex.Position;
 
 import openfl.events.MouseEvent;
 
-class MovingNode extends Node<MovingNode>
-{
-	public var controled:Controled;
-	public var eyeCandy:EyeCandy;
-	public var position:Position;
-}
-
-class GraphicsSystem extends ListIteratingSystem<MovingNode>
+class GraphicsSystem extends ListIteratingSystem<MovingGraphicalNode>
 {
 	var scene(default, null):Sprite;
 	var game:GameStage;
 	var overlay = new Sprite();
-	var goal = new hex.Position(3, 6); // dummy
+	var goal = new Position(3, 6); // dummy
 
 	public function new(game:GameStage, scene:Sprite, grid:hex.Grid)
 	{
@@ -44,10 +37,10 @@ class GraphicsSystem extends ListIteratingSystem<MovingNode>
 		});
 		drawBackground();
 		drawPath(path);
-		super(MovingNode, updateNode, addNode, removeNode);
+		super(MovingGraphicalNode, updateMovingGraphicalNode, addMovingGraphicalNode, removeMovingGraphicalNode);
 	}
 
-	function updateNode(node:MovingNode, deltaTime:Float)
+	function updateMovingGraphicalNode(node:MovingGraphicalNode, deltaTime:Float)
 	{
 		if (node.controled.oldPosition != null && node.position.equals(node.controled.oldPosition))
 			return;
@@ -59,12 +52,12 @@ class GraphicsSystem extends ListIteratingSystem<MovingNode>
 		drawPath(path);
 	}
 
-	function addNode(node:MovingNode)
+	function addMovingGraphicalNode(node:MovingGraphicalNode)
 	{
 		this.scene.addChild(node.eyeCandy.sprite);
 	}
 
-	function removeNode(node:MovingNode)
+	function removeMovingGraphicalNode(node:MovingGraphicalNode)
 	{
 		this.scene.removeChild(node.eyeCandy.sprite);
 	}
