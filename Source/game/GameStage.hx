@@ -19,8 +19,7 @@ import game.components.EyeCandy;
 import game.components.Speed;
 import game.actions.Move;
 
-class GameStage
-{
+class GameStage {
 	public var grid:hex.Grid;
 	public var grunt:Entity;
 
@@ -28,22 +27,19 @@ class GameStage
     var engine = new Engine();
     var tickProvider:ITickProvider;
 
-    public function new(scene:Sprite, width:Int, height:Int)
-    {
+    public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
 		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
         prepare(scene, width, height);
     }
 
-    public function start():Void
-    {
+    public function start() {
         tickProvider = new FrameTickProvider(scene);
         tickProvider.add(engine.update);
         tickProvider.start();
     }
 
-    function prepare(scene:Sprite, width:Float, height:Float):Void
-    {
+    function prepare(scene:Sprite, width:Float, height:Float):Void {
 		engine.addSystem(new ActionSystem(this), 1);
 		engine.addSystem(new ControledSystem(this), 1);
         engine.addSystem(new GraphicsSystem(this, scene, grid), 2);

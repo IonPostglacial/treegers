@@ -2,12 +2,10 @@ package game.components;
 
 import openfl.display.Sprite;
 
-class EyeCandy
-{
+class EyeCandy {
 	public var sprite:Sprite;
 
-	public function new(sprite:Sprite)
-	{
+	public function new(sprite:Sprite) {
 		this.sprite = sprite;
 	}
 }

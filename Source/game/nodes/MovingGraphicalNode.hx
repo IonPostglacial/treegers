@@ -6,8 +6,7 @@ import game.components.Controled;
 import game.components.EyeCandy;
 import hex.Position;
 
-class MovingGraphicalNode extends Node<MovingGraphicalNode>
-{
+class MovingGraphicalNode extends Node<MovingGraphicalNode> {
 	public var controled:Controled;
 	public var eyeCandy:EyeCandy;
 	public var position:Position;

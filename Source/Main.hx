@@ -9,13 +9,10 @@ import openfl.display.Sprite;
 
 import game.GameStage;
 
-class Main extends Sprite
-{
+class Main extends Sprite {
 	var game:GameStage;
 
-
-	public function new()
-	{
+	public function new() {
 		super();
 		game = new GameStage(this, 14, 11);
 		game.start();

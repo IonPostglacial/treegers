@@ -10,37 +10,29 @@ import game.actions.Move;
 import game.nodes.ControledNode;
 import hex.Position;
 
-enum Order
-{
+enum Order {
 	MovementOrdered(goal:Position);
 	PowerOrdered(goal:Position);
 	TargetSelected(area:Rectangle);
 }
 
-class ControledSystem extends ListIteratingSystem<ControledNode>
-{
+class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var stage:GameStage;
 	var events:Array<Order>;
 
-	public function new(stage:GameStage)
-	{
+	public function new(stage:GameStage) {
 		this.stage = stage;
 		this.events = [];
 		super(ControledNode, updateNode);
 	}
 
-	function updateNode(node:ControledNode, deltaTime:Float)
-	{
-		for (event in events)
-		{
-			switch (event)
-			{
+	function updateNode(node:ControledNode, deltaTime:Float) {
+		for (event in events) {
+			switch (event) {
 			case MovementOrdered(goal):
-				if (node.controled.selected)
-				{
+				if (node.controled.selected) {
 					var path = graph.Path.find(stage.grid, node.position, goal);
-					if (path != null)
-					{
+					if (path != null) {
 						node.controled.actions = [new Move(path)];
 					}
 				}
