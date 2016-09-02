@@ -14,16 +14,16 @@ class ActionSystem extends ListIteratingSystem<ActionedNode>
 		super(ActionedNode, updateNode);
 	}
 
-	function updateNode(node:ActionedNode, deltaTime:Float):Void
+	function updateNode(node:ActionedNode, deltaTime:Float)
 	{
 		var oldPosition = node.position;
-		if (node.controled.currentOrder == null)
+		if (node.controled.currentAction == null)
 			return;
 		node.speed.timeSinceLastMove += deltaTime;
-		node.controled.currentOrder.execute(stage, node, deltaTime);
-		if (node.controled.currentOrder.done)
+		node.controled.currentAction.execute(stage, node, deltaTime);
+		if (node.controled.currentAction.done)
 		{
-			node.controled.orders.pop();
+			node.controled.actions.pop();
 			node.controled.oldPosition = oldPosition;
 			node.speed.timeSinceLastMove = 0;
 		}

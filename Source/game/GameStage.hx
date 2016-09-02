@@ -7,8 +7,9 @@ import ash.tick.FrameTickProvider;
 import ash.core.Engine;
 import ash.core.Entity;
 
-import game.systems.GraphicsSystem;
 import game.systems.ActionSystem;
+import game.systems.GraphicsSystem;
+import game.systems.ControledSystem;
 
 import drawing.Shape;
 import hex.Hexagon;
@@ -44,6 +45,7 @@ class GameStage
     function prepare(scene:Sprite, width:Float, height:Float):Void
     {
 		engine.addSystem(new ActionSystem(this), 1);
+		engine.addSystem(new ControledSystem(this), 1);
         engine.addSystem(new GraphicsSystem(this, scene, grid), 2);
 
 		var hex = new Sprite();
@@ -51,7 +53,7 @@ class GameStage
 		Shape.hexagon(hex.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
 
 		var controled = new Controled();
-		controled.orders.push(new Move([new hex.Position(0, 3), new hex.Position(0, 2), new hex.Position(0, 1)]));
+		controled.actions.push(new Move([new hex.Position(0, 3), new hex.Position(0, 2), new hex.Position(0, 1)]));
 
 		grunt = new Entity()
         .add(new Position(0, 0))

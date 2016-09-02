@@ -5,17 +5,18 @@ import game.actions.Action;
 class Controled
 {
 	public var oldPosition:hex.Position;
-	public var orders:Array<Action>;
-	public var currentOrder(get,never):Action;
+	public var actions:Array<Action>;
+	public var currentAction(get,never):Action;
+	public var selected:Bool;
 
 	public function new()
 	{
 		this.oldPosition = null;
-		this.orders = [];
+		this.actions = [];
 	}
 
-	public function get_currentOrder()
+	public function get_currentAction()
 	{
-		return orders[orders.length - 1];
+		return actions[actions.length - 1];
 	}
 }
