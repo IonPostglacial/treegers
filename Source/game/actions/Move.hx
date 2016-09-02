@@ -1,12 +1,14 @@
-package game.orders;
+package game.actions;
 
 import ash.core.Entity;
 
 import game.components.Speed;
-import game.nodes.ControledNode;
+import game.nodes.ActionedNode;
 
-class Move implements Order {
+class Move implements Action {
+	public var done(get, never):Bool;
 	var path:Array<hex.Position>;
+	var _done = false;
 
 	public function new(path)
 	{
@@ -25,7 +27,12 @@ class Move implements Order {
 		return updatedPosition;
 	}
 
-	public function take(stage:GameStage, node:ControledNode, deltaTime:Float):Bool
+	public function get_done():Bool
+	{
+		return _done;
+	}
+
+	public function execute(stage:GameStage, node:ActionedNode, deltaTime:Float)
 	{
 		if (path.length > 0)
 		{
@@ -34,11 +41,10 @@ class Move implements Order {
 			{
 				node.position.assign(newPosition);
 			}
-			return false;
 		}
 		else
 		{
-			return true;
+			_done = true;
 		}
 	}
 }

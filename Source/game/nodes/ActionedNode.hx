@@ -6,7 +6,7 @@ import game.components.Controled;
 import game.components.Speed;
 import hex.Position;
 
-class ControledNode extends Node<ControledNode>
+class ActionedNode extends Node<ActionedNode>
 {
 	public var controled:Controled;
 	public var position:Position;

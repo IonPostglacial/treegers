@@ -1,12 +1,12 @@
 package game.components;
 
-import game.orders.Order;
+import game.actions.Action;
 
 class Controled
 {
 	public var oldPosition:hex.Position;
-	public var orders:Array<Order>;
-	public var currentOrder(get,never):Order;
+	public var orders:Array<Action>;
+	public var currentOrder(get,never):Action;
 
 	public function new()
 	{

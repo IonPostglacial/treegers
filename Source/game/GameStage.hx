@@ -8,7 +8,7 @@ import ash.core.Engine;
 import ash.core.Entity;
 
 import game.systems.GraphicsSystem;
-import game.systems.OrderSystem;
+import game.systems.ActionSystem;
 
 import drawing.Shape;
 import hex.Hexagon;
@@ -16,7 +16,7 @@ import hex.Position;
 import game.components.Controled;
 import game.components.EyeCandy;
 import game.components.Speed;
-import game.orders.Move;
+import game.actions.Move;
 
 class GameStage
 {
@@ -43,7 +43,7 @@ class GameStage
 
     function prepare(scene:Sprite, width:Float, height:Float):Void
     {
-		engine.addSystem(new OrderSystem(this), 1);
+		engine.addSystem(new ActionSystem(this), 1);
         engine.addSystem(new GraphicsSystem(this, scene, grid), 2);
 
 		var hex = new Sprite();
