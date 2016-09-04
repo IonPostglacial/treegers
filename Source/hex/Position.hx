@@ -5,22 +5,20 @@
  */
 package hex;
 
-import graph.Path.Node;
-
-class Position implements Node<Position> {
+class Position {
 	public var x(default, null):Int;
 	public var y(default, null):Int;
 
-	public function new(x, y) {
+	public inline function new(x, y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public function equals(other):Bool {
+	public inline function equals(other):Bool {
 		return this.x == other.x && this.y == other.y;
 	}
 
-	public function assign(other:Position) {
+	public inline function assign(other:Position) {
 		this.x = other.x;
 		this.y = other.y;
 	}

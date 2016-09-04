@@ -9,7 +9,8 @@ import haxe.ds.HashMap;
 import de.polygonal.ds.Heap;
 import de.polygonal.ds.Heapable;
 
-interface Node<T> {
+@:generic
+typedef Node<T> = {
 	function equals(other:T):Bool;
 	function hashCode():Int;
 }
@@ -39,6 +40,7 @@ interface Findable<T> {
 }
 
 class Path {
+	@:generic
 	static inline function reconstructPath<Node_t:Node<Node_t>>(nodes:HashMap<Node_t, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
 		var path = [];
 		var currentNode = goal;
@@ -51,6 +53,7 @@ class Path {
 		return path;
 	}
 
+	@:generic
 	public static function find<Node_t:Node<Node_t>>(graph:Findable<Node_t>, start:Node_t, goal:Node_t):Array<Node_t> {
 		var scores = new HashMap<Node_t, Score<Node_t>>();
 		var frontier = new Heap<Score<Node_t>>();
