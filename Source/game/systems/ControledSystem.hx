@@ -1,6 +1,8 @@
 package game.systems;
 
+import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
+import openfl.Lib;
 
 import ash.tools.ListIteratingSystem;
 
@@ -13,7 +15,8 @@ import hex.Position;
 enum Order {
 	MovementOrdered(goal:Position);
 	PowerOrdered(goal:Position);
-	TargetSelected(area:Rectangle);
+	TargetSelected(position:Position);
+	GroupSelected(area:Rectangle);
 }
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {
@@ -23,7 +26,20 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	public function new(stage:GameStage) {
 		this.stage = stage;
 		this.events = [];
+		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
+			var mousePosition = drawing.Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.grid.radius);
+			this.events.push(TargetSelected(mousePosition));
+		});
+		Lib.current.addEventListener(MouseEvent.RIGHT_CLICK, function(e) {
+			var mousePosition = drawing.Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.grid.radius);
+			this.events.push(MovementOrdered(mousePosition));
+		});
 		super(ControledNode, updateNode);
+	}
+
+	override function update(deltaTime:Float) {
+		super.update(deltaTime);
+		events = [];
 	}
 
 	function updateNode(node:ControledNode, deltaTime:Float) {
@@ -36,8 +52,9 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 						node.controled.actions = [new Move(path)];
 					}
 				}
-			case TargetSelected(area):
-				node.controled.selected = area.containsPoint(Shape.positionToPoint(node.position, Conf.HEX_RADIUS));
+			case TargetSelected(position):
+				node.controled.selected = node.position.equals(position);
+			case GroupSelected(area): // TODO: implement it :p
 			case PowerOrdered(goal): // TODO: implement it :p
 			}
 		}

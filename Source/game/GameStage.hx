@@ -42,20 +42,17 @@ class GameStage {
     function prepare(scene:Sprite, width:Float, height:Float):Void {
 		engine.addSystem(new ActionSystem(this), 1);
 		engine.addSystem(new ControledSystem(this), 1);
-        engine.addSystem(new GraphicsSystem(this, scene, grid), 2);
+        engine.addSystem(new GraphicsSystem(this, grid), 2);
 
 		var hex = new Sprite();
-		hex.graphics.beginFill(0xFF0000);
+		hex.graphics.beginFill(0xBB5555);
 		Shape.hexagon(hex.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
-
-		var controled = new Controled();
-		controled.actions.push(new Move([new hex.Position(0, 3), new hex.Position(0, 2), new hex.Position(0, 1)]));
 
 		grunt = new Entity()
         .add(new Position(0, 0))
 		.add(new EyeCandy(hex))
 		.add(new Speed(1))
-		.add(controled);
+		.add(new Controled());
 		engine.addEntity(grunt);
     }
 }

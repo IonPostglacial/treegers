@@ -3,6 +3,7 @@ package game.systems;
 import ash.tools.ListIteratingSystem;
 
 import game.nodes.ActionedNode;
+import hex.Position;
 
 class ActionSystem extends ListIteratingSystem<ActionedNode> {
 	private var stage:GameStage;
@@ -13,7 +14,7 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 	}
 
 	function updateNode(node:ActionedNode, deltaTime:Float) {
-		var oldPosition = node.position;
+		var oldPosition = new Position(node.position.x, node.position.y);
 		if (node.controled.currentAction == null) {
 			return;
 		}
