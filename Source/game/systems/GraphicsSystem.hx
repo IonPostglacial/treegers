@@ -15,7 +15,6 @@ import openfl.events.MouseEvent;
 
 class GraphicsSystem extends ListIteratingSystem<MovingGraphicalNode> {
 	var game:GameStage;
-	var goal = new Position(3, 6); // dummy
 
 	public function new(game:GameStage, grid:hex.Grid) {
 		this.game = game;

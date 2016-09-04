@@ -12,6 +12,7 @@ class Move implements Action {
 
 	public function new(path) {
 		this.path = path;
+		this.path.pop();
 	}
 
 	function processMovement(speed:Speed, time:Float):Null<hex.Position> {

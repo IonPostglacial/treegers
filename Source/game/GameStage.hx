@@ -21,7 +21,6 @@ import game.actions.Move;
 
 class GameStage {
 	public var grid:hex.Grid;
-	public var grunt:Entity;
 
 	var scene:Sprite;
     var engine = new Engine();
@@ -48,7 +47,7 @@ class GameStage {
 		hex.graphics.beginFill(0xBB5555);
 		Shape.hexagon(hex.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
 
-		grunt = new Entity()
+		var grunt = new Entity()
         .add(new Position(0, 0))
 		.add(new EyeCandy(hex))
 		.add(new Speed(1))

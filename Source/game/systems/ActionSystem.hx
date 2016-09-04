@@ -14,10 +14,10 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 	}
 
 	function updateNode(node:ActionedNode, deltaTime:Float) {
-		var oldPosition = new Position(node.position.x, node.position.y);
 		if (node.controled.currentAction == null) {
 			return;
 		}
+		var oldPosition = new Position(node.position.x, node.position.y);
 		node.speed.timeSinceLastMove += deltaTime;
 		node.controled.currentAction.execute(stage, node, deltaTime);
 		if (node.controled.currentAction.done) {
