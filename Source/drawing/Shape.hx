@@ -24,6 +24,14 @@ class Shape {
 		return new Point(PIX_X, PIX_Y);
 	}
 
+	public static inline function gridPixelWidth(grid:hex.Grid):Int {
+		return Std.int(SQRT3 * grid.width * grid.radius);
+	}
+
+	public static inline function gridPixelHeight(grid:hex.Grid):Int {
+		return Std.int((1.5 * grid.height + 0.5) * grid.radius);
+	}
+
 	public static function hexagon(graphics:Graphics, hexagon:Hexagon) {
 		var corners = hexagon.corners;
 
