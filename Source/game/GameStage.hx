@@ -41,7 +41,7 @@ class GameStage {
     function prepare(scene:Sprite, width:Float, height:Float):Void {
 		engine.addSystem(new ActionSystem(this), 1);
 		engine.addSystem(new ControledSystem(this), 1);
-        engine.addSystem(new GraphicsSystem(this, grid), 2);
+        engine.addSystem(new GraphicsSystem(this), 2);
 
 		var hex = new Sprite();
 		hex.graphics.beginFill(0xBB5555);

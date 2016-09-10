@@ -9,6 +9,7 @@ import openfl.Lib;
 import game.Conf;
 import game.nodes.MovingGraphicalNode;
 import drawing.Shape;
+import hex.Hexagon;
 import hex.Position;
 
 import openfl.events.MouseEvent;
@@ -16,19 +17,34 @@ import openfl.events.MouseEvent;
 class GraphicsSystem extends ListIteratingSystem<MovingGraphicalNode> {
 	var game:GameStage;
 
-	public function new(game:GameStage, grid:hex.Grid) {
+	public function new(game:GameStage) {
 		this.game = game;
 		drawBackground();
 		super(MovingGraphicalNode, updateMovingGraphicalNode, addMovingGraphicalNode, removeMovingGraphicalNode);
 	}
 
+	static function createSelectionSprite():Sprite {
+		var selection = new Sprite();
+		selection.name = "selection";
+		selection.graphics.lineStyle(2, 0xFFFF00);
+		Shape.hexagon(selection.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
+		return selection;
+	}
+
 	function updateMovingGraphicalNode(node:MovingGraphicalNode, deltaTime:Float) {
-		if (node.controled.oldPosition != null && node.position.equals(node.controled.oldPosition)) {
-			return;
+		if (node.controled.oldPosition == null || !node.position.equals(node.controled.oldPosition)) {
+			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
+			node.eyeCandy.sprite.x = pixPosition.x;
+			node.eyeCandy.sprite.y = pixPosition.y;
 		}
-		var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
-		node.eyeCandy.sprite.x = pixPosition.x;
-		node.eyeCandy.sprite.y = pixPosition.y;
+		var selection = node.eyeCandy.sprite.getChildByName("selection");
+		if (node.controled.selected) {
+			if (selection == null) {
+				node.eyeCandy.sprite.addChild(createSelectionSprite());
+			}
+		} else if (selection != null) {
+			node.eyeCandy.sprite.removeChild(selection);
+		}
 	}
 
 	function addMovingGraphicalNode(node:MovingGraphicalNode) {
