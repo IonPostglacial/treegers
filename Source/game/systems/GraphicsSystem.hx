@@ -1,29 +1,52 @@
 package game.systems;
 
-import ash.core.Node;
-import ash.tools.ListIteratingSystem;
+import ash.core.Engine;
+import ash.core.NodeList;
+import ash.core.System;
 
 import openfl.display.Sprite;
 import openfl.Lib;
 
-import game.Conf;
+import game.nodes.ControledGraphicalNode;
 import game.nodes.MovingGraphicalNode;
 import drawing.Shape;
 import hex.Hexagon;
-import hex.Position;
 
 import openfl.events.MouseEvent;
 
-class GraphicsSystem extends ListIteratingSystem<MovingGraphicalNode> {
+
+class GraphicsSystem extends System {
 	var game:GameStage;
+	var movers:NodeList<MovingGraphicalNode>;
+	var controledMovers:NodeList<ControledGraphicalNode>;
 
 	public function new(game:GameStage) {
 		this.game = game;
 		drawBackground();
-		super(MovingGraphicalNode, updateMovingGraphicalNode, addMovingGraphicalNode, removeMovingGraphicalNode);
+		super();
 	}
 
-	static function createSelectionSprite():Sprite {
+	override public function update(deltaTime:Float) {
+		for (node in movers) {
+			updateMovingGraphicalNode(node, deltaTime);
+		}
+		for (node in controledMovers) {
+			updateControledGraphicalNode(node, deltaTime);
+		}
+	}
+
+	override public function addToEngine(engine:Engine) {
+		controledMovers = engine.getNodeList(ControledGraphicalNode);
+		movers = engine.getNodeList(MovingGraphicalNode);
+		movers.nodeAdded.add(function (node:MovingGraphicalNode) {
+			Lib.current.addChild(node.eyeCandy.sprite);
+		});
+		movers.nodeRemoved.add(function (node:MovingGraphicalNode) {
+			Lib.current.removeChild(node.eyeCandy.sprite);
+		});
+	}
+
+	static inline function createSelectionSprite():Sprite {
 		var selection = new Sprite();
 		selection.name = "selection";
 		selection.graphics.lineStyle(2, 0xFFFF00);
@@ -32,11 +55,14 @@ class GraphicsSystem extends ListIteratingSystem<MovingGraphicalNode> {
 	}
 
 	function updateMovingGraphicalNode(node:MovingGraphicalNode, deltaTime:Float) {
-		if (node.controled.oldPosition == null || !node.position.equals(node.controled.oldPosition)) {
+		if (node.speed.oldPosition == null || !node.position.equals(node.speed.oldPosition)) {
 			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
 			node.eyeCandy.sprite.x = pixPosition.x;
 			node.eyeCandy.sprite.y = pixPosition.y;
 		}
+	}
+
+	function updateControledGraphicalNode(node:ControledGraphicalNode, deltaTime:Float) {
 		var selection = node.eyeCandy.sprite.getChildByName("selection");
 		if (node.controled.selected) {
 			if (selection == null) {
@@ -45,14 +71,6 @@ class GraphicsSystem extends ListIteratingSystem<MovingGraphicalNode> {
 		} else if (selection != null) {
 			node.eyeCandy.sprite.removeChild(selection);
 		}
-	}
-
-	function addMovingGraphicalNode(node:MovingGraphicalNode) {
-		Lib.current.addChild(node.eyeCandy.sprite);
-	}
-
-	function removeMovingGraphicalNode(node:MovingGraphicalNode) {
-		Lib.current.removeChild(node.eyeCandy.sprite);
 	}
 
 	function drawBackground() {

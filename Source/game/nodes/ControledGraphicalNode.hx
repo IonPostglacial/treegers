@@ -2,12 +2,12 @@ package game.nodes;
 
 import ash.core.Node;
 
+import game.components.Controled;
 import game.components.EyeCandy;
-import game.components.Speed;
 import hex.Position;
 
-class MovingGraphicalNode extends Node<MovingGraphicalNode> {
-	public var speed:Speed;
+class ControledGraphicalNode extends Node<ControledGraphicalNode> {
+	public var controled:Controled;
 	public var eyeCandy:EyeCandy;
 	public var position:Position;
 }
