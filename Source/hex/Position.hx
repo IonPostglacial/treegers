@@ -24,6 +24,6 @@ class Position {
 	}
 
 	public inline function hashCode():Int {
-		return x + 31 * y;
+		return y | (x << 16); // x can be negative while y cannot.
 	}
 }
