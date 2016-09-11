@@ -1,5 +1,7 @@
 package game;
 
+import haxe.ds.HashMap;
+
 import openfl.display.Sprite;
 
 import ash.tick.ITickProvider;
@@ -10,6 +12,7 @@ import ash.core.Entity;
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
 import game.systems.GraphicsSystem;
+import game.systems.HealthSystem;
 import game.systems.LinearMovementSystem;
 
 import drawing.Shape;
@@ -17,6 +20,7 @@ import hex.Hexagon;
 import hex.Position;
 import game.components.Controled;
 import game.components.EyeCandy;
+import game.components.Health;
 import game.components.LinearMover;
 import game.components.Speed;
 
@@ -27,12 +31,23 @@ class GameStage {
 	var scene:Sprite;
     var engine = new Engine();
     var tickProvider:ITickProvider;
+	var tiles:HashMap<Position, TileType>;
 
     public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
 		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
+		this.tiles = new HashMap<Position, TileType>();
         prepare(scene, width, height);
     }
+
+	public function tileAt(position:Position) {
+		var tileType = tiles.get(position);
+		if (tileType == null) {
+			return TileType.None;
+		} else {
+			return tiles.get(position);
+		}
+	}
 
     public function start() {
         tickProvider = new FrameTickProvider(scene);
@@ -43,6 +58,7 @@ class GameStage {
     function prepare(scene:Sprite, width:Float, height:Float):Void {
 		engine.addSystem(new ActionSystem(this), 1);
 		engine.addSystem(new ControledSystem(this), 1);
+		engine.addSystem(new HealthSystem(this), 1);
 		engine.addSystem(new LinearMovementSystem(this), 1);
         engine.addSystem(new GraphicsSystem(this), 2);
 
@@ -56,6 +72,7 @@ class GameStage {
 
 		var grunt = new Entity()
         .add(new Position(0, 0))
+		.add(new Health(100, 100, 2))
 		.add(new EyeCandy(gruntSprite))
 		.add(new Speed(1))
 		.add(new Controled());
