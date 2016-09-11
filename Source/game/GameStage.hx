@@ -72,7 +72,7 @@ class GameStage {
 
 		var grunt = new Entity()
         .add(new Position(0, 0))
-		.add(new Health(100, 100, 2))
+		.add(new Health(100, 200, 2))
 		.add(new EyeCandy(gruntSprite))
 		.add(new Speed(1))
 		.add(new Controled());
