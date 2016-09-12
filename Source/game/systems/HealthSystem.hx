@@ -3,16 +3,16 @@ package game.systems;
 import ash.core.Engine;
 import ash.tools.ListIteratingSystem;
 
-import game.nodes.HealthNode;
+import game.nodes.HealthyNode;
 import hex.Position;
 
-class HealthSystem extends ListIteratingSystem<HealthNode> {
+class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	var game:GameStage;
 	var engine:Engine;
 
 	public function new(game:GameStage) {
 		this.game = game;
-		super(HealthNode, updateNode);
+		super(HealthyNode, updateNode);
 	}
 
 	override public function addToEngine(engine:Engine) {
@@ -20,7 +20,7 @@ class HealthSystem extends ListIteratingSystem<HealthNode> {
 		super.addToEngine(engine);
 	}
 
-	function updateNode(node:HealthNode, deltaTime:Float) {
+	function updateNode(node:HealthyNode, deltaTime:Float) {
 		switch(game.tileAt(node.position)) {
 		case Pikes:
 			node.health.level -= 10;

@@ -9,6 +9,7 @@ import openfl.Lib;
 
 import game.components.Health;
 import game.nodes.ControledGraphicalNode;
+import game.nodes.HealthyGraphicalNode;
 import game.nodes.MovingGraphicalNode;
 import drawing.Shape;
 import hex.Hexagon;
@@ -19,6 +20,7 @@ import openfl.events.MouseEvent;
 class GraphicsSystem extends System {
 	var game:GameStage;
 	var movers:NodeList<MovingGraphicalNode>;
+	var healthies:NodeList<HealthyGraphicalNode>;
 	var controledMovers:NodeList<ControledGraphicalNode>;
 
 	static var HEALTH_COLOR = 0x00FF00;
@@ -33,22 +35,33 @@ class GraphicsSystem extends System {
 	}
 
 	override public function update(deltaTime:Float) {
-		for (node in movers) {
-			updateMovingGraphicalNode(node, deltaTime);
+		for (mover in movers) {
+			updateMovingGraphicalNode(mover, deltaTime);
 		}
-		for (node in controledMovers) {
-			updateControledGraphicalNode(node, deltaTime);
+		for (controled in controledMovers) {
+			updateControledGraphicalNode(controled, deltaTime);
+		}
+		for (healthy in healthies) {
+			updateHealthyNode(healthy, deltaTime);
 		}
 	}
 
 	override public function addToEngine(engine:Engine) {
 		controledMovers = engine.getNodeList(ControledGraphicalNode);
 		movers = engine.getNodeList(MovingGraphicalNode);
+		healthies = engine.getNodeList(HealthyGraphicalNode);
+
 		movers.nodeAdded.add(function (node:MovingGraphicalNode) {
 			Lib.current.addChild(node.eyeCandy.sprite);
 		});
 		movers.nodeRemoved.add(function (node:MovingGraphicalNode) {
 			Lib.current.removeChild(node.eyeCandy.sprite);
+		});
+		healthies.nodeAdded.add(function (node:HealthyGraphicalNode) {
+			node.eyeCandy.sprite.addChild(createHealthSprite(node.health));
+		});
+		healthies.nodeRemoved.add(function (node:HealthyGraphicalNode) {
+			node.eyeCandy.sprite.removeChild(node.eyeCandy.sprite.getChildByName("health"));
 		});
 	}
 
@@ -76,33 +89,24 @@ class GraphicsSystem extends System {
 		}
 	}
 
+	function updateHealthyNode(node:HealthyGraphicalNode, deltaTime:Float) {
+		var healthSprite = cast (node.eyeCandy.sprite.getChildByName("health"), Sprite);
+		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
+		healthSprite.graphics.beginFill(0x000000);
+		healthSprite.graphics.drawRect(0, 0, GAUGE_WIDTH, GAUGE_HEIGHT);
+		healthSprite.graphics.beginFill(HEALTH_COLOR);
+		healthSprite.graphics.drawRect(0, 0, GAUGE_WIDTH * (node.health.level / node.health.max), GAUGE_HEIGHT);
+		healthSprite.graphics.endFill();
+	}
+
 	function updateControledGraphicalNode(node:ControledGraphicalNode, deltaTime:Float) {
 		var selection = node.eyeCandy.sprite.getChildByName("selection");
 		if (node.controled.selected) {
 			if (selection == null) {
-				node.eyeCandy.sprite.addChild(createSelectionSprite());
+				node.eyeCandy.sprite.addChildAt(createSelectionSprite(), 0);
 			}
-			var health = node.entity.get(Health);
-			if (health != null) {
-				var hdo = node.eyeCandy.sprite.getChildByName("health");
-				var healthSprite:Sprite;
-				if (hdo == null) {
-					healthSprite = createHealthSprite(health);
-					node.eyeCandy.sprite.addChild(healthSprite);
-				} else {
-					healthSprite = cast (hdo, Sprite);
-				}
-				healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
-				healthSprite.graphics.beginFill(0x000000);
-				healthSprite.graphics.drawRect(0, 0, GAUGE_WIDTH, GAUGE_HEIGHT);
-				healthSprite.graphics.beginFill(HEALTH_COLOR);
-				healthSprite.graphics.drawRect(0, 0, GAUGE_WIDTH * (health.level / health.max), GAUGE_HEIGHT);
-				healthSprite.graphics.endFill();
-			}
-		} else {
-			if (selection != null) node.eyeCandy.sprite.removeChild(selection);
-			var healthSprite = node.eyeCandy.sprite.getChildByName("health");
-			if (healthSprite != null) node.eyeCandy.sprite.removeChild(healthSprite);
+		} else if (selection != null) {
+			node.eyeCandy.sprite.removeChild(selection);
 		}
 	}
 
