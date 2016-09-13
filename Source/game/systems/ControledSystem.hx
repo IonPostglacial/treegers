@@ -6,8 +6,6 @@ import openfl.Lib;
 
 import ash.tools.ListIteratingSystem;
 
-import drawing.Shape;
-import game.Conf;
 import game.actions.Move;
 import game.nodes.ControledNode;
 import hex.Position;
@@ -47,10 +45,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			switch (event) {
 			case MovementOrdered(goal):
 				if (node.controled.selected) {
-					var path = graph.Path.find(stage.grid, node.position, goal);
-					if (path != null) {
-						node.controled.actions = [new Move(path)];
-					}
+					node.controled.actions = [new Move(stage, node.entity, goal)];
 				}
 			case TargetSelected(position):
 				node.controled.selected = node.position.equals(position);

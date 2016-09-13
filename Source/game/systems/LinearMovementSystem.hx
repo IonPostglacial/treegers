@@ -2,27 +2,25 @@ package game.systems;
 
 import ash.tools.ListIteratingSystem;
 
-import game.nodes.LinearMovingNode;
+import game.nodes.LinearWalkingNode;
 import hex.Position;
 
-class LinearMovementSystem extends ListIteratingSystem<LinearMovingNode> {
+class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 	var game:GameStage;
 
 	public function new(game:GameStage) {
 		this.game = game;
-		super(LinearMovingNode, updateNode);
+		super(LinearWalkingNode, updateNode);
 	}
 
-	function updateNode(node:LinearMovingNode, deltaTime:Float) {
-		node.speed.timeSinceLastMove += deltaTime;
-		if (node.speed.timeSinceLastMove >= node.speed.period) {
+	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
+		if (node.pace.ready) {
 			var newPosition = new Position(
-				node.position.x + node.linearMover.dx,
-				node.position.y + node.linearMover.dy
+				node.position.x + node.linearWalker.dx,
+				node.position.y + node.linearWalker.dy
 			);
-			node.speed.timeSinceLastMove -= node.speed.period;
-			node.speed.oldPosition.assign(node.position);
-			node.position.assign(newPosition);
+			node.pace.oldPosition = node.position.copy();
+			node.entity.add(newPosition);
 		}
 	}
 }

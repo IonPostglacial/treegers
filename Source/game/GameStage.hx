@@ -14,6 +14,8 @@ import game.systems.ControledSystem;
 import game.systems.GraphicsSystem;
 import game.systems.HealthSystem;
 import game.systems.LinearMovementSystem;
+import game.systems.PathMovementSystem;
+import game.systems.PaceSystem;
 
 import drawing.Shape;
 import hex.Hexagon;
@@ -21,8 +23,8 @@ import hex.Position;
 import game.components.Controled;
 import game.components.EyeCandy;
 import game.components.Health;
-import game.components.LinearMover;
-import game.components.Speed;
+import game.components.LinearWalker;
+import game.components.Pace;
 
 
 class GameStage {
@@ -60,6 +62,8 @@ class GameStage {
 		engine.addSystem(new ControledSystem(this), 1);
 		engine.addSystem(new HealthSystem(this), 1);
 		engine.addSystem(new LinearMovementSystem(this), 1);
+		engine.addSystem(new PathMovementSystem(this), 1);
+		engine.addSystem(new PaceSystem(this), 1);
         engine.addSystem(new GraphicsSystem(this), 2);
 
 		var gruntSprite = new Sprite();
@@ -74,14 +78,14 @@ class GameStage {
         .add(new Position(0, 0))
 		.add(new Health(100, 200, 2))
 		.add(new EyeCandy(gruntSprite))
-		.add(new Speed(1))
+		.add(new Pace(1))
 		.add(new Controled());
 
 		var rollingBall = new Entity()
 		.add(new Position(3, 3))
 		.add(new EyeCandy(ballSprite))
-		.add(new Speed(1))
-		.add(new LinearMover(1, 0));
+		.add(new Pace(1))
+		.add(new LinearWalker(1, 0));
 
 		engine.addEntity(grunt);
 		engine.addEntity(rollingBall);

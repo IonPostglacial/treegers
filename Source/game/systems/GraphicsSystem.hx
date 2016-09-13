@@ -82,7 +82,7 @@ class GraphicsSystem extends System {
 	}
 
 	function updateMovingGraphicalNode(node:MovingGraphicalNode, deltaTime:Float) {
-		if (node.speed.oldPosition == null || !node.position.equals(node.speed.oldPosition)) {
+		if (node.pace.oldPosition == null || !node.position.equals(node.pace.oldPosition)) {
 			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
 			node.eyeCandy.sprite.x = pixPosition.x;
 			node.eyeCandy.sprite.y = pixPosition.y;

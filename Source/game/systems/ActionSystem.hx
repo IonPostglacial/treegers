@@ -18,12 +18,10 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 			return;
 		}
 		var oldPosition = new Position(node.position.x, node.position.y);
-		node.speed.timeSinceLastMove += deltaTime;
 		node.controled.currentAction.execute(stage, node, deltaTime);
 		if (node.controled.currentAction.done) {
 			node.controled.actions.pop();
-			node.speed.oldPosition = oldPosition;
-			node.speed.timeSinceLastMove = 0;
+			node.pace.oldPosition = oldPosition;
 		}
 	}
 }

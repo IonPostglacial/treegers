@@ -2,41 +2,31 @@ package game.actions;
 
 import ash.core.Entity;
 
-import game.components.Speed;
+import game.components.PathWalker;
 import game.nodes.ActionedNode;
+import hex.Position;
 
 class Move implements Action {
 	public var done(get, never):Bool;
+	var entity:Entity;
 	var path:Array<hex.Position>;
-	var _done = false;
 
-	public function new(path) {
-		this.path = path;
+	public function new(stage:GameStage, entity, goal) {
+		this.entity = entity;
+		this.path = graph.Path.find(stage.grid, entity.get(Position), goal);
 		this.path.pop();
 	}
 
-	function processMovement(speed:Speed, time:Float):Null<hex.Position> {
-		var updatedPosition:Null<hex.Position> = null;
-
-		if (speed.timeSinceLastMove >= speed.period) {
-			updatedPosition = path.pop();
-			speed.timeSinceLastMove -= speed.period;
-		}
-		return updatedPosition;
-	}
-
 	public function get_done():Bool {
-		return _done;
+		var walker = entity.get(PathWalker);
+		return walker == null || walker.path.length == 0;
 	}
 
 	public function execute(stage:GameStage, node:ActionedNode, deltaTime:Float) {
-		if (path.length > 0) {
-			var newPosition = processMovement(node.speed, deltaTime);
-			if (newPosition != null) {
-				node.position.assign(newPosition);
-			}
-		} else {
-			_done = true;
+		var walker = entity.get(PathWalker);
+		if (walker != null && walker.path.length == 0) {
+			entity.remove(PathWalker);
 		}
+		entity.add(new PathWalker(path));
 	}
 }

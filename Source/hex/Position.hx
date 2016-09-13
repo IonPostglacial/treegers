@@ -18,9 +18,8 @@ class Position {
 		return this.x == other.x && this.y == other.y;
 	}
 
-	public inline function assign(other:Position) {
-		this.x = other.x;
-		this.y = other.y;
+	public inline function copy():Position {
+		return new Position(x, y);
 	}
 
 	public inline function hashCode():Int {

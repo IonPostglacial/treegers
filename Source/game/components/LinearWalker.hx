@@ -1,6 +1,6 @@
 package game.components;
 
-class LinearMover {
+class LinearWalker {
 	public var dx:Int;
 	public var dy:Int;
 
