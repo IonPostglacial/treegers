@@ -31,16 +31,16 @@ class GameStage {
 	public var grid:hex.Grid;
 
 	var scene:Sprite;
-    var engine = new Engine();
-    var tickProvider:ITickProvider;
+	var engine = new Engine();
+	var tickProvider:ITickProvider;
 	var tiles:HashMap<Position, TileType>;
 
-    public function new(scene:Sprite, width:Int, height:Int) {
+	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
 		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
 		this.tiles = new HashMap<Position, TileType>();
-        prepare(scene, width, height);
-    }
+		prepare(scene, width, height);
+	}
 
 	public function tileAt(position:Position) {
 		var tileType = tiles.get(position);
@@ -51,20 +51,20 @@ class GameStage {
 		}
 	}
 
-    public function start() {
-        tickProvider = new FrameTickProvider(scene);
-        tickProvider.add(engine.update);
-        tickProvider.start();
-    }
+	public function start() {
+		tickProvider = new FrameTickProvider(scene);
+		tickProvider.add(engine.update);
+		tickProvider.start();
+	}
 
-    function prepare(scene:Sprite, width:Float, height:Float):Void {
+	function prepare(scene:Sprite, width:Float, height:Float):Void {
 		engine.addSystem(new ActionSystem(this), 1);
 		engine.addSystem(new ControledSystem(this), 1);
 		engine.addSystem(new HealthSystem(this), 1);
 		engine.addSystem(new LinearMovementSystem(this), 1);
 		engine.addSystem(new PathMovementSystem(this), 1);
 		engine.addSystem(new PaceSystem(this), 1);
-        engine.addSystem(new GraphicsSystem(this), 2);
+		engine.addSystem(new GraphicsSystem(this), 2);
 
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
@@ -75,7 +75,7 @@ class GameStage {
 		Shape.hexagon(ballSprite.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
 
 		var grunt = new Entity()
-        .add(new Position(0, 0))
+		.add(new Position(0, 0))
 		.add(new Health(100, 200, 2))
 		.add(new EyeCandy(gruntSprite))
 		.add(new Pace(1))
@@ -89,5 +89,5 @@ class GameStage {
 
 		engine.addEntity(grunt);
 		engine.addEntity(rollingBall);
-    }
+	}
 }
