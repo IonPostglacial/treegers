@@ -25,11 +25,8 @@ class Grid implements Path.Findable<Position> {
 
 		posCache = [];
 		for (y in 0...height) {
-			for (x in 0...width - 1) {
-				posCache.push(new Position(x - Std.int((y + 1) / 2), y));
-			}
-			if (y % 2 == 0) {
-				posCache.push(new Position(width - 1 - Std.int(y / 2), y));
+			for (x in 0...width) {
+				posCache.push(new Position(x - Std.int(y / 2), y));
 			}
 		}
 	}

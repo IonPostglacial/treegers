@@ -42,29 +42,9 @@ class Shape {
 	}
 
 	public static function hexagonGrid(graphics:Graphics, grid:hex.Grid) {
-		var HEX_WIDTH = SQRT3 * grid.radius;
-		var HEX_HEIGHT = 2 * grid.radius;
-		var LAST_Y = (1.5 * grid.height + 1) * grid.radius;
-		var y = 0.5 * grid.radius;
-
-		while (y < LAST_Y) {
-			for (i in 0...grid.width) {
-				var x = i * HEX_WIDTH;
-
-				graphics.moveTo(x, y + grid.radius);
-				graphics.lineTo(x, y);
-				graphics.lineTo(x + 0.5 * HEX_WIDTH, y - 0.5 * grid.radius);
-				graphics.lineTo(x + HEX_WIDTH, y);
-				graphics.moveTo(x, y + grid.radius);
-				graphics.lineTo(x + 0.5 * HEX_WIDTH, y + 1.5 * grid.radius);
-				if (y < LAST_Y - 1.5 * HEX_HEIGHT) {
-					graphics.lineTo(x + 0.5 * HEX_WIDTH, y + 2.5 * grid.radius);
-					graphics.moveTo(x + 0.5 * HEX_WIDTH, y + 1.5 * grid.radius);
-				}
-				graphics.lineTo(x + HEX_WIDTH, y + grid.radius);
-			}
-			graphics.lineTo(HEX_WIDTH * grid.width, y);
-			y += 1.5 * HEX_HEIGHT;
+		for (position in grid.positions) {
+			var center = positionToPoint(position, grid.radius);
+			hexagon(graphics, new Hexagon(center.x, center.y, grid.radius));
 		}
 	}
 }
