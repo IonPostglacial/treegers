@@ -20,6 +20,7 @@ import game.systems.PaceSystem;
 import drawing.Shape;
 import hex.Hexagon;
 import hex.Position;
+import hex.HexaMap;
 import game.components.Controled;
 import game.components.EyeCandy;
 import game.components.Health;
@@ -33,22 +34,17 @@ class GameStage {
 	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
-	var tiles:HashMap<Position, TileType>;
+	var tiles:HexaMap<TileType>;
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
 		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
-		this.tiles = new HashMap<Position, TileType>();
+		this.tiles = new HexaMap<TileType>(width, height, TileType.None);
 		prepare(scene, width, height);
 	}
 
 	public function tileAt(position:Position) {
-		var tileType = tiles.get(position);
-		if (tileType == null) {
-			return TileType.None;
-		} else {
-			return tiles.get(position);
-		}
+		return tiles.get(position.x, position.y);
 	}
 
 	public function start() {
