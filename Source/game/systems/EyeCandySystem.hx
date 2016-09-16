@@ -7,21 +7,15 @@ import ash.core.System;
 import openfl.display.Sprite;
 import openfl.Lib;
 
-import game.components.Health;
-import game.nodes.ControledGraphicalNode;
-import game.nodes.HealthyGraphicalNode;
-import game.nodes.MovingGraphicalNode;
 import drawing.Shape;
+import game.components.Health;
+import game.nodes.HealthyGraphicalNode;
 import hex.Hexagon;
 
-import openfl.events.MouseEvent;
 
-
-class GraphicsSystem extends System {
+class EyeCandySystem extends System {
 	var game:GameStage;
-	var movers:NodeList<MovingGraphicalNode>;
 	var healthies:NodeList<HealthyGraphicalNode>;
-	var controledMovers:NodeList<ControledGraphicalNode>;
 
 	static var HEALTH_COLOR = 0x00FF00;
 	static var GAUGE_LHEIGHT = 2;
@@ -35,28 +29,14 @@ class GraphicsSystem extends System {
 	}
 
 	override public function update(deltaTime:Float) {
-		for (mover in movers) {
-			updateMovingGraphicalNode(mover, deltaTime);
-		}
-		for (controled in controledMovers) {
-			updateControledGraphicalNode(controled, deltaTime);
-		}
 		for (healthy in healthies) {
 			updateHealthyNode(healthy, deltaTime);
 		}
 	}
 
 	override public function addToEngine(engine:Engine) {
-		controledMovers = engine.getNodeList(ControledGraphicalNode);
-		movers = engine.getNodeList(MovingGraphicalNode);
 		healthies = engine.getNodeList(HealthyGraphicalNode);
 
-		movers.nodeAdded.add(function (node:MovingGraphicalNode) {
-			Lib.current.addChild(node.eyeCandy.sprite);
-		});
-		movers.nodeRemoved.add(function (node:MovingGraphicalNode) {
-			Lib.current.removeChild(node.eyeCandy.sprite);
-		});
 		healthies.nodeAdded.add(function (node:HealthyGraphicalNode) {
 			node.eyeCandy.sprite.addChild(createHealthSprite(node.health));
 		});
@@ -65,28 +45,12 @@ class GraphicsSystem extends System {
 		});
 	}
 
-	static inline function createSelectionSprite():Sprite {
-		var selection = new Sprite();
-		selection.name = "selection";
-		selection.graphics.lineStyle(2, 0xFFFF00);
-		Shape.hexagon(selection.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
-		return selection;
-	}
-
 	static inline function createHealthSprite(health:Health):Sprite {
 		var selection = new Sprite();
 		selection.name = "health";
 		selection.x -= Conf.HEX_RADIUS / 2;
 		selection.y -= Conf.HEX_RADIUS;
 		return selection;
-	}
-
-	function updateMovingGraphicalNode(node:MovingGraphicalNode, deltaTime:Float) {
-		if (node.pace.oldPosition == null || !node.position.equals(node.pace.oldPosition)) {
-			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
-			node.eyeCandy.sprite.x = pixPosition.x;
-			node.eyeCandy.sprite.y = pixPosition.y;
-		}
 	}
 
 	function updateHealthyNode(node:HealthyGraphicalNode, deltaTime:Float) {
@@ -99,22 +63,18 @@ class GraphicsSystem extends System {
 		healthSprite.graphics.endFill();
 	}
 
-	function updateControledGraphicalNode(node:ControledGraphicalNode, deltaTime:Float) {
-		var selection = node.eyeCandy.sprite.getChildByName("selection");
-		if (node.controled.selected) {
-			if (selection == null) {
-				node.eyeCandy.sprite.addChildAt(createSelectionSprite(), 0);
-			}
-		} else if (selection != null) {
-			node.eyeCandy.sprite.removeChild(selection);
-		}
-	}
-
 	function drawBackground() {
-		Lib.current.graphics.beginFill(0xbd7207);
+		Lib.current.graphics.beginFill(0x000000);
 		Lib.current.graphics.drawRect(0, 0, 800, 600);
 		Lib.current.graphics.endFill();
+		for (position in game.grid.positions) {
+			var tilePoint = Shape.positionToPoint(position, game.grid.radius);
+			var tileType = game.tileAt(position);
+			Lib.current.graphics.beginFill(Tile.Color.of(tileType));
+			Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, game.grid.radius));
+			Lib.current.graphics.endFill();
+		}
 		Lib.current.graphics.lineStyle(2, 0xffa200);
-		drawing.Shape.hexagonGrid(Lib.current.graphics, game.grid);
+		Shape.hexagonGrid(Lib.current.graphics, game.grid);
 	}
 }

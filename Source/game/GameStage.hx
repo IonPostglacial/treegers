@@ -11,7 +11,9 @@ import ash.core.Entity;
 
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
-import game.systems.GraphicsSystem;
+import game.systems.EyeCandySystem;
+import game.systems.ControledEyeCandySystem;
+import game.systems.MovingEyeCandySystem;
 import game.systems.HealthSystem;
 import game.systems.LinearMovementSystem;
 import game.systems.PathMovementSystem;
@@ -34,12 +36,13 @@ class GameStage {
 	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
-	var tiles:HexaMap<TileType>;
+	var tiles:HexaMap<Tile.Type>;
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
 		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
-		this.tiles = new HexaMap<TileType>(width, height, TileType.None);
+		this.tiles = new HexaMap<Tile.Type>(width, height, Tile.Type.Ground);
+		this.tiles.set(3, 2, Tile.Type.Pikes);
 		prepare(scene, width, height);
 	}
 
@@ -60,7 +63,9 @@ class GameStage {
 		engine.addSystem(new LinearMovementSystem(this), 1);
 		engine.addSystem(new PathMovementSystem(this), 1);
 		engine.addSystem(new PaceSystem(this), 1);
-		engine.addSystem(new GraphicsSystem(this), 2);
+		engine.addSystem(new EyeCandySystem(this), 2);
+		engine.addSystem(new ControledEyeCandySystem(this), 3);
+		engine.addSystem(new MovingEyeCandySystem(this), 3);
 
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
@@ -72,7 +77,7 @@ class GameStage {
 
 		var grunt = new Entity()
 		.add(new Position(0, 0))
-		.add(new Health(100, 200, 2))
+		.add(new Health(100, 100, 2))
 		.add(new EyeCandy(gruntSprite))
 		.add(new Pace(1))
 		.add(new Controled());

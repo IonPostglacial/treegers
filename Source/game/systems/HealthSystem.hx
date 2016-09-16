@@ -23,7 +23,7 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	function updateNode(node:HealthyNode, deltaTime:Float) {
 		switch(game.tileAt(node.position)) {
 		case Pikes:
-			node.health.level -= 10;
+			node.health.level -= 1;
 		default:
 		}
 		if (node.health.level <= 0) {
