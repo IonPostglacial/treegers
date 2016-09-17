@@ -40,24 +40,25 @@ class Grid implements Path.Findable<Position> {
 	}
 
 	public function contains(x:Int, y:Int):Bool {
-		return x + Std.int(y / 2) >= 0 && x + Std.int((y + 1) / 2) < width && y >= 0 && y < height;
+		return x + Std.int(y / 2) >= 0 && x + Std.int(y / 2) < width && y >= 0 && y < height;
 	}
 
 	static function abs(n:Int):Int {
 		return n >= 0 ? n : -n;
 	}
 
-	public function distanceBetween(p1:Position, p2:Position):Int {
+	public inline function distanceBetween(p1:Position, p2:Position):Int {
 		return Std.int((abs(p1.x - p2.x) + abs(p1.x + p1.y - p2.x - p2.y) + abs(p1.y - p2.y)) / 2);
 	}
 
-	public function neighborsOf(p:Position):Iterable<Position> {
+	public inline function neighborsOf(p:Position):Array<Position> {
 		var neighbors = [];
 		for (i in 0...6) {
 			var x = p.x + deltas[2 * i];
 			var y = p.y + deltas[2 * i + 1];
-
-			neighbors.push(new Position(x, y));
+			if (contains(x, y)) {
+				neighbors.push(new Position(x, y));
+			}
 		}
 		return neighbors;
 	}

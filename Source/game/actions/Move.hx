@@ -13,7 +13,7 @@ class Move implements Action {
 
 	public function new(stage:GameStage, entity, goal) {
 		this.entity = entity;
-		this.path = graph.Path.find(stage.grid, entity.get(Position), goal);
+		this.path = graph.Path.find(stage, entity.get(Position), goal);
 		this.path.pop();
 	}
 

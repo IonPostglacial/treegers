@@ -7,6 +7,7 @@ enum Type {
 	Hole;
 	Pikes;
 	Cliff;
+	Arrow(dx:Int, dy:Int);
 }
 
 class Color {
@@ -15,8 +16,9 @@ class Color {
 		case Ground: 0xBD7207;
 		case Water: 0x22DDEE;
 		case Hole: 0xFFDDCA;
-		case Pikes: 0xFFDDDD;
-		case Cliff: 0xCACACA;
+		case Pikes: 0xDDAAAA;
+		case Cliff: 0xAAAAAA;
+		case Arrow(_): 0xDD7777;
 		default:0x000000;
 	}
 }

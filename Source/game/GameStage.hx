@@ -28,9 +28,10 @@ import game.components.EyeCandy;
 import game.components.Health;
 import game.components.LinearWalker;
 import game.components.Pace;
+import graph.Path;
 
 
-class GameStage {
+class GameStage implements Path.Findable<Position> {
 	public var grid:hex.Grid;
 
 	var scene:Sprite;
@@ -43,11 +44,24 @@ class GameStage {
 		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
 		this.tiles = new HexaMap<Tile.Type>(width, height, Tile.Type.Ground);
 		this.tiles.set(3, 2, Tile.Type.Pikes);
+		this.tiles.set(3, 3, Tile.Type.Cliff);
+		this.tiles.set(3, 4, Tile.Type.Cliff);
+		this.tiles.set(3, 5, Tile.Type.Cliff);
 		prepare(scene, width, height);
 	}
 
 	public function tileAt(position:Position) {
 		return tiles.get(position.x, position.y);
+	}
+
+	public function distanceBetween(p1:Position, p2:Position):Int {
+		return grid.distanceBetween(p1, p2);
+	}
+
+	public function neighborsOf(p:Position):Iterable<Position> {
+		return grid.neighborsOf(p).filter(function (position) {
+			return tileAt(position) != Tile.Type.Cliff;
+		});
 	}
 
 	public function start() {
@@ -83,7 +97,7 @@ class GameStage {
 		.add(new Controled());
 
 		var rollingBall = new Entity()
-		.add(new Position(3, 3))
+		.add(new Position(0, 3))
 		.add(new EyeCandy(ballSprite))
 		.add(new Pace(1))
 		.add(new LinearWalker(1, 0));
