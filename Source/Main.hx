@@ -9,6 +9,7 @@ import openfl.display.Sprite;
 
 import game.GameStage;
 
+
 class Main extends Sprite {
 	var game:GameStage;
 

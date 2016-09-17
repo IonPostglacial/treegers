@@ -21,7 +21,7 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 		node.controled.currentAction.execute(stage, node, deltaTime);
 		if (node.controled.currentAction.done) {
 			node.controled.actions.pop();
-			node.pace.oldPosition = oldPosition;
+			node.movement.oldPosition = oldPosition;
 		}
 	}
 }

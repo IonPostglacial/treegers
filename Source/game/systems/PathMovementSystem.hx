@@ -13,10 +13,10 @@ class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 	}
 
 	function updateNode(node:PathWalkingNode, deltaTime:Float) {
-		if (node.pathWalker.path.length > 0 && node.pace.ready) {
+		if (node.pathWalker.path.length > 0 && node.movement.ready) {
 			var nextPosition = node.pathWalker.path.pop();
-			if (Tile.Crossable.with(stage.tileAt(nextPosition), node.pace.transportation)) {
-				node.pace.oldPosition = node.position.copy();
+			if (Tile.Crossable.with(stage.tileAt(nextPosition), node.movement.transportation)) {
+				node.movement.oldPosition = node.position.copy();
 				node.entity.add(nextPosition);
 			} else {
 				node.pathWalker.path = [];

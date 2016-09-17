@@ -2,7 +2,7 @@ package game.components;
 
 import hex.Position;
 
-class Pace {
+class Movement {
 	public var transportation:Tile.Transportation;
 	public var period:Float;
 	public var delta(get, never):Float;

@@ -29,7 +29,7 @@ class MovingEyeCandySystem extends ListIteratingSystem<MovingGraphicalNode> {
 	}
 
 	function updateNode(node:MovingGraphicalNode, deltaTime:Float) {
-		if (node.pace.oldPosition == null || !node.position.equals(node.pace.oldPosition)) {
+		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
 			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
 			node.eyeCandy.sprite.x = pixPosition.x;
 			node.eyeCandy.sprite.y = pixPosition.y;

@@ -2,7 +2,7 @@ package game.actions;
 
 import ash.core.Entity;
 
-import game.components.Pace;
+import game.components.Movement;
 import game.components.PathWalker;
 import game.nodes.ActionedNode;
 import hex.Position;
@@ -14,7 +14,7 @@ class Move implements Action {
 
 	public function new(stage:GameStage, entity, goal) {
 		this.entity = entity;
-		this.path = graph.Path.find(stage.obstaclesFor(entity.get(Pace).transportation), entity.get(Position), goal);
+		this.path = graph.Path.find(stage.obstaclesFor(entity.get(Movement).transportation), entity.get(Position), goal);
 		this.path.pop();
 	}
 

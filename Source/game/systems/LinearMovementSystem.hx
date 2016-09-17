@@ -22,13 +22,13 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 	}
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
-		if (node.pace.ready) {
+		if (node.movement.ready) {
 			var newPosition = new Position(
 				node.position.x + node.linearWalker.dx,
 				node.position.y + node.linearWalker.dy
 			);
-			if (Tile.Crossable.with(stage.tileAt(newPosition), node.pace.transportation)) {
-				node.pace.oldPosition = node.position.copy();
+			if (Tile.Crossable.with(stage.tileAt(newPosition), node.movement.transportation)) {
+				node.movement.oldPosition = node.position.copy();
 				node.entity.add(newPosition);
 			} else {
 				engine.removeEntity(node.entity);

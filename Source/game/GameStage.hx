@@ -17,7 +17,7 @@ import game.systems.MovingEyeCandySystem;
 import game.systems.HealthSystem;
 import game.systems.LinearMovementSystem;
 import game.systems.PathMovementSystem;
-import game.systems.PaceSystem;
+import game.systems.MovementSystem;
 
 import drawing.Shape;
 import hex.Hexagon;
@@ -27,7 +27,7 @@ import game.components.Controled;
 import game.components.EyeCandy;
 import game.components.Health;
 import game.components.LinearWalker;
-import game.components.Pace;
+import game.components.Movement;
 import graph.Path;
 
 private class ObstacleGrid implements Path.Findable<Position> {
@@ -94,7 +94,7 @@ class GameStage {
 		engine.addSystem(new HealthSystem(this), 1);
 		engine.addSystem(new LinearMovementSystem(this), 1);
 		engine.addSystem(new PathMovementSystem(this), 1);
-		engine.addSystem(new PaceSystem(this), 1);
+		engine.addSystem(new MovementSystem(this), 1);
 		engine.addSystem(new EyeCandySystem(this), 2);
 		engine.addSystem(new ControledEyeCandySystem(this), 3);
 		engine.addSystem(new MovingEyeCandySystem(this), 3);
@@ -111,13 +111,13 @@ class GameStage {
 		.add(new Position(0, 0))
 		.add(new Health(100, 100, 2))
 		.add(new EyeCandy(gruntSprite))
-		.add(new Pace(Tile.Transportation.Foot, 1))
+		.add(new Movement(Tile.Transportation.Foot, 1))
 		.add(new Controled());
 
 		var rollingBall = new Entity()
 		.add(new Position(0, 3))
 		.add(new EyeCandy(ballSprite))
-		.add(new Pace(Tile.Transportation.Foot, 1))
+		.add(new Movement(Tile.Transportation.Foot, 1))
 		.add(new LinearWalker(1, 0));
 
 		engine.addEntity(grunt);
