@@ -30,14 +30,36 @@ import game.components.LinearWalker;
 import game.components.Pace;
 import graph.Path;
 
+private class ObstacleGrid implements Path.Findable<Position> {
+	var grid:hex.Grid;
+	var tiles:HexaMap<Tile.Type>;
+	public var transportation:Tile.Transportation;
 
-class GameStage implements Path.Findable<Position> {
+	public inline function new(grid, tiles, transportation) {
+		this.grid = grid;
+		this.tiles = tiles;
+		this.transportation = transportation;
+	}
+
+	public function distanceBetween(p1:Position, p2:Position):Int {
+		return grid.distanceBetween(p1, p2);
+	}
+
+	public function neighborsOf(p:Position):Iterable<Position> {
+		return grid.neighborsOf(p).filter(function (position) {
+			return Tile.Crossable.with(tiles.get(position.x, position.y), transportation);
+		});
+	}
+}
+
+class GameStage {
 	public var grid:hex.Grid;
 
 	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
 	var tiles:HexaMap<Tile.Type>;
+	var obstacles:ObstacleGrid;
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
@@ -47,6 +69,7 @@ class GameStage implements Path.Findable<Position> {
 		this.tiles.set(3, 3, Tile.Type.Cliff);
 		this.tiles.set(3, 4, Tile.Type.Cliff);
 		this.tiles.set(3, 5, Tile.Type.Cliff);
+		this.obstacles = new ObstacleGrid(this.grid, this.tiles, Tile.Transportation.Foot);
 		prepare(scene, width, height);
 	}
 
@@ -54,14 +77,9 @@ class GameStage implements Path.Findable<Position> {
 		return tiles.get(position.x, position.y);
 	}
 
-	public function distanceBetween(p1:Position, p2:Position):Int {
-		return grid.distanceBetween(p1, p2);
-	}
-
-	public function neighborsOf(p:Position):Iterable<Position> {
-		return grid.neighborsOf(p).filter(function (position) {
-			return tileAt(position) != Tile.Type.Cliff;
-		});
+	public function obstaclesFor(transportation:Tile.Transportation):graph.Path.Findable<Position> {
+		obstacles.transportation = transportation;
+		return obstacles;
 	}
 
 	public function start() {
@@ -93,13 +111,13 @@ class GameStage implements Path.Findable<Position> {
 		.add(new Position(0, 0))
 		.add(new Health(100, 100, 2))
 		.add(new EyeCandy(gruntSprite))
-		.add(new Pace(1))
+		.add(new Pace(Tile.Transportation.Foot, 1))
 		.add(new Controled());
 
 		var rollingBall = new Entity()
 		.add(new Position(0, 3))
 		.add(new EyeCandy(ballSprite))
-		.add(new Pace(1))
+		.add(new Pace(Tile.Transportation.Foot, 1))
 		.add(new LinearWalker(1, 0));
 
 		engine.addEntity(grunt);

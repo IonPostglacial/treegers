@@ -10,6 +10,17 @@ enum Type {
 	Arrow(dx:Int, dy:Int);
 }
 
+enum Transportation { Foot; Boat; Plane; }
+
+class Crossable {
+	public static function with(type:Type, mean:Transportation):Bool return switch (type) {
+		case None: false;
+		case Water: mean != Foot;
+		case Cliff: false;
+		default:true;
+	}
+}
+
 class Color {
 	public static function of(type:Type):Int return switch(type) {
 		case None: 0x000000;

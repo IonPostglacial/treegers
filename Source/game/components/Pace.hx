@@ -3,13 +3,15 @@ package game.components;
 import hex.Position;
 
 class Pace {
+	public var transportation:Tile.Transportation;
 	public var period:Float;
 	public var delta(get, never):Float;
 	public var ready(get, never):Bool;
 	public var oldPosition(default, set):Position;
 	var timeSinceLastMove:Float;
 
-	public function new(period) {
+	public function new(transportation, period) {
+		this.transportation = transportation;
 		this.period = period;
 		this.timeSinceLastMove = 0;
 		this.oldPosition = new Position(-1, -1);
