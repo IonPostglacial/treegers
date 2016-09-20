@@ -17,17 +17,6 @@ class MovingEyeCandySystem extends ListIteratingSystem<MovingGraphicalNode> {
 		super(MovingGraphicalNode, updateNode);
 	}
 
-	override public function addToEngine(engine:Engine) {
-		super.addToEngine(engine);
-
-		nodeList.nodeAdded.add(function (node:MovingGraphicalNode) {
-			Lib.current.addChild(node.eyeCandy.sprite);
-		});
-		nodeList.nodeRemoved.add(function (node:MovingGraphicalNode) {
-			Lib.current.removeChild(node.eyeCandy.sprite);
-		});
-	}
-
 	function updateNode(node:MovingGraphicalNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
 			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);

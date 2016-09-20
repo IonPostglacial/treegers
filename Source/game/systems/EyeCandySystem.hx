@@ -9,12 +9,14 @@ import openfl.Lib;
 
 import drawing.Shape;
 import game.components.Health;
+import game.nodes.EyeCandyNode;
 import game.nodes.HealthyGraphicalNode;
 import hex.Hexagon;
 
 
 class EyeCandySystem extends System {
 	var game:GameStage;
+	var eyeCandies:NodeList<EyeCandyNode>;
 	var healthies:NodeList<HealthyGraphicalNode>;
 
 	static var HEALTH_COLOR = 0x00FF00;
@@ -24,18 +26,33 @@ class EyeCandySystem extends System {
 
 	public function new(game:GameStage) {
 		this.game = game;
-		drawBackground();
 		super();
 	}
 
 	override public function update(deltaTime:Float) {
+		if (game.bgDamaged) {
+			drawBackground();
+		}
 		for (healthy in healthies) {
 			updateHealthyNode(healthy, deltaTime);
 		}
 	}
 
 	override public function addToEngine(engine:Engine) {
+		super.addToEngine(engine);
+
+		eyeCandies = engine.getNodeList(EyeCandyNode);
 		healthies = engine.getNodeList(HealthyGraphicalNode);
+
+		eyeCandies.nodeAdded.add(function (node:EyeCandyNode) {
+			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
+			node.eyeCandy.sprite.x = pixPosition.x;
+			node.eyeCandy.sprite.y = pixPosition.y;
+			Lib.current.addChild(node.eyeCandy.sprite);
+		});
+		eyeCandies.nodeRemoved.add(function (node:EyeCandyNode) {
+			Lib.current.removeChild(node.eyeCandy.sprite);
+		});
 
 		healthies.nodeAdded.add(function (node:HealthyGraphicalNode) {
 			node.eyeCandy.sprite.addChild(createHealthSprite(node.health));
@@ -65,6 +82,7 @@ class EyeCandySystem extends System {
 
 	function drawBackground() {
 		Lib.current.graphics.beginFill(0x000000);
+		Lib.current.graphics.lineStyle(0, 0x000000);
 		Lib.current.graphics.drawRect(0, 0, 800, 600);
 		Lib.current.graphics.endFill();
 		for (position in game.grid.positions) {
@@ -76,5 +94,7 @@ class EyeCandySystem extends System {
 		}
 		Lib.current.graphics.lineStyle(2, 0xffa200);
 		Shape.hexagonGrid(Lib.current.graphics, game.grid);
+		Lib.current.graphics.endFill();
+		game.bgDamaged = false;
 	}
 }

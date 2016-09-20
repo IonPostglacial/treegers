@@ -25,7 +25,7 @@ class Color {
 	public static function of(type:Type):Int return switch(type) {
 		case None: 0x000000;
 		case Ground: 0xBD7207;
-		case Water: 0x22DDEE;
+		case Water: 0x55BBDD;
 		case Hole: 0xFFDDCA;
 		case Pikes: 0xDDAAAA;
 		case Cliff: 0xAAAAAA;

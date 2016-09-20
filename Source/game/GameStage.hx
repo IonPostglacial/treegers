@@ -18,11 +18,12 @@ import game.systems.HealthSystem;
 import game.systems.LinearMovementSystem;
 import game.systems.PathMovementSystem;
 import game.systems.MovementSystem;
-
+import game.systems.ButtonSystem;
 import drawing.Shape;
 import hex.Hexagon;
 import hex.Position;
 import hex.HexaMap;
+import game.components.Button;
 import game.components.Controled;
 import game.components.EyeCandy;
 import game.components.Health;
@@ -54,6 +55,7 @@ private class ObstacleGrid implements Path.Findable<Position> {
 
 class GameStage {
 	public var grid:hex.Grid;
+	public var bgDamaged = true;
 
 	var scene:Sprite;
 	var engine = new Engine();
@@ -77,6 +79,11 @@ class GameStage {
 		return tiles.get(position.x, position.y);
 	}
 
+	public function setTileAt(position:Position, value:Tile.Type) {
+		tiles.set(position.x, position.y, value);
+		bgDamaged = true;
+	}
+
 	public function obstaclesFor(transportation:Tile.Transportation):graph.Path.Findable<Position> {
 		obstacles.transportation = transportation;
 		return obstacles;
@@ -95,6 +102,7 @@ class GameStage {
 		engine.addSystem(new LinearMovementSystem(this), 1);
 		engine.addSystem(new PathMovementSystem(this), 1);
 		engine.addSystem(new MovementSystem(this), 1);
+		engine.addSystem(new ButtonSystem(this), 1);
 		engine.addSystem(new EyeCandySystem(this), 2);
 		engine.addSystem(new ControledEyeCandySystem(this), 3);
 		engine.addSystem(new MovingEyeCandySystem(this), 3);
@@ -102,6 +110,10 @@ class GameStage {
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
 		Shape.hexagon(gruntSprite.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
+
+		var buttonSprite = new Sprite();
+		buttonSprite.graphics.beginFill(0x0066BB);
+		Shape.hexagon(buttonSprite.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
 
 		var ballSprite = new Sprite();
 		ballSprite.graphics.beginFill(0x777777);
@@ -114,6 +126,11 @@ class GameStage {
 		.add(new Movement(Tile.Transportation.Foot, 1))
 		.add(new Controled());
 
+		var button = new Entity()
+		.add(new Position(0, 1))
+		.add(new EyeCandy(buttonSprite))
+		.add(new Button(true, [new Position(1, 1)], Tile.Type.Ground, Tile.Type.Water));
+
 		var rollingBall = new Entity()
 		.add(new Position(0, 3))
 		.add(new EyeCandy(ballSprite))
@@ -121,6 +138,7 @@ class GameStage {
 		.add(new LinearWalker(1, 0));
 
 		engine.addEntity(grunt);
+		engine.addEntity(button);
 		engine.addEntity(rollingBall);
 	}
 }
