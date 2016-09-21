@@ -2,12 +2,12 @@ package game.nodes;
 
 import ash.core.Node;
 
-import game.components.EyeCandy;
+import game.components.Visible;
 import game.components.Health;
 import hex.Position;
 
-class HealthyGraphicalNode extends Node<HealthyGraphicalNode> {
+class VisiblyHealthyNode extends Node<VisiblyHealthyNode> {
 	public var health:Health;
 	public var position:Position;
-	public var eyeCandy:EyeCandy;
+	public var visible:Visible;
 }

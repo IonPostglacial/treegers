@@ -6,22 +6,22 @@ import ash.core.Engine;
 import ash.tools.ListIteratingSystem;
 
 import drawing.Shape;
-import game.nodes.MovingGraphicalNode;
+import game.nodes.VisiblyMovingNode;
 
 
-class MovingEyeCandySystem extends ListIteratingSystem<MovingGraphicalNode> {
+class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 	var game:GameStage;
 
 	public function new(game:GameStage) {
 		this.game = game;
-		super(MovingGraphicalNode, updateNode);
+		super(VisiblyMovingNode, updateNode);
 	}
 
-	function updateNode(node:MovingGraphicalNode, deltaTime:Float) {
+	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
 			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
-			node.eyeCandy.sprite.x = pixPosition.x;
-			node.eyeCandy.sprite.y = pixPosition.y;
+			node.visible.sprite.x = pixPosition.x;
+			node.visible.sprite.y = pixPosition.y;
 		}
 	}
 }

@@ -4,10 +4,10 @@ import openfl.display.Sprite;
 
 import ash.core.Node;
 
-import game.components.EyeCandy;
+import game.components.Visible;
 import hex.Position;
 
-class EyeCandyNode extends Node<EyeCandyNode> {
-	public var eyeCandy:EyeCandy;
+class VisibleNode extends Node<VisibleNode> {
+	public var visible:Visible;
 	public var position:Position;
 }

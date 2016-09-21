@@ -2,12 +2,12 @@ package game.nodes;
 
 import ash.core.Node;
 
-import game.components.EyeCandy;
+import game.components.Visible;
 import game.components.Movement;
 import hex.Position;
 
-class MovingGraphicalNode extends Node<MovingGraphicalNode> {
+class VisiblyMovingNode extends Node<VisiblyMovingNode> {
 	public var movement:Movement;
-	public var eyeCandy:EyeCandy;
+	public var visible:Visible;
 	public var position:Position;
 }

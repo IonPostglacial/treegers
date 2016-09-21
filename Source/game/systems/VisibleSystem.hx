@@ -9,15 +9,15 @@ import openfl.Lib;
 
 import drawing.Shape;
 import game.components.Health;
-import game.nodes.EyeCandyNode;
-import game.nodes.HealthyGraphicalNode;
+import game.nodes.VisibleNode;
+import game.nodes.VisiblyHealthyNode;
 import hex.Hexagon;
 
 
-class EyeCandySystem extends System {
+class VisibleSystem extends System {
 	var game:GameStage;
-	var eyeCandies:NodeList<EyeCandyNode>;
-	var healthies:NodeList<HealthyGraphicalNode>;
+	var eyeCandies:NodeList<VisibleNode>;
+	var healthies:NodeList<VisiblyHealthyNode>;
 
 	static var HEALTH_COLOR = 0x00FF00;
 	static var GAUGE_LHEIGHT = 2;
@@ -41,24 +41,24 @@ class EyeCandySystem extends System {
 	override public function addToEngine(engine:Engine) {
 		super.addToEngine(engine);
 
-		eyeCandies = engine.getNodeList(EyeCandyNode);
-		healthies = engine.getNodeList(HealthyGraphicalNode);
+		eyeCandies = engine.getNodeList(VisibleNode);
+		healthies = engine.getNodeList(VisiblyHealthyNode);
 
-		eyeCandies.nodeAdded.add(function (node:EyeCandyNode) {
+		eyeCandies.nodeAdded.add(function (node:VisibleNode) {
 			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
-			node.eyeCandy.sprite.x = pixPosition.x;
-			node.eyeCandy.sprite.y = pixPosition.y;
-			Lib.current.addChild(node.eyeCandy.sprite);
+			node.visible.sprite.x = pixPosition.x;
+			node.visible.sprite.y = pixPosition.y;
+			Lib.current.addChild(node.visible.sprite);
 		});
-		eyeCandies.nodeRemoved.add(function (node:EyeCandyNode) {
-			Lib.current.removeChild(node.eyeCandy.sprite);
+		eyeCandies.nodeRemoved.add(function (node:VisibleNode) {
+			Lib.current.removeChild(node.visible.sprite);
 		});
 
-		healthies.nodeAdded.add(function (node:HealthyGraphicalNode) {
-			node.eyeCandy.sprite.addChild(createHealthSprite(node.health));
+		healthies.nodeAdded.add(function (node:VisiblyHealthyNode) {
+			node.visible.sprite.addChild(createHealthSprite(node.health));
 		});
-		healthies.nodeRemoved.add(function (node:HealthyGraphicalNode) {
-			node.eyeCandy.sprite.removeChild(node.eyeCandy.sprite.getChildByName("health"));
+		healthies.nodeRemoved.add(function (node:VisiblyHealthyNode) {
+			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("health"));
 		});
 	}
 
@@ -70,8 +70,8 @@ class EyeCandySystem extends System {
 		return selection;
 	}
 
-	function updateHealthyNode(node:HealthyGraphicalNode, deltaTime:Float) {
-		var healthSprite = cast (node.eyeCandy.sprite.getChildByName("health"), Sprite);
+	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
+		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
 		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
 		healthSprite.graphics.beginFill(0x000000);
 		healthSprite.graphics.drawRect(0, 0, GAUGE_WIDTH, GAUGE_HEIGHT);

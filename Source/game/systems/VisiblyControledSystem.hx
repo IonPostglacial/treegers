@@ -4,16 +4,16 @@ import openfl.display.Sprite;
 import ash.tools.ListIteratingSystem;
 
 import drawing.Shape;
-import game.nodes.ControledGraphicalNode;
+import game.nodes.VisiblyControledNode;
 import hex.Hexagon;
 
 
-class ControledEyeCandySystem extends ListIteratingSystem<ControledGraphicalNode> {
+class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 	var game:GameStage;
 
 	public function new(game:GameStage) {
 		this.game = game;
-		super(ControledGraphicalNode, updateNode);
+		super(VisiblyControledNode, updateNode);
 	}
 
 	inline function createSelectionSprite():Sprite {
@@ -24,14 +24,14 @@ class ControledEyeCandySystem extends ListIteratingSystem<ControledGraphicalNode
 		return selection;
 	}
 
-	function updateNode(node:ControledGraphicalNode, deltaTime:Float) {
-		var selection = node.eyeCandy.sprite.getChildByName("selection");
+	function updateNode(node:VisiblyControledNode, deltaTime:Float) {
+		var selection = node.visible.sprite.getChildByName("selection");
 		if (node.controled.selected) {
 			if (selection == null) {
-				node.eyeCandy.sprite.addChildAt(createSelectionSprite(), 0);
+				node.visible.sprite.addChildAt(createSelectionSprite(), 0);
 			}
 		} else if (selection != null) {
-			node.eyeCandy.sprite.removeChild(selection);
+			node.visible.sprite.removeChild(selection);
 		}
 	}
 }
