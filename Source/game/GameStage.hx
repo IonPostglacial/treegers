@@ -71,6 +71,8 @@ class GameStage {
 		this.tiles.set(3, 3, Tile.Type.Cliff);
 		this.tiles.set(3, 4, Tile.Type.Cliff);
 		this.tiles.set(3, 5, Tile.Type.Cliff);
+		this.tiles.set(1, 0, Tile.Type.Arrow(1, 0));
+		this.tiles.set(11, 0, Tile.Type.Arrow(-1, 0));
 		this.obstacles = new ObstacleGrid(this.grid, this.tiles, Tile.Transportation.Foot);
 		prepare(scene, width, height);
 	}
@@ -96,16 +98,16 @@ class GameStage {
 	}
 
 	function prepare(scene:Sprite, width:Float, height:Float):Void {
-		engine.addSystem(new ActionSystem(this), 1);
 		engine.addSystem(new ControledSystem(this), 1);
-		engine.addSystem(new HealthSystem(this), 1);
-		engine.addSystem(new LinearMovementSystem(this), 1);
-		engine.addSystem(new PathMovementSystem(this), 1);
-		engine.addSystem(new MovementSystem(this), 1);
-		engine.addSystem(new ButtonSystem(this), 1);
-		engine.addSystem(new EyeCandySystem(this), 2);
-		engine.addSystem(new ControledEyeCandySystem(this), 3);
-		engine.addSystem(new MovingEyeCandySystem(this), 3);
+		engine.addSystem(new ActionSystem(this), 2);
+		engine.addSystem(new HealthSystem(this), 2);
+		engine.addSystem(new LinearMovementSystem(this), 2);
+		engine.addSystem(new PathMovementSystem(this), 2);
+		engine.addSystem(new MovementSystem(this), 2);
+		engine.addSystem(new ButtonSystem(this), 2);
+		engine.addSystem(new EyeCandySystem(this), 3);
+		engine.addSystem(new ControledEyeCandySystem(this), 4);
+		engine.addSystem(new MovingEyeCandySystem(this), 4);
 
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
@@ -127,12 +129,12 @@ class GameStage {
 		.add(new Controled());
 
 		var button = new Entity()
-		.add(new Position(0, 1))
+		.add(new Position(5, 0))
 		.add(new EyeCandy(buttonSprite))
-		.add(new Button(true, [new Position(1, 1)], Tile.Type.Ground, Tile.Type.Water));
+		.add(new Button(false, [new Position(1, 1)], Tile.Type.Ground, Tile.Type.Water));
 
 		var rollingBall = new Entity()
-		.add(new Position(0, 3))
+		.add(new Position(4, 0))
 		.add(new EyeCandy(ballSprite))
 		.add(new Movement(Tile.Transportation.Foot, 1))
 		.add(new LinearWalker(1, 0));

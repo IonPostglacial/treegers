@@ -18,7 +18,7 @@ class HexaMap<T> {
 	}
 
 	inline function indexOf(x:Int, y:Int):Int {
-		return x + Std.int(y/2) + height * y;
+		return x + Std.int(y/2) + width * y;
 	}
 
 	public function get(x:Int, y:Int):T {

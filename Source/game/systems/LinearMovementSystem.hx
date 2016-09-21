@@ -23,6 +23,13 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
 		if (node.movement.ready) {
+			switch (stage.tileAt(node.position)) {
+			case Tile.Type.Arrow(dx, dy):
+				node.linearWalker.dx = dx;
+				node.linearWalker.dy = dy;
+			default:
+				// Do Nothing
+			}
 			var newPosition = new Position(
 				node.position.x + node.linearWalker.dx,
 				node.position.y + node.linearWalker.dy
@@ -33,7 +40,6 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 			} else {
 				engine.removeEntity(node.entity);
 			}
-
 		}
 	}
 }

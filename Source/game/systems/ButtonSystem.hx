@@ -19,16 +19,18 @@ class ButtonSystem extends System {
 
 	override public function update(deltaTime:Float) {
 		for (buttonNode in buttons) {
-			var buttonAlreadyPressed = buttonNode.button.pressed;
+			var buttonAlreadyPressed = buttonNode.button.isPressed;
+			var buttonCurrentlyPressed = false;
 			for (mover in movers) {
-				buttonNode.button.pressed = mover.position.equals(buttonNode.position);
-				if (buttonAlreadyPressed != buttonNode.button.pressed) {
-					for (position in buttonNode.button.affectedTiles) {
-						stage.setTileAt(position, buttonNode.button.currentTileType);
-					}
-				}
-				if (buttonNode.button.pressed) {
+				buttonCurrentlyPressed = mover.position.equals(buttonNode.position);
+				if (buttonCurrentlyPressed) {
 					break;
+				}
+			}
+			if (buttonAlreadyPressed != buttonCurrentlyPressed) {
+				buttonNode.button.flip();
+				for (position in buttonNode.button.affectedTiles) {
+					stage.setTileAt(position, buttonNode.button.currentTileType);
 				}
 			}
 		}

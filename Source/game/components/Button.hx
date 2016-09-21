@@ -6,7 +6,7 @@ import hex.Position;
 class Button {
 	var alternatingTileTypes:Array<Tile.Type>;
 
-	public var pressed(default,set):Bool = false;
+	public var isPressed(default,null):Bool = false;
 	public var triggered(default,default):Bool = false;
 	public var isToggle(default,null):Bool;
 	public var affectedTiles(default,null):Array<Position>;
@@ -22,11 +22,10 @@ class Button {
 		return alternatingTileTypes[triggered ? 1 : 0];
 	}
 
-	public function set_pressed(pressed:Bool):Bool {
-		if ((this.pressed != pressed) && (isToggle || pressed)) {
+	public function flip() {
+		isPressed = !isPressed;
+		if (isToggle || isPressed) {
 			triggered = !triggered;
 		}
-		this.pressed = pressed;
-		return pressed;
 	}
 }
