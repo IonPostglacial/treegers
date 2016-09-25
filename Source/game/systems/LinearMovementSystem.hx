@@ -43,7 +43,7 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 				node.position.x + node.linearWalker.dx,
 				node.position.y + node.linearWalker.dy
 			);
-			if (Tile.Crossable.with(stage.tileAt(newPosition), node.movement.mover)) {
+			if (Tile.Crossable.with(stage.tileAt(newPosition), node.movement.vehicle)) {
 				node.movement.oldPosition = node.position.copy();
 				node.entity.add(newPosition);
 			} else {

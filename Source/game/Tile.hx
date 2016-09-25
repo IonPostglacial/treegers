@@ -15,7 +15,7 @@ enum Vehicle { Foot; Boat; Plane; }
 class Crossable {
 	public static function with(type:Type, vehicle:Vehicle):Bool return switch (type) {
 		case None: false;
-		case Water: vehicle != Foot;
+		case Water: std.Type.enumEq(vehicle, Boat) || std.Type.enumEq(vehicle, Plane);
 		case Cliff: false;
 		default:true;
 	}

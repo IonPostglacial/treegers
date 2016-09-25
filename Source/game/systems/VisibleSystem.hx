@@ -35,7 +35,6 @@ class VisibleSystem extends System implements TileChangeListener {
 
 	static var HEALTH_COLOR = 0x00FF00;
 	static var GAUGE_LHEIGHT = 2;
-	//static var GAUGE_WIDTH = Conf.HEX_RADIUS;
 	static var GAUGE_HEIGHT = 5;
 
 	public function new(game:Stage) {

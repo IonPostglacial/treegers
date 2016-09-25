@@ -17,7 +17,7 @@ class Move implements Action {
 
 	public function new(stage:Stage, entity, goal) {
 		this.entity = entity;
-		this.path = Path.find(stage.obstaclesFor(entity.get(Movement).transportation), entity.get(Position), goal);
+		this.path = Path.find(stage.obstaclesFor(entity.get(Movement).vehicle), entity.get(Position), goal);
 		this.path.pop();
 	}
 
