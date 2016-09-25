@@ -31,7 +31,7 @@ class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		var selection = new Sprite();
 		selection.name = "selection";
 		selection.graphics.lineStyle(2, 0xFFFF00);
-		Shape.hexagon(selection.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
+		Shape.hexagon(selection.graphics, new Hexagon(0, 0, game.grid.radius));
 		return selection;
 	}
 

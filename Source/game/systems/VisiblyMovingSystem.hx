@@ -29,7 +29,7 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
-			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
+			var pixPosition = Shape.positionToPoint(node.position, game.grid.radius);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 		}

@@ -48,7 +48,7 @@ class Stage {
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
-		this.grid = new HexagonalGrid(width, height, Conf.HEX_RADIUS);
+		this.grid = new HexagonalGrid(width, height, 32);
 		this.tiles = new HexagonalMap<Tile.Type>(width, height, Tile.Type.Ground);
 		this.tiles.set(3, 2, Tile.Type.Pikes);
 		this.tiles.set(3, 3, Tile.Type.Cliff);
@@ -56,7 +56,7 @@ class Stage {
 		this.tiles.set(3, 5, Tile.Type.Cliff);
 		this.tiles.set(1, 0, Tile.Type.Arrow(1, 0));
 		this.tiles.set(11, 0, Tile.Type.Arrow(-1, 0));
-		this.obstacles = new ObstacleGrid(this.grid, this.tiles, Tile.Transportation.Foot);
+		this.obstacles = new ObstacleGrid(this.grid, this.tiles, Tile.Vehicle.Foot);
 		prepare(scene, width, height);
 	}
 
@@ -69,8 +69,8 @@ class Stage {
 		bgDamaged = true;
 	}
 
-	public function obstaclesFor(transportation:Tile.Transportation):graph.Path.Findable<Position> {
-		obstacles.transportation = transportation;
+	public function obstaclesFor(vehicle:Tile.Vehicle):graph.Path.Findable<Position> {
+		obstacles.vehicle = vehicle;
 		return obstacles;
 	}
 
@@ -95,21 +95,21 @@ class Stage {
 
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
-		Shape.hexagon(gruntSprite.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
+		Shape.hexagon(gruntSprite.graphics, new Hexagon(0, 0, grid.radius));
 
 		var buttonSprite = new Sprite();
 		buttonSprite.graphics.beginFill(0x0066BB);
-		Shape.hexagon(buttonSprite.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
+		Shape.hexagon(buttonSprite.graphics, new Hexagon(0, 0, grid.radius));
 
 		var ballSprite = new Sprite();
 		ballSprite.graphics.beginFill(0x777777);
-		Shape.hexagon(ballSprite.graphics, new Hexagon(0, 0, Conf.HEX_RADIUS));
+		Shape.hexagon(ballSprite.graphics, new Hexagon(0, 0, grid.radius));
 
 		var grunt = new Entity()
 		.add(new Position(0, 0))
 		.add(new Health(100, 100, 2))
 		.add(new Visible(gruntSprite))
-		.add(new Movement(Tile.Transportation.Foot, 0.5))
+		.add(new Movement(Tile.Vehicle.Foot, 0.5))
 		.add(new Controled());
 
 		var button = new Entity()
@@ -121,7 +121,7 @@ class Stage {
 		.add(new Position(4, 0))
 		.add(new Visible(ballSprite))
 		.add(new Collectible([new Health(0, 100, 2)]))
-		.add(new Movement(Tile.Transportation.Foot, 1.5))
+		.add(new Movement(Tile.Vehicle.Foot, 1.5))
 		.add(new LinearWalker(1, 0));
 
 		engine.addEntity(grunt);

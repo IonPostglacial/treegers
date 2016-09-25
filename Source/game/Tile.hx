@@ -10,12 +10,12 @@ enum Type {
 	Arrow(dx:Int, dy:Int);
 }
 
-enum Transportation { Foot; Boat; Plane; }
+enum Vehicle { Foot; Boat; Plane; }
 
 class Crossable {
-	public static function with(type:Type, mean:Transportation):Bool return switch (type) {
+	public static function with(type:Type, vehicle:Vehicle):Bool return switch (type) {
 		case None: false;
-		case Water: mean != Foot;
+		case Water: vehicle != Foot;
 		case Cliff: false;
 		default:true;
 	}

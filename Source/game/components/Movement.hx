@@ -2,15 +2,15 @@ package game.components;
 
 
 class Movement {
-	public var transportation:Tile.Transportation;
+	public var mover:Tile.Vehicle;
 	public var period:Float;
 	public var delta(get, never):Float;
 	public var ready(get, never):Bool;
 	public var oldPosition(default, set):Position;
 	var timeSinceLastMove:Float;
 
-	public function new(transportation, period) {
-		this.transportation = transportation;
+	public function new(mover, period) {
+		this.mover = mover;
 		this.period = period;
 		this.timeSinceLastMove = 0;
 		this.oldPosition = new Position(-1, -1);

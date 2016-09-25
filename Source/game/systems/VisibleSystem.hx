@@ -35,7 +35,7 @@ class VisibleSystem extends System {
 
 	static var HEALTH_COLOR = 0x00FF00;
 	static var GAUGE_LHEIGHT = 2;
-	static var GAUGE_WIDTH = Conf.HEX_RADIUS;
+	//static var GAUGE_WIDTH = Conf.HEX_RADIUS;
 	static var GAUGE_HEIGHT = 5;
 
 	public function new(game:Stage) {
@@ -59,7 +59,7 @@ class VisibleSystem extends System {
 		healthies = engine.getNodeList(VisiblyHealthyNode);
 
 		eyeCandies.nodeAdded.add(function (node:VisibleNode) {
-			var pixPosition = Shape.positionToPoint(node.position, Conf.HEX_RADIUS);
+			var pixPosition = Shape.positionToPoint(node.position, game.grid.radius);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			Lib.current.addChild(node.visible.sprite);
@@ -76,11 +76,11 @@ class VisibleSystem extends System {
 		});
 	}
 
-	static inline function createHealthSprite(health:Health):Sprite {
+	inline function createHealthSprite(health:Health):Sprite {
 		var selection = new Sprite();
 		selection.name = "health";
-		selection.x -= Conf.HEX_RADIUS / 2;
-		selection.y -= Conf.HEX_RADIUS;
+		selection.x -= game.grid.radius / 2;
+		selection.y -= game.grid.radius;
 		return selection;
 	}
 
@@ -88,9 +88,9 @@ class VisibleSystem extends System {
 		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
 		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
 		healthSprite.graphics.beginFill(0x000000);
-		healthSprite.graphics.drawRect(0, 0, GAUGE_WIDTH, GAUGE_HEIGHT);
+		healthSprite.graphics.drawRect(0, 0, game.grid.radius, GAUGE_HEIGHT);
 		healthSprite.graphics.beginFill(HEALTH_COLOR);
-		healthSprite.graphics.drawRect(0, 0, GAUGE_WIDTH * (node.health.level / node.health.max), GAUGE_HEIGHT);
+		healthSprite.graphics.drawRect(0, 0, game.grid.radius * (node.health.level / node.health.max), GAUGE_HEIGHT);
 		healthSprite.graphics.endFill();
 	}
 
