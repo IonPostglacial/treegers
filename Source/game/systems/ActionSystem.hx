@@ -5,6 +5,7 @@ import ash.tools.ListIteratingSystem;
 import game.nodes.ActionedNode;
 import game.components.Position;
 
+
 class ActionSystem extends ListIteratingSystem<ActionedNode> {
 	private var stage:Stage;
 

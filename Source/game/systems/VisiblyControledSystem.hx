@@ -1,12 +1,23 @@
 package game.systems;
 
 import openfl.display.Sprite;
+
+import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
 import game.drawing.Shape;
-import game.nodes.VisiblyControledNode;
 import game.geometry.Hexagon;
 
+import game.components.Controled;
+import game.components.Visible;
+import game.components.Position;
+
+
+class VisiblyControledNode extends Node<VisiblyControledNode> {
+	public var controled:Controled;
+	public var visible:Visible;
+	public var position:Position;
+}
 
 class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 	var game:Stage;

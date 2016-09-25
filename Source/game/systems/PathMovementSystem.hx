@@ -1,8 +1,18 @@
 package game.systems;
 
+import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
-import game.nodes.PathWalkingNode;
+import game.components.Movement;
+import game.components.PathWalker;
+import game.components.Position;
+
+
+class PathWalkingNode extends Node<PathWalkingNode> {
+	public var position:Position;
+	public var pathWalker:PathWalker;
+	public var movement:Movement;
+}
 
 class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 	var stage:Stage;

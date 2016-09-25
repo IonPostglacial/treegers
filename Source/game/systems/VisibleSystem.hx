@@ -1,6 +1,7 @@
 package game.systems;
 
 import ash.core.Engine;
+import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
@@ -9,10 +10,23 @@ import openfl.Lib;
 
 import game.drawing.Shape;
 import game.components.Health;
-import game.nodes.VisibleNode;
-import game.nodes.VisiblyHealthyNode;
 import game.geometry.Hexagon;
 
+import game.components.Visible;
+import game.components.Health;
+import game.components.Position;
+
+
+class VisibleNode extends Node<VisibleNode> {
+	public var visible:Visible;
+	public var position:Position;
+}
+
+class VisiblyHealthyNode extends Node<VisiblyHealthyNode> {
+	public var health:Health;
+	public var position:Position;
+	public var visible:Visible;
+}
 
 class VisibleSystem extends System {
 	var game:Stage;

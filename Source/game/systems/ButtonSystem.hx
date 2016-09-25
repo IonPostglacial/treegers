@@ -1,12 +1,21 @@
 package game.systems;
 
 import ash.core.Engine;
+import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
 import game.Stage;
-import game.nodes.ButtonNode;
 import game.nodes.MovingNode;
+
+import game.components.Button;
+import game.components.Position;
+
+
+class ButtonNode extends Node<ButtonNode> {
+	public var button:Button;
+	public var position:Position;
+}
 
 class ButtonSystem extends System {
 	var stage:Stage;

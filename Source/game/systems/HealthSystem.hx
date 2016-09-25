@@ -1,10 +1,17 @@
 package game.systems;
 
 import ash.core.Engine;
+import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
-import game.nodes.HealthyNode;
+import game.components.Health;
 import game.components.Position;
+
+
+class HealthyNode extends Node<HealthyNode> {
+	public var health:Health;
+	public var position:Position;
+}
 
 class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	var game:Stage;

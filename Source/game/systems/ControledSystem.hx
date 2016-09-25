@@ -4,12 +4,13 @@ import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
 import openfl.Lib;
 
+import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
 import game.actions.Move;
+import game.components.Controled;
 import game.components.Position;
 import game.drawing.Shape;
-import game.nodes.ControledNode;
 
 
 enum Order {
@@ -17,6 +18,11 @@ enum Order {
 	PowerOrdered(goal:Position);
 	TargetSelected(position:Position);
 	GroupSelected(area:Rectangle);
+}
+
+class ControledNode extends Node<ControledNode> {
+	public var controled:Controled;
+	public var position:Position;
 }
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {

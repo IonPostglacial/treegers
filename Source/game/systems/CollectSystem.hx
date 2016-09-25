@@ -1,14 +1,26 @@
 package game.systems;
 
 import ash.core.Engine;
+import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
 import game.Stage;
+import game.components.Collectible;
 import game.components.Collector;
-import game.nodes.CollectibleNode;
-import game.nodes.CollectorNode;
 import game.nodes.MovingNode;
+import game.components.Position;
+
+
+class CollectibleNode extends Node<CollectibleNode> {
+	public var collectible:Collectible;
+	public var position:Position;
+}
+
+class CollectorNode extends Node<CollectorNode> {
+	public var collector:Collector;
+	public var position:Position;
+}
 
 class CollectSystem extends System {
 	var engine:Engine;

@@ -3,11 +3,21 @@ package game.systems;
 import openfl.Lib;
 
 import ash.core.Engine;
+import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
 import game.drawing.Shape;
-import game.nodes.VisiblyMovingNode;
 
+import game.components.Visible;
+import game.components.Movement;
+import game.components.Position;
+
+
+class VisiblyMovingNode extends Node<VisiblyMovingNode> {
+	public var movement:Movement;
+	public var visible:Visible;
+	public var position:Position;
+}
 
 class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 	var game:Stage;
