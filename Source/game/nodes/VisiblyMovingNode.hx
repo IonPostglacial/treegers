@@ -4,7 +4,7 @@ import ash.core.Node;
 
 import game.components.Visible;
 import game.components.Movement;
-import hex.Position;
+import game.components.Position;
 
 class VisiblyMovingNode extends Node<VisiblyMovingNode> {
 	public var movement:Movement;

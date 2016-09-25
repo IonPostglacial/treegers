@@ -4,7 +4,7 @@ import ash.core.Node;
 
 import game.components.Controled;
 import game.components.Movement;
-import hex.Position;
+import game.components.Position;
 
 class ActionedNode extends Node<ActionedNode> {
 	public var controled:Controled;

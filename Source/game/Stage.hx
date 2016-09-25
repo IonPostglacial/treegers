@@ -19,21 +19,22 @@ import game.systems.LinearMovementSystem;
 import game.systems.PathMovementSystem;
 import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
-import drawing.Shape;
-import hex.Hexagon;
-import hex.Position;
-import hex.HexaMap;
+import game.drawing.Shape;
+import game.geometry.Hexagon;
+import game.geometry.HexagonalGrid;
+import game.geometry.HexagonalMap;
 import game.components.Button;
 import game.components.Controled;
 import game.components.Visible;
 import game.components.Health;
 import game.components.LinearWalker;
 import game.components.Movement;
+import game.components.Position;
 import graph.Path;
 
 private class ObstacleGrid implements Path.Findable<Position> {
-	var grid:hex.Grid;
-	var tiles:HexaMap<Tile.Type>;
+	var grid:HexagonalGrid;
+	var tiles:HexagonalMap<Tile.Type>;
 	public var transportation:Tile.Transportation;
 
 	public inline function new(grid, tiles, transportation) {
@@ -53,20 +54,20 @@ private class ObstacleGrid implements Path.Findable<Position> {
 	}
 }
 
-class GameStage {
-	public var grid:hex.Grid;
+class Stage {
+	public var grid:HexagonalGrid;
 	public var bgDamaged = true;
 
 	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
-	var tiles:HexaMap<Tile.Type>;
+	var tiles:HexagonalMap<Tile.Type>;
 	var obstacles:ObstacleGrid;
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
-		this.grid = new hex.Grid(width, height, Conf.HEX_RADIUS);
-		this.tiles = new HexaMap<Tile.Type>(width, height, Tile.Type.Ground);
+		this.grid = new HexagonalGrid(width, height, Conf.HEX_RADIUS);
+		this.tiles = new HexagonalMap<Tile.Type>(width, height, Tile.Type.Ground);
 		this.tiles.set(3, 2, Tile.Type.Pikes);
 		this.tiles.set(3, 3, Tile.Type.Cliff);
 		this.tiles.set(3, 4, Tile.Type.Cliff);

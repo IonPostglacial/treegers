@@ -1,6 +1,7 @@
-package hex;
+package game.geometry;
 
-class HexaMap<T> {
+
+class HexagonalMap<T> {
 	var data:Array<T>;
 
 	public var width:Int;

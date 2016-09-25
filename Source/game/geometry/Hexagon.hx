@@ -3,7 +3,7 @@
  * This file is part of the haxehex project, licensed under a 3-Clause BSD license.
  * See LICENSE.txt in the root folder for more information.
  */
-package hex;
+package game.geometry;
 
 import openfl.geom.Point;
 

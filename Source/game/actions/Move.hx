@@ -4,17 +4,20 @@ import ash.core.Entity;
 
 import game.components.Movement;
 import game.components.PathWalker;
+import game.components.Position;
 import game.nodes.ActionedNode;
-import hex.Position;
+import game.components.Position;
+import graph.Path;
+
 
 class Move implements Action {
 	public var done(get, never):Bool;
 	var entity:Entity;
-	var path:Array<hex.Position>;
+	var path:Array<Position>;
 
-	public function new(stage:GameStage, entity, goal) {
+	public function new(stage:Stage, entity, goal) {
 		this.entity = entity;
-		this.path = graph.Path.find(stage.obstaclesFor(entity.get(Movement).transportation), entity.get(Position), goal);
+		this.path = Path.find(stage.obstaclesFor(entity.get(Movement).transportation), entity.get(Position), goal);
 		this.path.pop();
 	}
 
@@ -23,7 +26,7 @@ class Move implements Action {
 		return walker == null || walker.path.length == 0;
 	}
 
-	public function execute(stage:GameStage, node:ActionedNode, deltaTime:Float) {
+	public function execute(stage:Stage, node:ActionedNode, deltaTime:Float) {
 		var walker = entity.get(PathWalker);
 		if (walker != null && walker.path.length == 0) {
 			entity.remove(PathWalker);

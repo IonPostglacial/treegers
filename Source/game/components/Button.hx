@@ -1,7 +1,7 @@
 package game.components;
 
 import haxe.ds.Vector;
-import hex.Position;
+
 
 class Button {
 	var alternatingTileTypes:Array<Tile.Type>;

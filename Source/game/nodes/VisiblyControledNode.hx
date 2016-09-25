@@ -4,7 +4,7 @@ import ash.core.Node;
 
 import game.components.Controled;
 import game.components.Visible;
-import hex.Position;
+import game.components.Position;
 
 class VisiblyControledNode extends Node<VisiblyControledNode> {
 	public var controled:Controled;

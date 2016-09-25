@@ -3,11 +3,13 @@
  * This file is part of the haxehex project, licensed under a 3-Clause BSD license.
  * See LICENSE.txt in the root folder for more information.
  */
-package hex;
+package game.geometry;
 
 import graph.Path;
+import game.components.Position;
 
-class Grid implements Path.Findable<Position> {
+
+class HexagonalGrid implements Path.Findable<Position> {
 	static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
 
 	public var width(default, null):Int;
@@ -52,7 +54,7 @@ class Grid implements Path.Findable<Position> {
 	}
 
 	public inline function neighborsOf(p:Position):Array<Position> {
-		var neighbors = [];
+		var neighbors:Array<Position> = [];
 		for (i in 0...6) {
 			var x = p.x + deltas[2 * i];
 			var y = p.y + deltas[2 * i + 1];

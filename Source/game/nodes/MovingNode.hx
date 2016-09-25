@@ -3,7 +3,7 @@ package game.nodes;
 import ash.core.Node;
 
 import game.components.Movement;
-import hex.Position;
+import game.components.Position;
 
 class MovingNode extends Node<MovingNode> {
 	public var position:Position;

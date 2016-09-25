@@ -1,6 +1,5 @@
 package game.components;
 
-import hex.Position;
 
 class Movement {
 	public var transportation:Tile.Transportation;

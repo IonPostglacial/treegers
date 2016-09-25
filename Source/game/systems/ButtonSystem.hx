@@ -4,15 +4,16 @@ import ash.core.Engine;
 import ash.core.NodeList;
 import ash.core.System;
 
+import game.Stage;
 import game.nodes.ButtonNode;
 import game.nodes.MovingNode;
 
 class ButtonSystem extends System {
-	var stage:GameStage;
+	var stage:Stage;
 	var buttons:NodeList<ButtonNode>;
 	var movers:NodeList<MovingNode>;
 
-	public function new(stage:GameStage) {
+	public function new(stage:Stage) {
 		this.stage = stage;
 		super();
 	}

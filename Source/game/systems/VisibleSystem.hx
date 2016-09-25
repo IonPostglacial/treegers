@@ -7,15 +7,15 @@ import ash.core.System;
 import openfl.display.Sprite;
 import openfl.Lib;
 
-import drawing.Shape;
+import game.drawing.Shape;
 import game.components.Health;
 import game.nodes.VisibleNode;
 import game.nodes.VisiblyHealthyNode;
-import hex.Hexagon;
+import game.geometry.Hexagon;
 
 
 class VisibleSystem extends System {
-	var game:GameStage;
+	var game:Stage;
 	var eyeCandies:NodeList<VisibleNode>;
 	var healthies:NodeList<VisiblyHealthyNode>;
 
@@ -24,7 +24,7 @@ class VisibleSystem extends System {
 	static var GAUGE_WIDTH = Conf.HEX_RADIUS;
 	static var GAUGE_HEIGHT = 5;
 
-	public function new(game:GameStage) {
+	public function new(game:Stage) {
 		this.game = game;
 		super();
 	}

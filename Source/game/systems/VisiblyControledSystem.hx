@@ -3,15 +3,15 @@ package game.systems;
 import openfl.display.Sprite;
 import ash.tools.ListIteratingSystem;
 
-import drawing.Shape;
+import game.drawing.Shape;
 import game.nodes.VisiblyControledNode;
-import hex.Hexagon;
+import game.geometry.Hexagon;
 
 
 class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
-	var game:GameStage;
+	var game:Stage;
 
-	public function new(game:GameStage) {
+	public function new(game:Stage) {
 		this.game = game;
 		super(VisiblyControledNode, updateNode);
 	}

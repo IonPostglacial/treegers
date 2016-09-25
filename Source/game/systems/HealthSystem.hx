@@ -4,13 +4,13 @@ import ash.core.Engine;
 import ash.tools.ListIteratingSystem;
 
 import game.nodes.HealthyNode;
-import hex.Position;
+import game.components.Position;
 
 class HealthSystem extends ListIteratingSystem<HealthyNode> {
-	var game:GameStage;
+	var game:Stage;
 	var engine:Engine;
 
-	public function new(game:GameStage) {
+	public function new(game:Stage) {
 		this.game = game;
 		super(HealthyNode, updateNode);
 	}

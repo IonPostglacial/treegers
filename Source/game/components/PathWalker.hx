@@ -1,7 +1,8 @@
 package game.components;
 
+
 class PathWalker {
-	public var path:Array<hex.Position>;
+	public var path:Array<Position>;
 
 	public function new(path) {
 		this.path = path;

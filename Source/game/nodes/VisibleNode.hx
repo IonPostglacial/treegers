@@ -5,7 +5,7 @@ import openfl.display.Sprite;
 import ash.core.Node;
 
 import game.components.Visible;
-import hex.Position;
+import game.components.Position;
 
 class VisibleNode extends Node<VisibleNode> {
 	public var visible:Visible;

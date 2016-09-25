@@ -5,9 +5,9 @@ import ash.tools.ListIteratingSystem;
 import game.nodes.PathWalkingNode;
 
 class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
-	var stage:GameStage;
+	var stage:Stage;
 
-	public function new(stage:GameStage) {
+	public function new(stage:Stage) {
 		this.stage = stage;
 		super(PathWalkingNode, updateNode);
 	}

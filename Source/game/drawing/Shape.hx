@@ -1,7 +1,8 @@
-package drawing;
+package game.drawing;
 
-import hex.Hexagon;
-import hex.Position;
+import game.components.Position;
+import game.geometry.Hexagon;
+import game.geometry.HexagonalGrid;
 import openfl.display.Graphics;
 import openfl.geom.Point;
 
@@ -24,11 +25,11 @@ class Shape {
 		return new Point(PIX_X, PIX_Y);
 	}
 
-	public static inline function gridPixelWidth(grid:hex.Grid):Int {
+	public static inline function gridPixelWidth(grid:HexagonalGrid):Int {
 		return Std.int(SQRT3 * grid.width * grid.radius);
 	}
 
-	public static inline function gridPixelHeight(grid:hex.Grid):Int {
+	public static inline function gridPixelHeight(grid:HexagonalGrid):Int {
 		return Std.int((1.5 * grid.height + 0.5) * grid.radius);
 	}
 
@@ -41,7 +42,7 @@ class Shape {
 		}
 	}
 
-	public static function hexagonGrid(graphics:Graphics, grid:hex.Grid) {
+	public static function hexagonGrid(graphics:Graphics, grid:HexagonalGrid) {
 		for (position in grid.positions) {
 			var center = positionToPoint(position, grid.radius);
 			hexagon(graphics, new Hexagon(center.x, center.y, grid.radius));

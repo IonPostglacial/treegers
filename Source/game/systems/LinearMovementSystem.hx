@@ -4,14 +4,14 @@ import ash.core.Engine;
 import ash.tools.ListIteratingSystem;
 
 import game.nodes.LinearWalkingNode;
-import hex.Position;
+import game.components.Position;
 
 
 class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
-	var stage:GameStage;
+	var stage:Stage;
 	var engine:Engine;
 
-	public function new(stage:GameStage) {
+	public function new(stage:Stage) {
 		this.stage = stage;
 		super(LinearWalkingNode, updateNode);
 	}

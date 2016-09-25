@@ -7,8 +7,10 @@ import openfl.Lib;
 import ash.tools.ListIteratingSystem;
 
 import game.actions.Move;
+import game.components.Position;
+import game.drawing.Shape;
 import game.nodes.ControledNode;
-import hex.Position;
+
 
 enum Order {
 	MovementOrdered(goal:Position);
@@ -18,18 +20,18 @@ enum Order {
 }
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {
-	var stage:GameStage;
+	var stage:Stage;
 	var events:Array<Order>;
 
-	public function new(stage:GameStage) {
+	public function new(stage:Stage) {
 		this.stage = stage;
 		this.events = [];
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
-			var mousePosition = drawing.Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.grid.radius);
+			var mousePosition = Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.grid.radius);
 			this.events.push(TargetSelected(mousePosition));
 		});
 		Lib.current.addEventListener(MouseEvent.RIGHT_CLICK, function(e) {
-			var mousePosition = drawing.Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.grid.radius);
+			var mousePosition = Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.grid.radius);
 			this.events.push(MovementOrdered(mousePosition));
 		});
 		super(ControledNode, updateNode);

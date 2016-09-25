@@ -5,14 +5,14 @@ import openfl.Lib;
 import ash.core.Engine;
 import ash.tools.ListIteratingSystem;
 
-import drawing.Shape;
+import game.drawing.Shape;
 import game.nodes.VisiblyMovingNode;
 
 
 class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
-	var game:GameStage;
+	var game:Stage;
 
-	public function new(game:GameStage) {
+	public function new(game:Stage) {
 		this.game = game;
 		super(VisiblyMovingNode, updateNode);
 	}

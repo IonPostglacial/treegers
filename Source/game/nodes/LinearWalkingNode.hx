@@ -4,7 +4,7 @@ import ash.core.Node;
 
 import game.components.Movement;
 import game.components.LinearWalker;
-import hex.Position;
+import game.components.Position;
 
 class LinearWalkingNode extends Node<LinearWalkingNode> {
 	public var position:Position;

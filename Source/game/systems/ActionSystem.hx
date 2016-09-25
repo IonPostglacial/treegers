@@ -3,12 +3,12 @@ package game.systems;
 import ash.tools.ListIteratingSystem;
 
 import game.nodes.ActionedNode;
-import hex.Position;
+import game.components.Position;
 
 class ActionSystem extends ListIteratingSystem<ActionedNode> {
-	private var stage:GameStage;
+	private var stage:Stage;
 
-	public function new(stage:GameStage) {
+	public function new(stage:Stage) {
 		this.stage = stage;
 		super(ActionedNode, updateNode);
 	}
