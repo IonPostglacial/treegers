@@ -28,7 +28,7 @@ class VisiblyHealthyNode extends Node<VisiblyHealthyNode> {
 	public var visible:Visible;
 }
 
-class VisibleSystem extends System {
+class VisibleSystem extends System implements TileChangeListener {
 	var game:Stage;
 	var eyeCandies:NodeList<VisibleNode>;
 	var healthies:NodeList<VisiblyHealthyNode>;
@@ -44,12 +44,13 @@ class VisibleSystem extends System {
 	}
 
 	override public function update(deltaTime:Float) {
-		if (game.bgDamaged) {
-			drawBackground();
-		}
 		for (healthy in healthies) {
 			updateHealthyNode(healthy, deltaTime);
 		}
+	}
+
+	public function tileChanged(position:Position, oldType:Tile.Type, newType:Tile.Type) {
+		drawBackground();
 	}
 
 	override public function addToEngine(engine:Engine) {
@@ -74,6 +75,7 @@ class VisibleSystem extends System {
 		healthies.nodeRemoved.add(function (node:VisiblyHealthyNode) {
 			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("health"));
 		});
+		drawBackground();
 	}
 
 	inline function createHealthSprite(health:Health):Sprite {
@@ -109,6 +111,5 @@ class VisibleSystem extends System {
 		Lib.current.graphics.lineStyle(2, 0xffa200);
 		Shape.hexagonGrid(Lib.current.graphics, game.grid);
 		Lib.current.graphics.endFill();
-		game.bgDamaged = false;
 	}
 }

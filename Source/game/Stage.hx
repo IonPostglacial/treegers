@@ -8,6 +8,7 @@ import ash.tick.ITickProvider;
 import ash.tick.FrameTickProvider;
 import ash.core.Engine;
 import ash.core.Entity;
+import ash.core.System;
 
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
@@ -38,13 +39,13 @@ import game.components.Collectible;
 
 class Stage {
 	public var grid:HexagonalGrid;
-	public var bgDamaged = true;
 
 	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
 	var tiles:HexagonalMap<Tile.Type>;
 	var obstacles:ObstacleGrid;
+	var tileChangeListener:Array<TileChangeListener> = [];
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
@@ -65,8 +66,11 @@ class Stage {
 	}
 
 	public function setTileAt(position:Position, value:Tile.Type) {
+		var oldTileType = tiles.get(position.x, position.y);
 		tiles.set(position.x, position.y, value);
-		bgDamaged = true;
+		for (listener in tileChangeListener) {
+			listener.tileChanged(position, oldTileType, value);
+		}
 	}
 
 	public function obstaclesFor(vehicle:Tile.Vehicle):graph.Path.Findable<Position> {
@@ -80,18 +84,25 @@ class Stage {
 		tickProvider.start();
 	}
 
+	function addSystem(system:System, priority:Int) {
+		if (Std.is(system, TileChangeListener)) {
+			tileChangeListener.push(cast system);
+		}
+		engine.addSystem(system, priority);
+	}
+
 	function prepare(scene:Sprite, width:Float, height:Float):Void {
-		engine.addSystem(new ControledSystem(this), 1);
-		engine.addSystem(new ActionSystem(this), 2);
-		engine.addSystem(new HealthSystem(this), 2);
-		engine.addSystem(new LinearMovementSystem(this), 2);
-		engine.addSystem(new PathMovementSystem(this), 2);
-		engine.addSystem(new MovementSystem(this), 2);
-		engine.addSystem(new ButtonSystem(this), 2);
-		engine.addSystem(new CollectSystem(this), 2);
-		engine.addSystem(new VisibleSystem(this), 3);
-		engine.addSystem(new VisiblyMovingSystem(this), 4);
-		engine.addSystem(new VisibleControledSystem(this), 4);
+		addSystem(new ControledSystem(this), 1);
+		addSystem(new ActionSystem(this), 2);
+		addSystem(new HealthSystem(this), 2);
+		addSystem(new LinearMovementSystem(this), 2);
+		addSystem(new PathMovementSystem(this), 2);
+		addSystem(new MovementSystem(this), 2);
+		addSystem(new ButtonSystem(this), 2);
+		addSystem(new CollectSystem(this), 2);
+		addSystem(new VisibleSystem(this), 3);
+		addSystem(new VisiblyMovingSystem(this), 4);
+		addSystem(new VisibleControledSystem(this), 4);
 
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
