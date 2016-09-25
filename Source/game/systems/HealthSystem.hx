@@ -5,11 +5,13 @@ import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
 import game.components.Health;
+import game.components.Movement;
 import game.components.Position;
 
 
 class HealthyNode extends Node<HealthyNode> {
 	public var health:Health;
+	public var movement:Movement;
 	public var position:Position;
 }
 
@@ -31,7 +33,10 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 		switch(game.tileAt(node.position)) {
 		case Pikes:
 			node.health.level -= 1;
-		default:
+		case type:
+			if (!Tile.Crossable.with(type, node.movement.transportation)) {
+				node.health.level = 0;
+			}
 		}
 		if (node.health.level <= 0) {
 			engine.removeEntity(node.entity);
