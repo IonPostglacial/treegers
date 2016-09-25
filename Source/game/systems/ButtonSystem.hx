@@ -40,5 +40,6 @@ class ButtonSystem extends System {
 	override public function addToEngine(engine:Engine) {
 		buttons = engine.getNodeList(ButtonNode);
 		movers = engine.getNodeList(MovingNode);
+		super.addToEngine(engine);
 	}
 }

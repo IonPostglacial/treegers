@@ -19,10 +19,13 @@ import game.systems.LinearMovementSystem;
 import game.systems.PathMovementSystem;
 import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
+import game.systems.CollectSystem;
+
 import game.drawing.Shape;
 import game.geometry.Hexagon;
 import game.geometry.HexagonalGrid;
 import game.geometry.HexagonalMap;
+
 import game.components.Button;
 import game.components.Controled;
 import game.components.Visible;
@@ -30,29 +33,8 @@ import game.components.Health;
 import game.components.LinearWalker;
 import game.components.Movement;
 import game.components.Position;
-import graph.Path;
+import game.components.Collectible;
 
-private class ObstacleGrid implements Path.Findable<Position> {
-	var grid:HexagonalGrid;
-	var tiles:HexagonalMap<Tile.Type>;
-	public var transportation:Tile.Transportation;
-
-	public inline function new(grid, tiles, transportation) {
-		this.grid = grid;
-		this.tiles = tiles;
-		this.transportation = transportation;
-	}
-
-	public function distanceBetween(p1:Position, p2:Position):Int {
-		return grid.distanceBetween(p1, p2);
-	}
-
-	public function neighborsOf(p:Position):Iterable<Position> {
-		return grid.neighborsOf(p).filter(function (position) {
-			return Tile.Crossable.with(tiles.get(position.x, position.y), transportation);
-		});
-	}
-}
 
 class Stage {
 	public var grid:HexagonalGrid;
@@ -106,6 +88,7 @@ class Stage {
 		engine.addSystem(new PathMovementSystem(this), 2);
 		engine.addSystem(new MovementSystem(this), 2);
 		engine.addSystem(new ButtonSystem(this), 2);
+		engine.addSystem(new CollectSystem(this), 2);
 		engine.addSystem(new VisibleSystem(this), 3);
 		engine.addSystem(new VisiblyMovingSystem(this), 4);
 		engine.addSystem(new VisibleControledSystem(this), 4);
@@ -126,7 +109,7 @@ class Stage {
 		.add(new Position(0, 0))
 		.add(new Health(100, 100, 2))
 		.add(new Visible(gruntSprite))
-		.add(new Movement(Tile.Transportation.Foot, 1))
+		.add(new Movement(Tile.Transportation.Foot, 0.5))
 		.add(new Controled());
 
 		var button = new Entity()
@@ -137,7 +120,8 @@ class Stage {
 		var rollingBall = new Entity()
 		.add(new Position(4, 0))
 		.add(new Visible(ballSprite))
-		.add(new Movement(Tile.Transportation.Foot, 1))
+		.add(new Collectible([new Health(100, 100, 2)]))
+		.add(new Movement(Tile.Transportation.Foot, 1.5))
 		.add(new LinearWalker(1, 0));
 
 		engine.addEntity(grunt);
