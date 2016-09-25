@@ -120,7 +120,7 @@ class Stage {
 		var rollingBall = new Entity()
 		.add(new Position(4, 0))
 		.add(new Visible(ballSprite))
-		.add(new Collectible([new Health(100, 100, 2)]))
+		.add(new Collectible([new Health(0, 100, 2)]))
 		.add(new Movement(Tile.Transportation.Foot, 1.5))
 		.add(new LinearWalker(1, 0));
 
