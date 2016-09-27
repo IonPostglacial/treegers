@@ -27,11 +27,21 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 		super(VisiblyMovingNode, updateNode);
 	}
 
+	static inline function tween(x1:Float, x2:Float, delta:Float) {
+		return (1 - delta) * x1 + delta * x2;
+	}
+
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
 			var pixPosition = Shape.positionToPoint(node.position, game.grid.radius);
-			node.visible.sprite.x = pixPosition.x;
-			node.visible.sprite.y = pixPosition.y;
+			if(node.movement.oldPosition == null) {
+				node.visible.sprite.x = pixPosition.x;
+				node.visible.sprite.y = pixPosition.y;
+			} else {
+				var oldPixPosition = Shape.positionToPoint(node.movement.oldPosition, game.grid.radius);
+				node.visible.sprite.x = tween(oldPixPosition.x, pixPosition.x, node.movement.delta);
+				node.visible.sprite.y = tween(oldPixPosition.y, pixPosition.y, node.movement.delta);
+			}
 		}
 	}
 }

@@ -49,7 +49,10 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	public function tileChanged(position:Position, oldType:Tile.Type, newType:Tile.Type) {
-		drawBackground();
+		var tilePoint = Shape.positionToPoint(position, game.grid.radius);
+		Lib.current.graphics.beginFill(Tile.Color.of(newType));
+		Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, game.grid.radius));
+		Lib.current.graphics.endFill();
 	}
 
 	override public function addToEngine(engine:Engine) {

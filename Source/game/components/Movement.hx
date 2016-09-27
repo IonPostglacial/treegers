@@ -13,7 +13,7 @@ class Movement {
 		this.vehicle = vehicle;
 		this.period = period;
 		this.timeSinceLastMove = 0;
-		this.oldPosition = new Position(-1, -1);
+		this.oldPosition = null;
 	}
 
 	public function get_ready():Bool {
@@ -34,6 +34,6 @@ class Movement {
 
 	public function get_delta():Float {
 		var delta = timeSinceLastMove / period;
-		return delta <= 1 ? delta : 1;
+		return if (delta < 0) 0 else if (delta > 1) 1 else delta;
 	}
 }
