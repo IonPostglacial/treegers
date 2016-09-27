@@ -4,5 +4,5 @@ import game.components.Position;
 
 
 interface TileChangeListener {
-	function tileChanged(position:Position, oldType:Tile.Type, newType:Tile.Type):Void;
+	function tileChanged(position:Position, oldType:TileType, newType:TileType):Void;
 }

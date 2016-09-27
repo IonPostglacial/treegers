@@ -2,7 +2,7 @@ package game.components;
 
 
 class Movement {
-	public var vehicle:Tile.Vehicle;
+	public var vehicle:Vehicle;
 	public var period:Float;
 	public var delta(get, never):Float;
 	public var ready(get, never):Bool;

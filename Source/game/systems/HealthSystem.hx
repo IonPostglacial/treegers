@@ -34,7 +34,7 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 		case Pikes:
 			node.health.level -= 1;
 		case type:
-			if (!Tile.Crossable.with(type, node.movement.vehicle)) {
+			if (!type.crossableWith(node.movement.vehicle)) {
 				node.health.level = 0;
 			}
 		}

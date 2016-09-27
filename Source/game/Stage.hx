@@ -43,21 +43,21 @@ class Stage {
 	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
-	var tiles:HexagonalMap<Tile.Type>;
+	var tiles:HexagonalMap<TileType>;
 	var obstacles:ObstacleGrid;
 	var tileChangeListener:Array<TileChangeListener> = [];
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
 		this.grid = new HexagonalGrid(width, height, 32);
-		this.tiles = new HexagonalMap<Tile.Type>(width, height, Tile.Type.Ground);
-		this.tiles.set(3, 2, Tile.Type.Pikes);
-		this.tiles.set(3, 3, Tile.Type.Cliff);
-		this.tiles.set(3, 4, Tile.Type.Cliff);
-		this.tiles.set(3, 5, Tile.Type.Cliff);
-		this.tiles.set(1, 0, Tile.Type.Arrow(1, 0));
-		this.tiles.set(11, 0, Tile.Type.Arrow(-1, 0));
-		this.obstacles = new ObstacleGrid(this.grid, this.tiles, Tile.Vehicle.Foot);
+		this.tiles = new HexagonalMap<TileType>(width, height, TileType.Ground);
+		this.tiles.set(3, 2, TileType.Pikes);
+		this.tiles.set(3, 3, TileType.Cliff);
+		this.tiles.set(3, 4, TileType.Cliff);
+		this.tiles.set(3, 5, TileType.Cliff);
+		this.tiles.set(1, 0, TileType.ArrowA);
+		this.tiles.set(11, 0, TileType.ArrowD);
+		this.obstacles = new ObstacleGrid(this.grid, this.tiles, Vehicle.Foot);
 		prepare(scene, width, height);
 	}
 
@@ -65,7 +65,7 @@ class Stage {
 		return tiles.get(position.x, position.y);
 	}
 
-	public function setTileAt(position:Position, value:Tile.Type) {
+	public function setTileAt(position:Position, value:TileType) {
 		var oldTileType = tiles.get(position.x, position.y);
 		tiles.set(position.x, position.y, value);
 		for (listener in tileChangeListener) {
@@ -73,7 +73,7 @@ class Stage {
 		}
 	}
 
-	public function obstaclesFor(vehicle:Tile.Vehicle):graph.Path.Findable<Position> {
+	public function obstaclesFor(vehicle:Vehicle):graph.Path.Findable<Position> {
 		obstacles.vehicle = vehicle;
 		return obstacles;
 	}
@@ -120,19 +120,19 @@ class Stage {
 		.add(new Position(0, 0))
 		.add(new Health(100, 100, 2))
 		.add(new Visible(gruntSprite))
-		.add(new Movement(Tile.Vehicle.Foot, 0.5))
+		.add(new Movement(Vehicle.Foot, 0.5))
 		.add(new Controled());
 
 		var button = new Entity()
 		.add(new Position(5, 0))
 		.add(new Visible(buttonSprite))
-		.add(new Button(false, [new Position(1, 1)], Tile.Type.Ground, Tile.Type.Water));
+		.add(new Button(false, [new Position(1, 1)], TileType.Ground, TileType.Water));
 
 		var rollingBall = new Entity()
 		.add(new Position(4, 0))
 		.add(new Visible(ballSprite))
 		.add(new Collectible([new Health(0, 100, 2)]))
-		.add(new Movement(Tile.Vehicle.Foot, 1.5))
+		.add(new Movement(Vehicle.Foot, 1.5))
 		.add(new LinearWalker(1, 0));
 
 		engine.addEntity(grunt);

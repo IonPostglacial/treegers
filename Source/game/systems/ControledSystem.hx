@@ -61,11 +61,9 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			case PowerOrdered(goal): // TODO: implement it :p
 			}
 		}
-		switch (stage.tileAt(node.position)) {
-		case Tile.Type.Arrow(dx, dy):
-			node.controled.actions = [new Move(stage, node.entity, new Position(node.position.x + dx, node.position.y + dy))];
-		default:
-			// Do Nothing
+		var tileType = stage.tileAt(node.position);
+		if (tileType.isArrow()) {
+			node.controled.actions = [new Move(stage, node.entity, new Position(node.position.x + tileType.dx(), node.position.y + tileType.dy()))];
 		}
 	}
 }

@@ -48,9 +48,9 @@ class VisibleSystem extends System implements TileChangeListener {
 		}
 	}
 
-	public function tileChanged(position:Position, oldType:Tile.Type, newType:Tile.Type) {
+	public function tileChanged(position:Position, oldType:TileType, newType:TileType) {
 		var tilePoint = Shape.positionToPoint(position, game.grid.radius);
-		Lib.current.graphics.beginFill(Tile.Color.of(newType));
+		Lib.current.graphics.beginFill(newType.color());
 		Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, game.grid.radius));
 		Lib.current.graphics.endFill();
 	}
@@ -106,7 +106,7 @@ class VisibleSystem extends System implements TileChangeListener {
 		for (position in game.grid.positions) {
 			var tilePoint = Shape.positionToPoint(position, game.grid.radius);
 			var tileType = game.tileAt(position);
-			Lib.current.graphics.beginFill(Tile.Color.of(tileType));
+			Lib.current.graphics.beginFill(tileType.color());
 			Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, game.grid.radius));
 			Lib.current.graphics.endFill();
 		}
