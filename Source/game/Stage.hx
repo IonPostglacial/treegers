@@ -1,6 +1,5 @@
 package game;
 
-import haxe.ds.HashMap;
 
 import openfl.display.Sprite;
 
@@ -44,38 +43,30 @@ class Stage {
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
 	var tiles:HexagonalMap<TileType>;
-	var obstacles:ObstacleGrid;
+	var pathfinders:Array<graph.Pathfinder<Position>> = [];
 	var tileChangeListener:Array<TileChangeListener> = [];
 
 	public function new(scene:Sprite, width:Int, height:Int) {
 		this.scene = scene;
-		this.grid = new HexagonalGrid(width, height, 32);
-		this.tiles = new HexagonalMap<TileType>(width, height, TileType.Ground);
-		this.tiles.set(3, 2, TileType.Pikes);
-		this.tiles.set(3, 3, TileType.Cliff);
-		this.tiles.set(3, 4, TileType.Cliff);
-		this.tiles.set(3, 5, TileType.Cliff);
-		this.tiles.set(1, 0, TileType.ArrowA);
-		this.tiles.set(11, 0, TileType.ArrowD);
-		this.obstacles = new ObstacleGrid(this.grid, this.tiles, Vehicle.Foot);
-		prepare(scene, width, height);
+		loadMap(width, height);
+		loadSystems();
+		loadEntities(scene, width, height);
 	}
 
 	public function tileAt(position:Position) {
-		return tiles.get(position.x, position.y);
+		return tiles.get(position);
 	}
 
 	public function setTileAt(position:Position, value:TileType) {
-		var oldTileType = tiles.get(position.x, position.y);
-		tiles.set(position.x, position.y, value);
+		var oldTileType = tiles.get(position);
+		tiles.set(position, value);
 		for (listener in tileChangeListener) {
 			listener.tileChanged(position, oldTileType, value);
 		}
 	}
 
-	public function obstaclesFor(vehicle:Vehicle):graph.Path.Findable<Position> {
-		obstacles.vehicle = vehicle;
-		return obstacles;
+	public function findPath(vehicle:Vehicle, start:Position, goal:Position):Array<Position> {
+		return pathfinders[Type.enumIndex(vehicle)].find(start, goal);
 	}
 
 	public function start() {
@@ -84,14 +75,22 @@ class Stage {
 		tickProvider.start();
 	}
 
-	function addSystem(system:System, priority:Int) {
-		if (Std.is(system, TileChangeListener)) {
-			tileChangeListener.push(cast system);
+	function loadMap(width:Int, height:Int) {
+		this.grid = new HexagonalGrid(width, height, 32);
+		this.tiles = new HexagonalMap<TileType>(width, height, TileType.Ground);
+		this.tiles.set(new Position(3, 2), TileType.Pikes);
+		this.tiles.set(new Position(3, 3), TileType.Cliff);
+		this.tiles.set(new Position(3, 4), TileType.Cliff);
+		this.tiles.set(new Position(3, 5), TileType.Cliff);
+		this.tiles.set(new Position(1, 0), TileType.ArrowA);
+		this.tiles.set(new Position(11, 0), TileType.ArrowD);
+		for (vehicle in Type.allEnums(Vehicle)) {
+			var obstacles = new ObstacleGrid(this.grid, this.tiles, vehicle);
+			this.pathfinders.push(new graph.Pathfinder(obstacles));
 		}
-		engine.addSystem(system, priority);
 	}
 
-	function prepare(scene:Sprite, width:Float, height:Float):Void {
+	function loadSystems() {
 		addSystem(new ControledSystem(this), 1);
 		addSystem(new ActionSystem(this), 2);
 		addSystem(new HealthSystem(this), 2);
@@ -103,7 +102,16 @@ class Stage {
 		addSystem(new VisibleSystem(this), 3);
 		addSystem(new VisiblyMovingSystem(this), 4);
 		addSystem(new VisibleControledSystem(this), 4);
+	}
 
+	function addSystem(system:System, priority:Int) {
+		if (Std.is(system, TileChangeListener)) {
+			tileChangeListener.push(cast system);
+		}
+		engine.addSystem(system, priority);
+	}
+
+	function loadEntities(scene:Sprite, width:Float, height:Float):Void {
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
 		Shape.hexagon(gruntSprite.graphics, new Hexagon(0, 0, grid.radius));

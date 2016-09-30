@@ -43,7 +43,7 @@ class Shape {
 	}
 
 	public static function hexagonGrid(graphics:Graphics, grid:HexagonalGrid) {
-		for (position in grid.positions) {
+		for (position in grid) {
 			var center = positionToPoint(position, grid.radius);
 			hexagon(graphics, new Hexagon(center.x, center.y, grid.radius));
 		}

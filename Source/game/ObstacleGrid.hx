@@ -1,11 +1,12 @@
 package game;
 
-import graph.Path;
+import graph.Pathfindable;
 import game.components.Position;
 import game.geometry.HexagonalGrid;
 import game.geometry.HexagonalMap;
 
-class ObstacleGrid implements Path.Findable<Position> {
+
+class ObstacleGrid implements Pathfindable<Position> {
 	var grid:HexagonalGrid;
 	var tiles:HexagonalMap<TileType>;
 	public var vehicle:Vehicle;
@@ -22,7 +23,7 @@ class ObstacleGrid implements Path.Findable<Position> {
 
 	public function neighborsOf(p:Position):Iterable<Position> {
 		return grid.neighborsOf(p).filter(function (position) {
-			return tiles.get(position.x, position.y).crossableWith(vehicle);
+			return tiles.get(position).crossableWith(vehicle);
 		});
 	}
 }

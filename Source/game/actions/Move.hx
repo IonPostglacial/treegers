@@ -7,7 +7,6 @@ import game.components.PathWalker;
 import game.components.Position;
 import game.nodes.ActionedNode;
 import game.components.Position;
-import graph.Path;
 
 
 class Move implements Action {
@@ -17,7 +16,7 @@ class Move implements Action {
 
 	public function new(stage:Stage, entity, goal) {
 		this.entity = entity;
-		this.path = Path.find(stage.obstaclesFor(entity.get(Movement).vehicle), entity.get(Position), goal);
+		this.path = stage.findPath(entity.get(Movement).vehicle, entity.get(Position), goal);
 		this.path.pop();
 	}
 

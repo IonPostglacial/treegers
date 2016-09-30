@@ -15,6 +15,7 @@ typedef Node<T> = {
 	function hashCode():Int;
 }
 
+@:generic
 class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>> {
 	public var currentNode:Node_t;
 	public var previousNode:Node_t;
@@ -34,14 +35,15 @@ class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>> {
 	}
 }
 
-interface Findable<T> {
-	public function neighborsOf(position:T):Iterable<T>;
-	public function distanceBetween(start:T, goal:T):Int;
-}
+@:generic
+class Pathfinder<Node_t:Node<Node_t>> {
+	var graph:Pathfindable<Node_t>;
 
-class Path {
-	@:generic
-	static inline function reconstructPath<Node_t:Node<Node_t>>(nodes:HashMap<Node_t, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
+	public function new(graph) {
+		this.graph = graph;
+	}
+
+	inline function reconstructPath(nodes:HashMap<Node_t, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
 		var path = [];
 		var currentNode = goal;
 
@@ -53,8 +55,7 @@ class Path {
 		return path;
 	}
 
-	@:generic
-	public static function find<Node_t:Node<Node_t>>(graph:Findable<Node_t>, start:Node_t, goal:Node_t):Array<Node_t> {
+	public function find(start:Node_t, goal:Node_t):Array<Node_t> {
 		var scores = new HashMap<Node_t, Score<Node_t>>();
 		var frontier = new Heap<Score<Node_t>>();
 		var firstScore = new Score(start, null, 0, graph.distanceBetween(start, goal));

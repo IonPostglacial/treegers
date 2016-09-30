@@ -5,40 +5,30 @@
  */
 package game.geometry;
 
-import graph.Path;
+import graph.Pathfindable;
 import game.components.Position;
 
 
-class HexagonalGrid implements Path.Findable<Position> {
+class HexagonalGrid implements Pathfindable<Position> {
 	static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
 
 	public var width(default, null):Int;
 	public var height(default, null):Int;
 	public var radius(default, null):Int;
 	public var cellsNumber(get, never):Int;
-	public var positions(get, never):Iterable<Position>;
-
-	var posCache:Array<Position>;
 
 	public function new(width, height, radius) {
 		this.width = width;
 		this.height = height;
 		this.radius = radius;
-
-		posCache = [];
-		for (y in 0...height) {
-			for (x in 0...width) {
-				posCache.push(new Position(x - Std.int(y / 2), y));
-			}
-		}
 	}
 
 	public function get_cellsNumber():Int {
 		return Std.int((height + 1) / 2) * width + Std.int(height / 2) * (width - 1);
 	}
 
-	public function get_positions():Iterable<Position> {
-		return posCache;
+	public function iterator() {
+		return new HexagonalGridIterator(width, height);
 	}
 
 	public function contains(x:Int, y:Int):Bool {
