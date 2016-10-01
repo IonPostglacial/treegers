@@ -11,12 +11,12 @@ import game.components.Position;
 
 class Move implements Action {
 	public var done(get, never):Bool;
+	public var path:Array<Position>;
 	var entity:Entity;
-	var path:Array<Position>;
 
-	public function new(stage:Stage, entity, goal) {
+	public function new(entity, path) {
 		this.entity = entity;
-		this.path = stage.findPath(entity.get(Movement).vehicle, entity.get(Position), goal);
+		this.path = path;
 		this.path.pop();
 	}
 

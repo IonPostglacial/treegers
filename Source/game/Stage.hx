@@ -36,20 +36,17 @@ import game.components.Collectible;
 
 
 class Stage {
-	public var map:HexagonalMap<TileType>;
-	public var hexagonRadius:Float = 32;
+	public var map(default, null):HexagonalMap<TileType>;
+	public var hexagonRadius(default, null):Float = 32;
 
-	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
-	var pathfinders:Array<graph.Pathfinder<Position>> = [];
 	var tileChangeListener:Array<TileChangeListener> = [];
 
-	public function new(scene:Sprite, width:Int, height:Int) {
-		this.scene = scene;
+	public function new(width:Int, height:Int) {
 		loadMap(width, height);
 		loadSystems();
-		loadEntities(scene, width, height);
+		loadEntities(width, height);
 	}
 
 	public function tileAt(position:Position) {
@@ -64,12 +61,8 @@ class Stage {
 		}
 	}
 
-	public function findPath(vehicle:Vehicle, start:Position, goal:Position):Array<Position> {
-		return pathfinders[Type.enumIndex(vehicle)].find(start, goal);
-	}
-
 	public function start() {
-		tickProvider = new FrameTickProvider(scene);
+		tickProvider = new FrameTickProvider(openfl.Lib.current);
 		tickProvider.add(engine.update);
 		tickProvider.start();
 	}
@@ -80,12 +73,9 @@ class Stage {
 		this.map.set(new Position(3, 3), TileType.Cliff);
 		this.map.set(new Position(3, 4), TileType.Cliff);
 		this.map.set(new Position(3, 5), TileType.Cliff);
-		this.map.set(new Position(1, 0), TileType.ArrowA);
+		this.map.set(new Position(1, 0), TileType.ArrowB);
 		this.map.set(new Position(11, 0), TileType.ArrowD);
-		for (vehicle in Type.allEnums(Vehicle)) {
-			var obstacles = new ObstacleGrid(this.map, vehicle);
-			this.pathfinders.push(new graph.Pathfinder(obstacles));
-		}
+		this.map.set(new Position(1, 10), TileType.ArrowF);
 	}
 
 	function loadSystems() {
@@ -109,7 +99,7 @@ class Stage {
 		engine.addSystem(system, priority);
 	}
 
-	function loadEntities(scene:Sprite, width:Float, height:Float):Void {
+	function loadEntities(width:Float, height:Float):Void {
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
 		Shape.hexagon(gruntSprite.graphics, new Hexagon(0, 0, hexagonRadius));
@@ -130,16 +120,16 @@ class Stage {
 		.add(new Controled());
 
 		var button = new Entity()
-		.add(new Position(5, 0))
+		.add(new Position(6, 0))
 		.add(new Visible(buttonSprite))
-		.add(new Button(false, [new Position(1, 1)], TileType.Ground, TileType.Water));
+		.add(new Button(false, [new Position(2, 1)], TileType.Ground, TileType.Water));
 
 		var rollingBall = new Entity()
-		.add(new Position(4, 0))
+		.add(new Position(10, 0))
 		.add(new Visible(ballSprite))
 		.add(new Collectible([new Health(0, 100, 2)]))
 		.add(new Movement(Vehicle.Foot, 1.5))
-		.add(new LinearWalker(1, 0));
+		.add(new LinearWalker(-1, 0));
 
 		engine.addEntity(grunt);
 		engine.addEntity(button);

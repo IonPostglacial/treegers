@@ -9,6 +9,7 @@ import ash.tools.ListIteratingSystem;
 
 import game.actions.Move;
 import game.components.Controled;
+import game.components.Movement;
 import game.components.Position;
 import game.drawing.Shape;
 
@@ -22,6 +23,7 @@ enum Order {
 
 class ControledNode extends Node<ControledNode> {
 	public var controled:Controled;
+	public var movement:Movement;
 	public var position:Position;
 }
 
@@ -29,6 +31,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var stage:Stage;
 	var events:Array<Order>;
 	var pointedPosition:Position;
+	var pathfinders:Array<graph.Pathfinder<Position>> = [];
 
 	public function new(stage:Stage) {
 		this.stage = stage;
@@ -37,6 +40,10 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			var mousePosition = Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.hexagonRadius);
 			pointedPosition = mousePosition;
 		});
+		for (vehicle in Type.allEnums(Vehicle)) {
+			var obstacles = new ObstacleGrid(stage.map, vehicle);
+			this.pathfinders.push(new graph.Pathfinder(obstacles));
+		}
 		super(ControledNode, updateNode);
 	}
 
@@ -65,7 +72,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			switch (event) {
 			case MovementOrdered(goal):
 				if (node.controled.selected) {
-					node.controled.actions = [new Move(stage, node.entity, goal)];
+					var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position, goal);
+					node.controled.actions = [new Move(node.entity, path)];
 				}
 			case TargetSelected(position):
 				node.controled.selected = !node.controled.selected && node.position.equals(position);
@@ -75,7 +83,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		}
 		var tileType = stage.tileAt(node.position);
 		if (tileType.isArrow()) {
-			node.controled.actions = [new Move(stage, node.entity, new Position(node.position.x + tileType.dx(), node.position.y + tileType.dy()))];
+			var newPath = [new Position(node.position.x + tileType.dx(), node.position.y + tileType.dy()), node.position];
+			node.controled.actions = [new Move(node.entity, newPath)];
 		}
 	}
 }
