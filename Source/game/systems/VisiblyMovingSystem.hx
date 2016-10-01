@@ -20,10 +20,10 @@ class VisiblyMovingNode extends Node<VisiblyMovingNode> {
 }
 
 class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
-	var game:Stage;
+	var stage:Stage;
 
-	public function new(game:Stage) {
-		this.game = game;
+	public function new(stage:Stage) {
+		this.stage = stage;
 		super(VisiblyMovingNode, updateNode);
 	}
 
@@ -33,12 +33,12 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
-			var pixPosition = Shape.positionToPoint(node.position, game.grid.radius);
+			var pixPosition = Shape.positionToPoint(node.position, stage.hexagonRadius);
 			if(node.movement.oldPosition == null) {
 				node.visible.sprite.x = pixPosition.x;
 				node.visible.sprite.y = pixPosition.y;
 			} else {
-				var oldPixPosition = Shape.positionToPoint(node.movement.oldPosition, game.grid.radius);
+				var oldPixPosition = Shape.positionToPoint(node.movement.oldPosition, stage.hexagonRadius);
 				node.visible.sprite.x = tween(oldPixPosition.x, pixPosition.x, node.movement.delta);
 				node.visible.sprite.y = tween(oldPixPosition.y, pixPosition.y, node.movement.delta);
 			}

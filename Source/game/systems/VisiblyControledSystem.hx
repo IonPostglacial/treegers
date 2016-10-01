@@ -20,10 +20,10 @@ class VisiblyControledNode extends Node<VisiblyControledNode> {
 }
 
 class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
-	var game:Stage;
+	var stage:Stage;
 
-	public function new(game:Stage) {
-		this.game = game;
+	public function new(stage:Stage) {
+		this.stage = stage;
 		super(VisiblyControledNode, updateNode);
 	}
 
@@ -31,7 +31,7 @@ class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		var selection = new Sprite();
 		selection.name = "selection";
 		selection.graphics.lineStyle(2, 0xFFFF00);
-		Shape.hexagon(selection.graphics, new Hexagon(0, 0, game.grid.radius));
+		Shape.hexagon(selection.graphics, new Hexagon(0, 0, stage.hexagonRadius));
 		return selection;
 	}
 

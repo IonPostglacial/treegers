@@ -49,9 +49,9 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	public function tileChanged(position:Position, oldType:TileType, newType:TileType) {
-		var tilePoint = Shape.positionToPoint(position, stage.grid.radius);
+		var tilePoint = Shape.positionToPoint(position, stage.hexagonRadius);
 		Lib.current.graphics.beginFill(newType.color());
-		Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, stage.grid.radius));
+		Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, stage.hexagonRadius));
 		Lib.current.graphics.endFill();
 	}
 
@@ -62,7 +62,7 @@ class VisibleSystem extends System implements TileChangeListener {
 		healthies = engine.getNodeList(VisiblyHealthyNode);
 
 		visibles.nodeAdded.add(function (node:VisibleNode) {
-			var pixPosition = Shape.positionToPoint(node.position, stage.grid.radius);
+			var pixPosition = Shape.positionToPoint(node.position, stage.hexagonRadius);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			Lib.current.addChild(node.visible.sprite);
@@ -83,8 +83,8 @@ class VisibleSystem extends System implements TileChangeListener {
 	inline function createHealthSprite(health:Health):Sprite {
 		var selection = new Sprite();
 		selection.name = "health";
-		selection.x -= stage.grid.radius / 2;
-		selection.y -= stage.grid.radius;
+		selection.x -= stage.hexagonRadius / 2;
+		selection.y -= stage.hexagonRadius;
 		return selection;
 	}
 
@@ -92,9 +92,9 @@ class VisibleSystem extends System implements TileChangeListener {
 		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
 		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
 		healthSprite.graphics.beginFill(0x000000);
-		healthSprite.graphics.drawRect(0, 0, stage.grid.radius, GAUGE_HEIGHT);
+		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius, GAUGE_HEIGHT);
 		healthSprite.graphics.beginFill(HEALTH_COLOR);
-		healthSprite.graphics.drawRect(0, 0, stage.grid.radius * (node.health.level / node.health.max), GAUGE_HEIGHT);
+		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius * (node.health.level / node.health.max), GAUGE_HEIGHT);
 		healthSprite.graphics.endFill();
 	}
 
@@ -103,15 +103,15 @@ class VisibleSystem extends System implements TileChangeListener {
 		Lib.current.graphics.lineStyle(0, 0x000000);
 		Lib.current.graphics.drawRect(0, 0, 800, 600);
 		Lib.current.graphics.endFill();
-		for (position in stage.grid) {
-			var tilePoint = Shape.positionToPoint(position, stage.grid.radius);
+		for (position in stage.map.keys()) {
+			var tilePoint = Shape.positionToPoint(position, stage.hexagonRadius);
 			var tileType = stage.tileAt(position);
 			Lib.current.graphics.beginFill(tileType.color());
-			Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, stage.grid.radius));
+			Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, stage.hexagonRadius));
 			Lib.current.graphics.endFill();
 		}
 		Lib.current.graphics.lineStyle(2, 0xffa200);
-		Shape.hexagonGrid(Lib.current.graphics, stage.grid);
+		Shape.hexagonGrid(Lib.current.graphics, stage.map, stage.hexagonRadius);
 		Lib.current.graphics.endFill();
 	}
 }

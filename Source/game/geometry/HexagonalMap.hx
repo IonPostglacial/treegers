@@ -17,25 +17,16 @@ class HexagonalMapIterator<T> {
 	public inline function next() return this.hexMap.data[i];
 }
 
-class HexagonalMap<T> {
+class HexagonalMap<T> extends HexagonalGrid {
 	public var data:Array<T>;
 
-	public var width:Int;
-	public var height:Int;
-	public var size(get, never):Int;
-
 	public function new(width, height, ?value:T) {
-		this.width = width;
-		this.height = height;
+		super(width, height);
 		if (value == null) {
 			data = [];
 		} else {
 			data = [for (i in 0...width * height) value];
 		}
-	}
-
-	inline function indexOf(x:Int, y:Int):Int {
-		return x + Std.int(y/2) + width * y;
 	}
 
 	public function get(position:Position):T {
@@ -47,7 +38,7 @@ class HexagonalMap<T> {
 	}
 
 	public function exists(position):Bool {
-		return indexOf(position.x, position.y) < data.length;
+		return contains(position.x, position.y);
 	}
 
 	public function iterator() {
@@ -55,7 +46,7 @@ class HexagonalMap<T> {
 	}
 
 	public function keys() {
-		return new HexagonalGridIterator(width, height);
+		return cells();
 	}
 
 	public function toString() {
@@ -70,7 +61,7 @@ class HexagonalMap<T> {
 		return buffer.toString();
 	}
 
-	public function get_size():Int {
+	override public function get_size():Int {
 		return data.length;
 	}
 }

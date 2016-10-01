@@ -25,12 +25,12 @@ class Shape {
 		return new Point(PIX_X, PIX_Y);
 	}
 
-	public static inline function gridPixelWidth(grid:HexagonalGrid):Int {
-		return Std.int(SQRT3 * grid.width * grid.radius);
+	public static inline function gridPixelWidth(grid:HexagonalGrid, radius:Float):Int {
+		return Std.int(SQRT3 * grid.width * radius);
 	}
 
-	public static inline function gridPixelHeight(grid:HexagonalGrid):Int {
-		return Std.int((1.5 * grid.height + 0.5) * grid.radius);
+	public static inline function gridPixelHeight(grid:HexagonalGrid, radius:Float):Int {
+		return Std.int((1.5 * grid.height + 0.5) * radius);
 	}
 
 	public static function hexagon(graphics:Graphics, hexagon:Hexagon) {
@@ -42,10 +42,10 @@ class Shape {
 		}
 	}
 
-	public static function hexagonGrid(graphics:Graphics, grid:HexagonalGrid) {
-		for (position in grid) {
-			var center = positionToPoint(position, grid.radius);
-			hexagon(graphics, new Hexagon(center.x, center.y, grid.radius));
+	public static function hexagonGrid(graphics:Graphics, grid:HexagonalGrid, radius:Float) {
+		for (position in grid.cells()) {
+			var center = positionToPoint(position, radius);
+			hexagon(graphics, new Hexagon(center.x, center.y, radius));
 		}
 	}
 }

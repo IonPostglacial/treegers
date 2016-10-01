@@ -34,7 +34,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.stage = stage;
 		this.events = [];
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
-			var mousePosition = Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.grid.radius);
+			var mousePosition = Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.hexagonRadius);
 			pointedPosition = mousePosition;
 		});
 		super(ControledNode, updateNode);

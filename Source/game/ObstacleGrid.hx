@@ -7,23 +7,21 @@ import game.geometry.HexagonalMap;
 
 
 class ObstacleGrid implements Pathfindable<Position> {
-	var grid:HexagonalGrid;
-	var tiles:HexagonalMap<TileType>;
+	var map:HexagonalMap<TileType>;
 	public var vehicle:Vehicle;
 
-	public inline function new(grid, tiles, vehicle) {
-		this.grid = grid;
-		this.tiles = tiles;
+	public inline function new(map, vehicle) {
+		this.map = map;
 		this.vehicle = vehicle;
 	}
 
 	public function distanceBetween(p1:Position, p2:Position):Int {
-		return grid.distanceBetween(p1, p2);
+		return map.distanceBetween(p1, p2);
 	}
 
 	public function neighborsOf(p:Position):Iterable<Position> {
-		return grid.neighborsOf(p).filter(function (position) {
-			return tiles.get(position).crossableWith(vehicle);
+		return map.neighborsOf(p).filter(function (position) {
+			return map.get(position).crossableWith(vehicle);
 		});
 	}
 }

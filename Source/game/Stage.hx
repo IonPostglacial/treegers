@@ -23,7 +23,6 @@ import game.systems.CollectSystem;
 
 import game.drawing.Shape;
 import game.geometry.Hexagon;
-import game.geometry.HexagonalGrid;
 import game.geometry.HexagonalMap;
 
 import game.components.Button;
@@ -37,12 +36,12 @@ import game.components.Collectible;
 
 
 class Stage {
-	public var grid:HexagonalGrid;
+	public var map:HexagonalMap<TileType>;
+	public var hexagonRadius:Float = 32;
 
 	var scene:Sprite;
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
-	var tiles:HexagonalMap<TileType>;
 	var pathfinders:Array<graph.Pathfinder<Position>> = [];
 	var tileChangeListener:Array<TileChangeListener> = [];
 
@@ -54,12 +53,12 @@ class Stage {
 	}
 
 	public function tileAt(position:Position) {
-		return tiles.get(position);
+		return map.get(position);
 	}
 
 	public function setTileAt(position:Position, value:TileType) {
-		var oldTileType = tiles.get(position);
-		tiles.set(position, value);
+		var oldTileType = map.get(position);
+		map.set(position, value);
 		for (listener in tileChangeListener) {
 			listener.tileChanged(position, oldTileType, value);
 		}
@@ -76,16 +75,15 @@ class Stage {
 	}
 
 	function loadMap(width:Int, height:Int) {
-		this.grid = new HexagonalGrid(width, height, 32);
-		this.tiles = new HexagonalMap<TileType>(width, height, TileType.Ground);
-		this.tiles.set(new Position(3, 2), TileType.Pikes);
-		this.tiles.set(new Position(3, 3), TileType.Cliff);
-		this.tiles.set(new Position(3, 4), TileType.Cliff);
-		this.tiles.set(new Position(3, 5), TileType.Cliff);
-		this.tiles.set(new Position(1, 0), TileType.ArrowA);
-		this.tiles.set(new Position(11, 0), TileType.ArrowD);
+		this.map = new HexagonalMap<TileType>(width, height, TileType.Ground);
+		this.map.set(new Position(3, 2), TileType.Pikes);
+		this.map.set(new Position(3, 3), TileType.Cliff);
+		this.map.set(new Position(3, 4), TileType.Cliff);
+		this.map.set(new Position(3, 5), TileType.Cliff);
+		this.map.set(new Position(1, 0), TileType.ArrowA);
+		this.map.set(new Position(11, 0), TileType.ArrowD);
 		for (vehicle in Type.allEnums(Vehicle)) {
-			var obstacles = new ObstacleGrid(this.grid, this.tiles, vehicle);
+			var obstacles = new ObstacleGrid(this.map, vehicle);
 			this.pathfinders.push(new graph.Pathfinder(obstacles));
 		}
 	}
@@ -114,15 +112,15 @@ class Stage {
 	function loadEntities(scene:Sprite, width:Float, height:Float):Void {
 		var gruntSprite = new Sprite();
 		gruntSprite.graphics.beginFill(0xBB5555);
-		Shape.hexagon(gruntSprite.graphics, new Hexagon(0, 0, grid.radius));
+		Shape.hexagon(gruntSprite.graphics, new Hexagon(0, 0, hexagonRadius));
 
 		var buttonSprite = new Sprite();
 		buttonSprite.graphics.beginFill(0x0066BB);
-		Shape.hexagon(buttonSprite.graphics, new Hexagon(0, 0, grid.radius));
+		Shape.hexagon(buttonSprite.graphics, new Hexagon(0, 0, hexagonRadius));
 
 		var ballSprite = new Sprite();
 		ballSprite.graphics.beginFill(0x777777);
-		Shape.hexagon(ballSprite.graphics, new Hexagon(0, 0, grid.radius));
+		Shape.hexagon(ballSprite.graphics, new Hexagon(0, 0, hexagonRadius));
 
 		var grunt = new Entity()
 		.add(new Position(0, 0))
