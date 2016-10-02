@@ -9,13 +9,11 @@ import haxe.ds.HashMap;
 import de.polygonal.ds.Heap;
 import de.polygonal.ds.Heapable;
 
-@:generic
 typedef Node<T> = {
 	function equals(other:T):Bool;
 	function hashCode():Int;
 }
 
-@:generic
 class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>> {
 	public var currentNode:Node_t;
 	public var previousNode:Node_t;
