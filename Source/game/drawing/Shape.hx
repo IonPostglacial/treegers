@@ -19,8 +19,8 @@ class Shape {
 	}
 
 	public static inline function positionToPoint(point:Position, radius:Float):Point {
-		var PIX_Y = radius + 1.5 * radius * point.y;
-		var PIX_X = (PIX_Y - radius) / SQRT3 + SQRT3 * radius * (point.x + 0.5);
+		var PIX_Y = Std.int(radius + 1.5 * radius * point.y);
+		var PIX_X = Std.int((PIX_Y - radius) / SQRT3 + SQRT3 * radius * (point.x + 0.5));
 
 		return new Point(PIX_X, PIX_Y);
 	}

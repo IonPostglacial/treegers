@@ -1,20 +1,22 @@
 package game.systems;
 
+
+import openfl.display.Bitmap;
+import openfl.display.Sprite;
+import openfl.display.Tile;
+import openfl.Lib;
+
 import ash.core.Engine;
 import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import openfl.display.Sprite;
-import openfl.Lib;
-
-import game.drawing.Shape;
 import game.components.Health;
-import game.geometry.Hexagon;
-
 import game.components.Visible;
 import game.components.Health;
 import game.components.Position;
+import game.drawing.Shape;
+import game.geometry.Hexagon;
 
 
 class VisibleNode extends Node<VisibleNode> {
@@ -30,6 +32,7 @@ class VisiblyHealthyNode extends Node<VisiblyHealthyNode> {
 
 class VisibleSystem extends System implements TileChangeListener {
 	var stage:Stage;
+	var tiles(default, null):TileManager;
 	var visibles:NodeList<VisibleNode>;
 	var healthies:NodeList<VisiblyHealthyNode>;
 
@@ -49,28 +52,28 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	public function tileChanged(position:Position, oldType:TileType, newType:TileType) {
-		var tilePoint = Shape.positionToPoint(position, stage.hexagonRadius);
-		Lib.current.graphics.beginFill(newType.color());
-		Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, stage.hexagonRadius));
-		Lib.current.graphics.endFill();
+		tiles.setTileTypeAt(position, newType);
 	}
 
 	override public function addToEngine(engine:Engine) {
 		super.addToEngine(engine);
 
+		this.tiles = new TileManager(stage);
 		visibles = engine.getNodeList(VisibleNode);
 		healthies = engine.getNodeList(VisiblyHealthyNode);
-
 		visibles.nodeAdded.add(function (node:VisibleNode) {
 			var pixPosition = Shape.positionToPoint(node.position, stage.hexagonRadius);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			Lib.current.addChild(node.visible.sprite);
+			node.visible.tile = tiles.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
 		});
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
 			Lib.current.removeChild(node.visible.sprite);
+			if (node.visible.tile != null) {
+				tiles.removeTile(node.visible.tile);
+			}
 		});
-
 		healthies.nodeAdded.add(function (node:VisiblyHealthyNode) {
 			node.visible.sprite.addChild(createHealthSprite(node.health));
 		});
@@ -81,20 +84,19 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	inline function createHealthSprite(health:Health):Sprite {
-		var selection = new Sprite();
-		selection.name = "health";
-		selection.x -= stage.hexagonRadius / 2;
-		selection.y -= stage.hexagonRadius;
-		return selection;
+		var healthSprite = new Sprite();
+		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
+		healthSprite.graphics.beginFill(HEALTH_COLOR);
+		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius, GAUGE_HEIGHT);
+		healthSprite.name = "health";
+		healthSprite.x -= stage.hexagonRadius / 2;
+		healthSprite.y -= stage.hexagonRadius + GAUGE_HEIGHT;
+		return healthSprite;
 	}
 
 	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
 		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
-		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
-		healthSprite.graphics.beginFill(0x000000);
-		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius, GAUGE_HEIGHT);
-		healthSprite.graphics.beginFill(HEALTH_COLOR);
-		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius * (node.health.level / node.health.max), GAUGE_HEIGHT);
+		healthSprite.width = stage.hexagonRadius * (node.health.level / node.health.max);
 		healthSprite.graphics.endFill();
 	}
 
@@ -102,16 +104,6 @@ class VisibleSystem extends System implements TileChangeListener {
 		Lib.current.graphics.beginFill(0x000000);
 		Lib.current.graphics.lineStyle(0, 0x000000);
 		Lib.current.graphics.drawRect(0, 0, 800, 600);
-		Lib.current.graphics.endFill();
-		for (position in stage.map.keys()) {
-			var tilePoint = Shape.positionToPoint(position, stage.hexagonRadius);
-			var tileType = stage.tileAt(position);
-			Lib.current.graphics.beginFill(tileType.color());
-			Shape.hexagon(Lib.current.graphics, new Hexagon(tilePoint.x, tilePoint.y, stage.hexagonRadius));
-			Lib.current.graphics.endFill();
-		}
-		Lib.current.graphics.lineStyle(2, 0xffa200);
-		Shape.hexagonGrid(Lib.current.graphics, stage.map, stage.hexagonRadius);
 		Lib.current.graphics.endFill();
 	}
 }

@@ -37,14 +37,10 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 				node.linearWalker.dx = tileType.dx();
 				node.linearWalker.dy = tileType.dy();
 			}
-			var newPosition = new Position(
-				node.position.x + node.linearWalker.dx,
-				node.position.y + node.linearWalker.dy
-			);
-			if (stage.tileAt(newPosition).crossableWith(node.movement.vehicle)) {
-				node.movement.oldPosition = node.position.copy();
-				node.entity.add(newPosition);
-			} else {
+			node.movement.oldPosition = node.position.copy();
+			node.position.x += node.linearWalker.dx;
+			node.position.y += node.linearWalker.dy;
+			if (!stage.tileAt(node.position).crossableWith(node.movement.vehicle)) {
 				engine.removeEntity(node.entity);
 			}
 		}

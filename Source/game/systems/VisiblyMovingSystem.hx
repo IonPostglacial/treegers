@@ -28,7 +28,7 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 	}
 
 	static inline function tween(x1:Float, x2:Float, delta:Float) {
-		return (1 - delta) * x1 + delta * x2;
+		return Std.int((1 - delta) * x1 + delta * x2);
 	}
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
@@ -41,6 +41,9 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 				var oldPixPosition = Shape.positionToPoint(node.movement.oldPosition, stage.hexagonRadius);
 				node.visible.sprite.x = tween(oldPixPosition.x, pixPosition.x, node.movement.delta);
 				node.visible.sprite.y = tween(oldPixPosition.y, pixPosition.y, node.movement.delta);
+			}
+			if (node.visible.tile != null) {
+				TileManager.moveTile(node.visible.tile, node.visible.sprite.x, node.visible.sprite.y);
 			}
 		}
 	}

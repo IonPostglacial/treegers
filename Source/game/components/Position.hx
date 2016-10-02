@@ -6,8 +6,8 @@
 package game.components;
 
 class Position {
-	public var x(default, null):Int;
-	public var y(default, null):Int;
+	public var x:Int;
+	public var y:Int;
 
 	public inline function new(x, y) {
 		this.x = x;

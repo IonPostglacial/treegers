@@ -27,7 +27,8 @@ class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 			var nextPosition = node.pathWalker.path.pop();
 			if (stage.tileAt(nextPosition).crossableWith(node.movement.vehicle)) {
 				node.movement.oldPosition = node.position.copy();
-				node.entity.add(nextPosition);
+				node.position.x = nextPosition.x;
+				node.position.y = nextPosition.y;
 			} else {
 				node.pathWalker.path = [];
 			}
