@@ -4,6 +4,7 @@ import openfl.Assets;
 import openfl.display.Tile;
 import openfl.display.Tilemap;
 import openfl.display.Tileset;
+import openfl.Lib;
 
 import game.components.Position;
 import game.drawing.Shape;
@@ -22,7 +23,7 @@ class TileManager {
 		var imgAsset = Assets.getBitmapData("assets/tileset.png");
 		tileRadius = stage.hexagonRadius;
 		tileset = new Tileset(imgAsset);
-		tilemap = new Tilemap(stage.map.width, stage.map.height, tileset);
+		tilemap = new Tilemap(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight, tileset);
 		tiles = new HexagonalMap<Tile>(stage.map.width, stage.map.height);
 		allocateIds(stage);
 		populateMap(stage);
