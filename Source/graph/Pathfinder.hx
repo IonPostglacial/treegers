@@ -9,12 +9,18 @@ import haxe.ds.HashMap;
 import de.polygonal.ds.Heap;
 import de.polygonal.ds.Heapable;
 
+
 typedef Node<T> = {
 	function equals(other:T):Bool;
 	function hashCode():Int;
 }
 
-class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>> {
+/*
+ * The goal of the Score class is to store the costs associated with a Node:
+ * - costSoFar is the cost to go to currentNode following the currently examined path
+ * - estimatedCost is the estimated cost to go to the goal node following the currently examined path, considering no obstacles will be encountered.
+ */
+private class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>> {
 	public var currentNode:Node_t;
 	public var previousNode:Node_t;
 	public var costSoFar:Int;
@@ -33,6 +39,13 @@ class Score<Node_t:Node<Node_t>> implements Heapable<Score<Node_t>> {
 	}
 }
 
+/*
+ * A Pathfinding object can be used to find the shortest path in a graph.
+ * A graph is a class implementing interface Pathfindable.
+ * The Pathfinding class and the Pathfindable interface are generic, their type parameter is the type of the nodes of the graph.
+ * Nodes must be comparable by equality and they must provide a hashCode function.
+ * It returns an Array containing every nodes composing the calculated path, starting node and ending node included.
+ */
 @:generic
 class Pathfinder<Node_t:Node<Node_t>> {
 	var graph:Pathfindable<Node_t>;
