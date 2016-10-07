@@ -11,7 +11,7 @@ import game.actions.Move;
 import game.components.Controled;
 import game.components.Movement;
 import game.components.Position;
-import game.drawing.Shape;
+import game.pixelutils.Shape;
 
 
 enum Order {
@@ -37,7 +37,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.stage = stage;
 		this.events = [];
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
-			var mousePosition = Shape.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY), stage.hexagonRadius);
+			var mousePosition = stage.coords.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY));
 			pointedPosition = mousePosition;
 		});
 		for (vehicle in Type.allEnums(Vehicle)) {

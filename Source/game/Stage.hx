@@ -16,6 +16,8 @@ import game.components.Position;
 import game.components.Collectible;
 
 import game.geometry.HexagonalMap;
+import game.pixelutils.CoordinatesSystem;
+import game.pixelutils.HexagonalCoordinates;
 
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
@@ -33,6 +35,7 @@ import game.systems.CollectSystem;
 class Stage {
 	public var map(default, null):HexagonalMap<TileType>;
 	public var hexagonRadius(default, null):Float = 32;
+	public var coords:CoordinatesSystem = new HexagonalCoordinates(32);
 
 	var engine = new Engine();
 	var tickProvider:ITickProvider;

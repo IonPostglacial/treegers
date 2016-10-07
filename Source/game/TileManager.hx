@@ -7,7 +7,7 @@ import openfl.display.Tileset;
 import openfl.Lib;
 
 import game.components.Position;
-import game.drawing.Shape;
+import game.pixelutils.Shape;
 import game.geometry.HexagonalMap;
 
 
@@ -15,13 +15,13 @@ class TileManager {
 	var tilesTypeToTilesId:Array<Int> = [];
 	var tiles:HexagonalMap<Tile>;
 
-	var tileRadius:Float;
+	var stage:Stage;
 	var tilemap:Tilemap;
 	var tileset:Tileset;
 
 	public function new(stage:Stage) {
 		var imgAsset = Assets.getBitmapData("assets/tileset.png");
-		tileRadius = stage.hexagonRadius;
+		this.stage = stage;
 		tileset = new Tileset(imgAsset);
 		tilemap = new Tilemap(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight, tileset);
 		tiles = new HexagonalMap<Tile>(stage.map.width, stage.map.height);
@@ -57,7 +57,7 @@ class TileManager {
 		if (oldTile != null) {
 			tilemap.removeTile(oldTile);
 		}
-		var pixPosition = Shape.positionToPoint(position, tileRadius);
+		var pixPosition = stage.coords.positionToPoint(position);
 		var newTile = new Tile(tilesTypeToTilesId[type], 0, 0);
 		moveTile(newTile, pixPosition.x, pixPosition.y);
 		tiles.set(position, newTile);

@@ -15,7 +15,7 @@ import game.components.Health;
 import game.components.Visible;
 import game.components.Health;
 import game.components.Position;
-import game.drawing.Shape;
+import game.pixelutils.Shape;
 import game.geometry.Hexagon;
 
 
@@ -62,7 +62,7 @@ class VisibleSystem extends System implements TileChangeListener {
 		visibles = engine.getNodeList(VisibleNode);
 		healthies = engine.getNodeList(VisiblyHealthyNode);
 		visibles.nodeAdded.add(function (node:VisibleNode) {
-			var pixPosition = Shape.positionToPoint(node.position, stage.hexagonRadius);
+			var pixPosition = stage.coords.positionToPoint(node.position);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			Lib.current.addChild(node.visible.sprite);
