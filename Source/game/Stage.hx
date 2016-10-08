@@ -1,5 +1,7 @@
 package game;
 
+import openfl.display.Sprite;
+
 import ash.tick.ITickProvider;
 import ash.tick.FrameTickProvider;
 import ash.core.Engine;
@@ -36,12 +38,18 @@ class Stage {
 	public var map(default, null):HexagonalMap<TileType>;
 	public var hexagonRadius(default, null):Float = 32;
 	public var coords:CoordinatesSystem = new HexagonalCoordinates(32);
+	public var background:Sprite;
+	public var foreground:Sprite;
 
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
 	var tileChangeListener:Array<TileChangeListener> = [];
 
 	public function new(width:Int, height:Int) {
+		this.background = new Sprite();
+		this.foreground = new Sprite();
+		openfl.Lib.current.addChild(this.background);
+		openfl.Lib.current.addChild(this.foreground);
 		loadMap(width, height);
 		loadSystems();
 		loadEntities(width, height);

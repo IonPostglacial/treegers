@@ -4,7 +4,6 @@ import openfl.Assets;
 import openfl.display.Tile;
 import openfl.display.Tilemap;
 import openfl.display.Tileset;
-import openfl.Lib;
 
 import game.components.Position;
 import game.pixelutils.Shape;
@@ -23,7 +22,7 @@ class TileManager {
 		var imgAsset = Assets.getBitmapData("assets/tileset.png");
 		this.stage = stage;
 		tileset = new Tileset(imgAsset);
-		tilemap = new Tilemap(Lib.current.stage.stageWidth, Lib.current.stage.stageHeight, tileset);
+		tilemap = new Tilemap(openfl.Lib.current.stage.stageWidth, openfl.Lib.current.stage.stageHeight, tileset);
 		tiles = new HexagonalMap<Tile>(stage.map.width, stage.map.height);
 		allocateIds(stage);
 		populateMap(stage);
@@ -42,7 +41,7 @@ class TileManager {
 			tilesTypeToTilesId.push(tileset.addRect(new openfl.geom.Rectangle(hexagonWidth * i, 0, 55, 64)));
 			i += 1;
 		}
-		openfl.Lib.current.addChild(tilemap);
+		stage.background.addChild(tilemap);
 	}
 
 	public inline function createTileAt(type:TileType, x:Float, y:Float):Tile {
@@ -54,14 +53,20 @@ class TileManager {
 
 	public function setTileTypeAt(position:Position, type:TileType) {
 		var oldTile = tiles.get(position);
+		var index = -1;
 		if (oldTile != null) {
+			index = tilemap.getTileIndex(oldTile);
 			tilemap.removeTile(oldTile);
 		}
 		var pixPosition = stage.coords.positionToPoint(position);
 		var newTile = new Tile(tilesTypeToTilesId[type], 0, 0);
 		moveTile(newTile, pixPosition.x, pixPosition.y);
 		tiles.set(position, newTile);
-		tilemap.addTile(newTile);
+		if (index >= 0) {
+			tilemap.addTileAt(newTile, index);
+		} else {
+			tilemap.addTile(newTile);
+		}
 	}
 
 	public static inline function moveTile(tile:Tile, x:Float, y:Float) {

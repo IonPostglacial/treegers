@@ -4,7 +4,6 @@ package game.systems;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
 import openfl.display.Tile;
-import openfl.Lib;
 
 import ash.core.Engine;
 import ash.core.Node;
@@ -65,11 +64,11 @@ class VisibleSystem extends System implements TileChangeListener {
 			var pixPosition = stage.coords.positionToPoint(node.position);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
-			Lib.current.addChild(node.visible.sprite);
+			stage.foreground.addChild(node.visible.sprite);
 			node.visible.tile = tiles.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
 		});
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
-			Lib.current.removeChild(node.visible.sprite);
+			stage.foreground.removeChild(node.visible.sprite);
 			if (node.visible.tile != null) {
 				tiles.removeTile(node.visible.tile);
 			}
@@ -101,9 +100,9 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	function drawBackground() {
-		Lib.current.graphics.beginFill(0x000000);
-		Lib.current.graphics.lineStyle(0, 0x000000);
-		Lib.current.graphics.drawRect(0, 0, 800, 600);
-		Lib.current.graphics.endFill();
+		stage.background.graphics.beginFill(0x000000);
+		stage.background.graphics.lineStyle(0, 0x000000);
+		stage.background.graphics.drawRect(0, 0, 800, 600);
+		stage.background.graphics.endFill();
 	}
 }

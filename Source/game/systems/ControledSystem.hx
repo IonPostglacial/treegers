@@ -1,5 +1,6 @@
 package game.systems;
 
+import openfl.display.Sprite;
 import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
 import openfl.Lib;
@@ -11,6 +12,7 @@ import game.actions.Move;
 import game.components.Controled;
 import game.components.Movement;
 import game.components.Position;
+import game.geometry.Hexagon;
 import game.pixelutils.Shape;
 
 
@@ -29,6 +31,7 @@ class ControledNode extends Node<ControledNode> {
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var stage:Stage;
+	var hover:Sprite;
 	var events:Array<Order>;
 	var pointedPosition:Position;
 	var pathfinders:Array<graph.Pathfinder<Position>> = [];
@@ -36,9 +39,19 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	public function new(stage:Stage) {
 		this.stage = stage;
 		this.events = [];
+		this.hover = new Sprite();
+		this.hover.graphics.lineStyle(2, 0xFF0000);
+		Shape.hexagon(this.hover.graphics, new Hexagon(0, 0, stage.hexagonRadius));
+		this.stage.foreground.addChild(this.hover);
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
 			var mousePosition = stage.coords.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY));
 			pointedPosition = mousePosition;
+		});
+		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
+			var mousePosition = stage.coords.pointToPosition(new openfl.geom.Point(e.stageX, e.stageY));
+			var mousePoint = stage.coords.positionToPoint(mousePosition);
+			this.hover.x = mousePoint.x;
+			this.hover.y = mousePoint.y;
 		});
 		for (vehicle in Type.allEnums(Vehicle)) {
 			var obstacles = new ObstacleGrid(stage.map, vehicle);
