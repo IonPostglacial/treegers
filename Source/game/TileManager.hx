@@ -5,9 +5,9 @@ import openfl.display.Tile;
 import openfl.display.Tilemap;
 import openfl.display.Tileset;
 
-import game.components.Position;
-import game.pixelutils.Shape;
-import game.geometry.HexagonalMap;
+import drawing.Shape;
+import geometry.Coordinates;
+import geometry.HexagonalMap;
 
 
 class TileManager {
@@ -51,14 +51,14 @@ class TileManager {
 		return tile;
 	}
 
-	public function setTileTypeAt(position:Position, type:TileType) {
+	public function setTileTypeAt(position:Coordinates, type:TileType) {
 		var oldTile = tiles.get(position);
 		var index = -1;
 		if (oldTile != null) {
 			index = tilemap.getTileIndex(oldTile);
 			tilemap.removeTile(oldTile);
 		}
-		var pixPosition = stage.coords.positionToPoint(position);
+		var pixPosition = stage.coordinates.toPixel(position);
 		var newTile = new Tile(tilesTypeToTilesId[type], 0, 0);
 		moveTile(newTile, pixPosition.x, pixPosition.y);
 		tiles.set(position, newTile);

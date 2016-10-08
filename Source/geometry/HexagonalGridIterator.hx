@@ -1,6 +1,4 @@
-package game.geometry;
-
-import game.components.Position;
+package geometry;
 
 
 class HexagonalGridIterator {
@@ -20,12 +18,12 @@ class HexagonalGridIterator {
 		return i != width - 1 || y != height - 1;
 	}
 
-	public function next():Position {
+	public function next():Coordinates {
 		i += 1;
 		if (i == width) {
 			i = 0;
 			y += 1;
 		}
-		return new Position(i - Std.int(y / 2), y);
+		return new Coordinates(i - Std.int(y / 2), y);
 	}
 }

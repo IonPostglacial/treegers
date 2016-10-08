@@ -1,15 +1,13 @@
-package game.pixelutils;
+package drawing;
 
-import game.components.Position;
-import game.geometry.Hexagon;
-import game.geometry.HexagonalGrid;
+import geometry.Hexagon;
+import geometry.HexagonalGrid;
 import openfl.display.Graphics;
 import openfl.geom.Point;
 
 
 class Shape {
 	static var SQRT3 = Math.sqrt(3);
-	static var hexCoords = new HexagonalCoordinates(0);
 
 	public static inline function gridPixelWidth(grid:HexagonalGrid, radius:Float):Int {
 		return Std.int(SQRT3 * grid.width * radius);

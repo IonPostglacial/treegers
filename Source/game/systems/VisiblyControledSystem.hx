@@ -5,8 +5,8 @@ import openfl.display.Sprite;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
-import game.pixelutils.Shape;
-import game.geometry.Hexagon;
+import drawing.Shape;
+import geometry.Hexagon;
 
 import game.components.Controled;
 import game.components.Visible;

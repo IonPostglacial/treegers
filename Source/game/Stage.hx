@@ -17,9 +17,10 @@ import game.components.Movement;
 import game.components.Position;
 import game.components.Collectible;
 
-import game.geometry.HexagonalMap;
-import game.pixelutils.CoordinatesSystem;
-import game.pixelutils.HexagonalCoordinates;
+import geometry.Coordinates;
+import geometry.HexagonalMap;
+import geometry.CoordinatesSystem;
+import geometry.HexagonalCoordinates;
 
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
@@ -37,7 +38,7 @@ import game.systems.CollectSystem;
 class Stage {
 	public var map(default, null):HexagonalMap<TileType>;
 	public var hexagonRadius(default, null):Float = 32;
-	public var coords:CoordinatesSystem = new HexagonalCoordinates(32);
+	public var coordinates:CoordinatesSystem = new HexagonalCoordinates(32);
 	public var background:Sprite;
 	public var foreground:Sprite;
 
@@ -55,11 +56,11 @@ class Stage {
 		loadEntities(width, height);
 	}
 
-	public function tileAt(position:Position) {
+	public function tileAt(position:Coordinates) {
 		return map.get(position);
 	}
 
-	public function setTileAt(position:Position, value:TileType) {
+	public function setTileAt(position:Coordinates, value:TileType) {
 		var oldTileType = map.get(position);
 		map.set(position, value);
 		for (listener in tileChangeListener) {

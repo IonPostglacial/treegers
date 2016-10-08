@@ -3,9 +3,10 @@
  * This file is part of the haxehex project, licensed under a 3-Clause BSD license.
  * See LICENSE.txt in the root folder for more information.
  */
-package game.geometry;
+package geometry;
 
 import openfl.geom.Point;
+
 
 class Hexagon {
 	static var SQRT3 = Math.sqrt(3);

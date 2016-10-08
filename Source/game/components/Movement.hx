@@ -1,12 +1,14 @@
 package game.components;
 
+import geometry.Coordinates;
+
 
 class Movement {
 	public var vehicle:Vehicle;
 	public var period:Float;
 	public var delta(get, never):Float;
 	public var ready(get, never):Bool;
-	public var oldPosition(default, set):Position;
+	public var oldPosition(default, set):Coordinates;
 	var timeSinceLastMove:Float;
 
 	public function new(vehicle, period) {
@@ -26,7 +28,7 @@ class Movement {
 		}
 	}
 
-	public function set_oldPosition(oldPosition:Position):Position {
+	public function set_oldPosition(oldPosition:Coordinates):Coordinates {
 		this.oldPosition = oldPosition;
 		timeSinceLastMove -= period;
 		return oldPosition;

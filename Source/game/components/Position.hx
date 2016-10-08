@@ -5,24 +5,13 @@
  */
 package game.components;
 
-class Position {
-	public var x:Int;
-	public var y:Int;
 
+class Position extends geometry.Coordinates {
 	public inline function new(x, y) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 	}
 
-	public inline function equals(other):Bool {
-		return this.x == other.x && this.y == other.y;
-	}
-
-	public inline function copy():Position {
-		return new Position(x, y);
-	}
-
-	public inline function hashCode():Int {
-		return y | (x << 16); // x can be negative while y cannot.
+	public inline function fromCoordinates(coords:geometry.Coordinates) {
+		return new Position(coords.x, coords.y);
 	}
 }

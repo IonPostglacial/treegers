@@ -1,8 +1,8 @@
 package game;
 
-import game.components.Position;
+import geometry.Coordinates;
 
 
 interface TileChangeListener {
-	function tileChanged(position:Position, oldType:TileType, newType:TileType):Void;
+	function tileChanged(position:Coordinates, oldType:TileType, newType:TileType):Void;
 }

@@ -1,7 +1,4 @@
-package game.geometry;
-
-import haxe.Constraints.IMap;
-import game.components.Position;
+package geometry;
 
 
 class HexagonalMapIterator<T> {
@@ -29,16 +26,16 @@ class HexagonalMap<T> extends HexagonalGrid {
 		}
 	}
 
-	public function get(position:Position):T {
-		return data[indexOf(position.x, position.y)];
+	public function get(coordinates:Coordinates):T {
+		return data[indexOf(coordinates.x, coordinates.y)];
 	}
 
-	public function set(position:Position, value:T) {
-		data[indexOf(position.x, position.y)] = value;
+	public function set(coordinates:Coordinates, value:T) {
+		data[indexOf(coordinates.x, coordinates.y)] = value;
 	}
 
-	public function exists(position):Bool {
-		return contains(position.x, position.y);
+	public function exists(coordinates):Bool {
+		return contains(coordinates.x, coordinates.y);
 	}
 
 	public function iterator() {
@@ -52,10 +49,10 @@ class HexagonalMap<T> extends HexagonalGrid {
 	public function toString() {
 		var buffer = new StringBuf();
 		buffer.add("{ ");
-		for (position in keys()) {
-			buffer.add(position);
+		for (coordinates in keys()) {
+			buffer.add(coordinates);
 			buffer.add(": ");
-			buffer.add(get(position));
+			buffer.add(get(coordinates));
 		}
 		buffer.add(" }");
 		return buffer.toString();

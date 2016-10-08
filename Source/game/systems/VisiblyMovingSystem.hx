@@ -4,7 +4,7 @@ import ash.core.Engine;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
-import game.pixelutils.Shape;
+import drawing.Shape;
 
 import game.components.Visible;
 import game.components.Movement;
@@ -31,12 +31,12 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
-			var pixPosition = stage.coords.positionToPoint(node.position);
+			var pixPosition = stage.coordinates.toPixel(node.position);
 			if(node.movement.oldPosition == null) {
 				node.visible.sprite.x = pixPosition.x;
 				node.visible.sprite.y = pixPosition.y;
 			} else {
-				var oldPixPosition = stage.coords.positionToPoint(node.movement.oldPosition);
+				var oldPixPosition = stage.coordinates.toPixel(node.movement.oldPosition);
 				node.visible.sprite.x = tween(oldPixPosition.x, pixPosition.x, node.movement.delta);
 				node.visible.sprite.y = tween(oldPixPosition.y, pixPosition.y, node.movement.delta);
 			}

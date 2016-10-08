@@ -4,14 +4,13 @@ import ash.core.Entity;
 
 import game.components.Movement;
 import game.components.PathWalker;
-import game.components.Position;
 import game.nodes.ActionedNode;
-import game.components.Position;
+import geometry.Coordinates;
 
 
 class Move implements Action {
 	public var done(get, never):Bool;
-	public var path:Array<Position>;
+	public var path:Array<Coordinates>;
 	var entity:Entity;
 
 	public function new(entity, path) {

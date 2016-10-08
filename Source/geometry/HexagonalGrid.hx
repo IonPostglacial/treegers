@@ -1,10 +1,9 @@
-package game.geometry;
+package geometry;
 
 import graph.Pathfindable;
-import game.components.Position;
 
 
-class HexagonalGrid implements Pathfindable<Position> {
+class HexagonalGrid implements Pathfindable<Coordinates> {
 	static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
 
 	public var width:Int;
@@ -36,17 +35,17 @@ class HexagonalGrid implements Pathfindable<Position> {
 		return width * height;
 	}
 
-	public inline function distanceBetween(p1:Position, p2:Position):Int {
+	public inline function distanceBetween(p1:Coordinates, p2:Coordinates):Int {
 		return Std.int((abs(p1.x - p2.x) + abs(p1.x + p1.y - p2.x - p2.y) + abs(p1.y - p2.y)) / 2);
 	}
 
-	public inline function neighborsOf(p:Position):Array<Position> {
-		var neighbors:Array<Position> = [];
+	public inline function neighborsOf(p:Coordinates):Array<Coordinates> {
+		var neighbors:Array<Coordinates> = [];
 		for (i in 0...6) {
 			var x = p.x + deltas[2 * i];
 			var y = p.y + deltas[2 * i + 1];
 			if (contains(x, y)) {
-				neighbors.push(new Position(x, y));
+				neighbors.push(new Coordinates(x, y));
 			}
 		}
 		return neighbors;
