@@ -1,5 +1,7 @@
 package game.systems;
 
+import openfl.geom.Point;
+
 import ash.core.Engine;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
@@ -25,10 +27,6 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 		super(VisiblyMovingNode, updateNode);
 	}
 
-	static inline function tween(x1:Float, x2:Float, delta:Float) {
-		return Std.int((1 - delta) * x1 + delta * x2);
-	}
-
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
 			var pixPosition = stage.coordinates.toPixel(node.position);
@@ -37,8 +35,9 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 				node.visible.sprite.y = pixPosition.y;
 			} else {
 				var oldPixPosition = stage.coordinates.toPixel(node.movement.oldPosition);
-				node.visible.sprite.x = tween(oldPixPosition.x, pixPosition.x, node.movement.delta);
-				node.visible.sprite.y = tween(oldPixPosition.y, pixPosition.y, node.movement.delta);
+				var newPixPosition = Point.interpolate(pixPosition, oldPixPosition, node.movement.delta);
+				node.visible.sprite.x = newPixPosition.x;
+				node.visible.sprite.y = newPixPosition.y;
 			}
 			if (node.visible.tile != null) {
 				TileManager.moveTile(node.visible.tile, node.visible.sprite.x, node.visible.sprite.y);
