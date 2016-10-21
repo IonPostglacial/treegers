@@ -1,21 +1,21 @@
 package game;
 
-@:enum abstract TileType(Int) to Int {
-	var Grunt = 0;
-	var Water = 1;
-	var Ground = 2;
-	var Button = 3;
-	var Pikes = 4;
-	var Cliff = 5;
-	var ArrowA = 6;
-	var ArrowD = 7;
-	var ArrowE = 8;
-	var ArrowB = 9;
-	var ArrowF = 10;
-	var ArrowC = 11;
-	var RollinBall = 12;
-	var None = 13;
-	var Last = 13;
+@:enum abstract TileType(Int) from Int to Int {
+	var None = 0;
+	var Grunt = 1;
+	var Water = 2;
+	var Ground = 3;
+	var Button = 4;
+	var Pikes = 5;
+	var Cliff = 6;
+	var ArrowA = 7;
+	var ArrowD = 8;
+	var ArrowE = 9;
+	var ArrowB = 10;
+	var ArrowF = 11;
+	var ArrowC = 12;
+	var RollinBall = 13;
+	var Last = 14;
 
 	public function crossableWith(vehicle:Vehicle):Bool return switch (this) {
 		case TileType.None: false;

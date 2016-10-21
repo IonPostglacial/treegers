@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="hexagonal" renderorder="right-down" width="14" height="11" tilewidth="55" tileheight="64" hexsidelength="32" staggeraxis="y" staggerindex="odd" nextobjectid="1">
+ <tileset firstgid="1" name="basemap" tilewidth="55" tileheight="64" tilecount="14">
+  <image source="tileset.png" width="777" height="64"/>
+ </tileset>
+ <layer name="Calque de Tile 1" width="14" height="11">
+  <data encoding="base64" compression="zlib">
+   eJxjZmBgYEbCTHgwMw5MrB5sfGLsYSJTDzH6cLmJkB58ZhHjLkJm8EBpDhL1URI/pOpjx6KHE4deANA3AYw=
+  </data>
+ </layer>
+</map>

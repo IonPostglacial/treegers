@@ -38,7 +38,7 @@ class TileManager {
 		var hexagonWidth = Math.sqrt(3) * stage.hexagonRadius;
 		var i = 0;
 		for (tileType in 0...TileType.Last) {
-			tilesTypeToTilesId.push(tileset.addRect(new openfl.geom.Rectangle(hexagonWidth * i, 0, 55, 64)));
+			tilesTypeToTilesId.push(tileset.addRect(new openfl.geom.Rectangle(hexagonWidth * (i - 1), 0, 55, 64)));
 			i += 1;
 		}
 		stage.background.addChild(tilemap);

@@ -36,6 +36,7 @@ import game.systems.CollectSystem;
 
 
 class Stage {
+	public var tiledMap:tmx.TiledMap;
 	public var map(default, null):HexagonalMap<TileType>;
 	public var hexagonRadius(default, null):Float = 32;
 	public var coordinates:CoordinatesSystem = new HexagonalCoordinates(32);
@@ -51,7 +52,7 @@ class Stage {
 		this.foreground = new Sprite();
 		openfl.Lib.current.addChild(this.background);
 		openfl.Lib.current.addChild(this.foreground);
-		loadMap(width, height);
+		loadMap("simple-stage.tmx", width, height);
 		loadSystems();
 		loadEntities(width, height);
 	}
@@ -74,15 +75,11 @@ class Stage {
 		tickProvider.start();
 	}
 
-	function loadMap(width:Int, height:Int) {
-		this.map = new HexagonalMap<TileType>(width, height, TileType.Ground);
-		this.map.set(new Position(3, 2), TileType.Pikes);
-		this.map.set(new Position(3, 3), TileType.Cliff);
-		this.map.set(new Position(3, 4), TileType.Cliff);
-		this.map.set(new Position(3, 5), TileType.Cliff);
-		this.map.set(new Position(1, 0), TileType.ArrowB);
-		this.map.set(new Position(11, 0), TileType.ArrowD);
-		this.map.set(new Position(1, 10), TileType.ArrowF);
+	function loadMap(name:String, width:Int, height:Int) {
+		var mapXml = openfl.Assets.getText("assets/simple-stage.tmx");
+		this.tiledMap = new tmx.TiledMap();
+		this.tiledMap.loadFromXml(Xml.parse(mapXml));
+		this.map = HexagonalMap.fromVector(this.tiledMap.tileLayers[0].data, width, height);
 	}
 
 	function loadSystems() {
@@ -108,12 +105,12 @@ class Stage {
 
 	function loadEntities(width:Float, height:Float) {
 		var button = new Entity()
-		.add(new Position(6, 0))
+		.add(new Position(0, 10))
 		.add(new Visible(TileType.Button))
-		.add(new Button(false, [new Position(2, 1)], TileType.Ground, TileType.Water));
+		.add(new Button(false, [new Position(0, 4), new Position(0, 5), new Position(0, 6)], TileType.Water, TileType.Ground));
 
 		var rollingBall = new Entity()
-		.add(new Position(10, 0))
+		.add(new Position(2, 7))
 		.add(new Visible(TileType.RollinBall))
 		.add(new Collectible([new Health(0, 100, 2)]))
 		.add(new Movement(Vehicle.Foot, 1.5))
