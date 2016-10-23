@@ -1,5 +1,8 @@
 package tmx;
 
+using tmx.XmlDef;
+
+
 class Tileset {
 	public var firstGid:Int = 0;
 	public var source:String = "";
@@ -16,18 +19,18 @@ class Tileset {
 	public function new() {}
 
 	public function loadFromXml(xml:Xml) {
-		name = new Def(name).or(xml.get("name"));
-		source = new Def(source).or(xml.get("source"));
-		firstGid = new Def(firstGid).or(Std.parseInt(xml.get("firstgid")));
-		tileWidth = new Def(tileWidth).or(Std.parseInt(xml.get("tilewidth")));
-		tileHeight = new Def(tileHeight).or(Std.parseInt(xml.get("tileheight")));
-		spacing = new Def(spacing).or(Std.parseInt(xml.get("spacing")));
-		margin = new Def(margin).or(Std.parseInt(xml.get("margin")));
-		tileCount = new Def(tileCount).or(Std.parseInt(xml.get("tilecount")));
-		columns = new Def(columns).or(Std.parseInt(xml.get("columns")));
+		name = xml.defget("name", name);
+		source = xml.defget("source", source);
+		firstGid = Std.parseInt(xml.defget("firstgid", "0"));
+		tileWidth = Std.parseInt(xml.defget("tilewidth", "0"));
+		tileHeight = Std.parseInt(xml.defget("tileheight", "0"));
+		spacing = Std.parseInt(xml.defget("spacing", "0"));
+		margin = Std.parseInt(xml.defget("margin", "0"));
+		tileCount = Std.parseInt(xml.defget("tilecount", "0"));
+		columns = Std.parseInt(xml.defget("columns", "0"));
 		var imageElements = xml.elementsNamed('image');
 		for (imageElement in imageElements) {
-			var imagePath = new Def("").or(imageElement.get("source"));
+			var imagePath = imageElement.defget("source", "");
 			image = openfl.Assets.getBitmapData("assets/" + imagePath);
 		}
 	}

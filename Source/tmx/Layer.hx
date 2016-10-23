@@ -1,5 +1,8 @@
 package tmx;
 
+using tmx.XmlDef;
+
+
 class Layer {
 	public var name:String = "<unnamed>";
 	public var opacity:Float = 1.0;
@@ -14,10 +17,10 @@ class Layer {
 	}
 
 	public function loadFromXml(xml:Xml) {
-		name = new Def(name).or(xml.get("name"));
-		opacity = Std.parseFloat(new Def("1.0").or(xml.get("opacity")));
-		visible = Std.parseInt(new Def("1").or(xml.get("visible"))) == 1;
-		offsetX = new Def(offsetX).or(Std.parseInt(xml.get("offsetx")));
-		offsetY = new Def(offsetY).or(Std.parseInt(xml.get("offsety")));
+		name = xml.defget("name", name);
+		opacity = Std.parseFloat(xml.defget("opacity", "1.0"));
+		visible = Std.parseInt(xml.defget("visible", "1")) == 1;
+		offsetX = Std.parseInt(xml.defget("offsetx", "0"));
+		offsetY = Std.parseInt(xml.defget("offsety", "0"));
 	}
 }

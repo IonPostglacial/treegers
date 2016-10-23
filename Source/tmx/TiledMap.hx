@@ -6,7 +6,7 @@ import geometry.OrthogonalCoordinates;
 
 
 using StringTools;
-
+using tmx.XmlDef;
 
 typedef XmlLoadable = {
 	function loadFromXml(xml:Xml):Void;
@@ -39,18 +39,19 @@ class TiledMap {
 	public function loadFromXml(xml:Xml) {
 		var root = xml.firstElement();
 
-		version = new Def(version).or(root.get("version"));
-		orientation = new Def(orientation).or(root.get("orientation"));
-		renderOrder = new Def(renderOrder).or(root.get("renderorder"));
-		width = new Def(width).or(Std.parseInt(root.get("width")));
-		height = new Def(height).or(Std.parseInt(root.get("height")));
-		tileWidth = new Def(tileWidth).or(Std.parseInt(root.get("tilewidth")));
-		tileHeight = new Def(tileHeight).or(Std.parseInt(root.get("tileheight")));
-		hexSideLength = new Def(hexSideLength).or(Std.parseInt(root.get("hexsidelength")));
-		staggerAxis = new Def(staggerAxis).or(root.get("staggeraxis"));
-		staggerIndex = new Def(staggerIndex).or(root.get("staggerindex"));
-		backgroundColor = new Def(backgroundColor).or(Std.parseInt(root.get("backgroundcolor")));
-		nextObjectId = new Def(nextObjectId).or(Std.parseInt(new Def("").or(root.get("nextobjectid")).replace("#", "0x")));
+		version = root.defget("version", version);
+		orientation = root.defget("orientation", orientation);
+		renderOrder = root.defget("renderorder", renderOrder);
+		width = Std.parseInt(root.defget("width", "0"));
+		height = Std.parseInt(root.defget("height", "0"));
+		tileWidth = Std.parseInt(root.defget("tilewidth", "0"));
+		tileHeight = Std.parseInt(root.defget("tileheight", "0"));
+		hexSideLength = Std.parseInt(root.defget("hexsidelength", "0"));
+		staggerAxis = root.defget("staggeraxis", staggerAxis);
+		staggerIndex = root.defget("staggerindex", staggerIndex);
+		backgroundColor = Std.parseInt(root.defget("backgroundcolor", "0"));
+		var nextObjId = Std.parseInt(root.defget("nextobjectid", "").replace("#", "0x"));
+		nextObjectId = nextObjId != null ? nextObjId : 0;
 
 		switch (orientation) {
 			case Orientation.Hexagonal:
