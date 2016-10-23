@@ -3,9 +3,9 @@ package geometry;
 import haxe.ds.Vector;
 
 
-class HexagonalMapIterator<T> {
+class OrthogonalMapIterator<T> {
 	var i:Int;
-	var hexMap:HexagonalMap<T>;
+	var hexMap:OrthogonalMap<T>;
 
 	public inline function new(hexMap) {
 		this.i = 0;
@@ -16,7 +16,7 @@ class HexagonalMapIterator<T> {
 	public inline function next() return this.hexMap.data[i];
 }
 
-class HexagonalMap<T> extends HexagonalGrid implements Map2D<T> {
+class OrthogonalMap<T> extends OrthogonalGrid implements Map2D<T> {
 	public var data:Vector<T>;
 	public var defaultData(default,null):Null<T>;
 
@@ -29,8 +29,8 @@ class HexagonalMap<T> extends HexagonalGrid implements Map2D<T> {
 		}
 	}
 
-	public static function fromVector<T>(data:Vector<T>, width, height):HexagonalMap<T> {
-		var map = new HexagonalMap<T>(width, height);
+	public static function fromVector<T>(data:Vector<T>, width, height):OrthogonalMap<T> {
+		var map = new OrthogonalMap<T>(width, height);
 		for (i in 0...map.data.length) {
 			map.data[i] = data[i];
 		}
@@ -55,7 +55,7 @@ class HexagonalMap<T> extends HexagonalGrid implements Map2D<T> {
 	}
 
 	public function iterator() {
-		return new HexagonalMapIterator<T>(this);
+		return new OrthogonalMapIterator<T>(this);
 	}
 
 	public function keys() {

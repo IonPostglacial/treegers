@@ -2,12 +2,13 @@ package game;
 
 import graph.Pathfindable;
 import geometry.Coordinates;
-import geometry.HexagonalGrid;
-import geometry.HexagonalMap;
+import geometry.Map2D;
+
+using Lambda;
 
 
 class ObstacleGrid implements Pathfindable<Coordinates> {
-	var map:HexagonalMap<TileType>;
+	var map:Map2D<TileType>;
 	public var vehicle:Vehicle;
 
 	public inline function new(map, vehicle) {

@@ -15,7 +15,6 @@ import game.components.Visible;
 import game.components.Health;
 import game.components.Position;
 import geometry.Coordinates;
-import geometry.Hexagon;
 
 
 class VisibleNode extends Node<VisibleNode> {
@@ -85,8 +84,10 @@ class VisibleSystem extends System implements TileChangeListener {
 		healthSprite.graphics.beginFill(HEALTH_COLOR);
 		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius, GAUGE_HEIGHT);
 		healthSprite.name = "health";
-		healthSprite.x -= stage.hexagonRadius / 2;
-		healthSprite.y -= stage.hexagonRadius + GAUGE_HEIGHT;
+		if (stage.tiledMap.orientation == tmx.Orientation.Hexagonal) {
+			healthSprite.x -= stage.tiledMap.hexSideLength / 2;
+		}
+		healthSprite.y -= 0.5 * stage.tiledMap.tileHeight + GAUGE_HEIGHT;
 		return healthSprite;
 	}
 

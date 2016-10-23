@@ -42,7 +42,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.events = [];
 		this.hover = new Sprite();
 		this.hover.graphics.lineStyle(2, 0xFF0000);
-		Shape.hexagon(this.hover.graphics, new Hexagon(0, 0, stage.hexagonRadius));
+		if (stage.tiledMap.orientation == tmx.Orientation.Hexagonal) {
+			Shape.hexagon(this.hover.graphics, new Hexagon(0, 0, stage.tiledMap.hexSideLength));
+		} else {
+			this.hover.graphics.drawRect(0, 0, stage.tiledMap.tileWidth, stage.tiledMap.tileHeight);
+		}
 		this.stage.foreground.addChild(this.hover);
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
 			var mousePosition = stage.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));

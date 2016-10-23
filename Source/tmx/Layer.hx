@@ -10,10 +10,14 @@ class Layer {
 	public var offsetX:Int = 0;
 	public var offsetY:Int = 0;
 
-	var map:TiledMap; // weak ref
+	public var orientation:Orientation;
+	public var width:Int;
+	public var height:Int;
 
 	public function new(map:TiledMap) {
-		this.map = map;
+		this.orientation = map.orientation;
+		this.width = map.width;
+		this.height = map.height;
 	}
 
 	public function loadFromXml(xml:Xml) {

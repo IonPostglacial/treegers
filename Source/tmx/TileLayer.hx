@@ -8,12 +8,14 @@ import openfl.utils.ByteArray;
 import openfl.utils.CompressionAlgorithm;
 
 import geometry.Coordinates;
+import geometry.Map2D;
 import geometry.HexagonalMap;
+import geometry.OrthogonalMap;
 
 
 class TileLayer extends Layer {
 	public var data(default, null):Vector<Int>;
-	public var tiles(default,null):haxe.Constraints.IMap<Coordinates, Int>;
+	public var tiles(default,null):Map2D<Int>;
 
 	static inline var ENCODING_CSV = "csv";
 	static inline var ENCODING_BASE64 = "base64";
@@ -47,11 +49,11 @@ class TileLayer extends Layer {
 				trace("oops !"); return;
 			}
 		}
-		switch(map.orientation) {
+		switch(orientation) {
 		case Orientation.Hexagonal:
-			tiles = HexagonalMap.fromVector(data, map.width, map.height);
+			tiles = HexagonalMap.fromVector(data, width, height);
 		default:
-			tiles = new Map<Coordinates, Int>(); // Implement it
+			tiles = OrthogonalMap.fromVector(data, width, height);
 		}
 	}
 }

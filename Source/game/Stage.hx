@@ -21,6 +21,7 @@ import geometry.Coordinates;
 import geometry.HexagonalMap;
 import geometry.CoordinatesSystem;
 import geometry.HexagonalCoordinates;
+import geometry.OrthogonalCoordinates;
 
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
@@ -38,9 +39,9 @@ import game.systems.CollectSystem;
 class Stage {
 	public var tiledMap(default,null):tmx.TiledMap;
 	public var tileRenderer(default,null):TileRenderer;
-	public var map(default,null):HexagonalMap<TileType>;
+	public var map(default,null):geometry.Map2D<TileType>;
 	public var hexagonRadius(default,null):Float = 32;
-	public var coordinates:CoordinatesSystem = new HexagonalCoordinates(32);
+	public var coordinates:CoordinatesSystem;
 	public var background:Sprite;
 	public var foreground:Sprite;
 
@@ -77,10 +78,15 @@ class Stage {
 	}
 
 	function loadMap(name:String, width:Int, height:Int) {
-		var mapXml = openfl.Assets.getText("assets/simple-stage.tmx");
+		var mapXml = openfl.Assets.getText("assets/" + name);
 		this.tiledMap = new tmx.TiledMap();
 		this.tiledMap.loadFromXml(Xml.parse(mapXml));
-		this.map = HexagonalMap.fromVector(this.tiledMap.tileLayers[0].data, width, height);
+		this.map = this.tiledMap.tileLayers[0].tiles;
+		if (this.tiledMap.orientation == tmx.Orientation.Hexagonal) {
+			this.coordinates = new HexagonalCoordinates(this.tiledMap.hexSideLength);
+		} else {
+			this.coordinates = new OrthogonalCoordinates(this.tiledMap.tileWidth, this.tiledMap.tileHeight);
+		}
 		this.tileRenderer = new TileRenderer(this.tiledMap);
 		this.background.addChild(this.tileRenderer);
 	}

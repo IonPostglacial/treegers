@@ -8,21 +8,31 @@ import openfl.geom.Rectangle;
 
 import drawing.Shape;
 import geometry.Coordinates;
+import geometry.Map2D;
 import geometry.HexagonalMap;
+import geometry.OrthogonalMap;
 
 import tmx.TiledMap;
 
 
 class TileRenderer extends Tilemap {
 	var tilesTypeToTilesId:Array<Int> = [];
-	var tiles:HexagonalMap<Tile>;
+	var tiles:Map2D<Tile>;
 	var map:TiledMap;
+	var tilesOffsetX = 0.0;
+	var tilesOffsetY = 0.0;
 
 	public function new(map:TiledMap) {
 		this.map = map;
 		tileset = new Tileset(map.tilesets[0].image);
 		super(openfl.Lib.current.stage.stageWidth, openfl.Lib.current.stage.stageHeight, tileset);
-		tiles = new HexagonalMap<Tile>(map.width, map.height);
+		if (map.orientation == tmx.Orientation.Hexagonal) {
+			tiles = new HexagonalMap<Tile>(map.width, map.height);
+			tilesOffsetX -= 0.5 * map.tileWidth;
+			tilesOffsetY -= 0.5 * map.tileHeight;
+		} else {
+			tiles = new OrthogonalMap<Tile>(map.width, map.height);
+		}
 		allocateIds(map);
 		populateMap(map);
 	}
@@ -35,11 +45,12 @@ class TileRenderer extends Tilemap {
 	}
 
 	inline function allocateIds(map:TiledMap) {
-		var hexagonWidth = Math.sqrt(3) * map.hexSideLength;
+		var rectWidth = map.tilesets[0].tileWidth;
+		var rectHeight = map.tilesets[0].tileHeight;
 		var i = 0;
 		for (tileType in 0...TileType.Last) {
-			tilesTypeToTilesId.push(tileset.addRect(new Rectangle(hexagonWidth * (i - 1), 0,
-				map.tilesets[0].tileWidth, map.tilesets[0].tileHeight)));
+			tilesTypeToTilesId.push(tileset.addRect(new Rectangle(rectWidth * (i - 1), 0,
+				rectWidth, rectHeight)));
 			i += 1;
 		}
 	}
@@ -71,7 +82,7 @@ class TileRenderer extends Tilemap {
 
 	public inline function moveTile(tile:Tile, x:Float, y:Float) {
 		var tileset = map.tilesets[0];
-		tile.x = x - 0.5 * tileset.tileWidth;
-		tile.y = y - 0.5 * tileset.tileHeight;
+		tile.x = x + tilesOffsetX;
+		tile.y = y + tilesOffsetY;
 	}
 }
