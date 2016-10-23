@@ -1,11 +1,16 @@
 package tmx;
 
+import geometry.CoordinatesSystem;
+import geometry.HexagonalCoordinates;
+import geometry.OrthogonalCoordinates;
+
+
 using StringTools;
+
 
 typedef XmlLoadable = {
 	function loadFromXml(xml:Xml):Void;
 }
-
 
 class TiledMap {
 	public var version(default,null):String = "0.0";
@@ -27,6 +32,8 @@ class TiledMap {
 	public var imageLayers(default,null):Array<ImageLayer> = [];
 	public var properties(default,null):Map<String, Dynamic> = new Map();
 
+	public var coordinates:CoordinatesSystem;
+
 	public function new() {}
 
 	public function loadFromXml(xml:Xml) {
@@ -45,6 +52,13 @@ class TiledMap {
 		backgroundColor = new Def(backgroundColor).or(Std.parseInt(root.get("backgroundcolor")));
 		nextObjectId = new Def(nextObjectId).or(Std.parseInt(new Def("").or(root.get("nextobjectid")).replace("#", "0x")));
 
+		switch (orientation) {
+			case Orientation.Hexagonal:
+				coordinates = new HexagonalCoordinates(hexSideLength);
+			default:
+				coordinates = new OrthogonalCoordinates(tileWidth, tileHeight);
+		}
+
 		for (element in root.elements()) {
 			var mapElement:Null<XmlLoadable> = null;
 			switch (element.nodeName) {
@@ -52,7 +66,7 @@ class TiledMap {
 				tilesets.push(new Tileset());
 				mapElement = tilesets[tilesets.length - 1];
 			case "layer":
-				tileLayers.push(new TileLayer());
+				tileLayers.push(new TileLayer(this));
 				mapElement = tileLayers[tileLayers.length - 1];
 			}
 			if (mapElement != null) {

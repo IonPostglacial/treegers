@@ -7,7 +7,11 @@ class Layer {
 	public var offsetX:Int = 0;
 	public var offsetY:Int = 0;
 
-	public function new() {}
+	var map:TiledMap; // weak ref
+
+	public function new(map:TiledMap) {
+		this.map = map;
+	}
 
 	public function loadFromXml(xml:Xml) {
 		name = new Def(name).or(xml.get("name"));

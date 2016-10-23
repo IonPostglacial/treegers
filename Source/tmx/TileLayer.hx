@@ -7,17 +7,21 @@ import lime.utils.Int32Array;
 import openfl.utils.ByteArray;
 import openfl.utils.CompressionAlgorithm;
 
+import geometry.Coordinates;
+import geometry.HexagonalMap;
+
 
 class TileLayer extends Layer {
 	public var data(default, null):Vector<Int>;
+	public var tiles(default,null):haxe.Constraints.IMap<Coordinates, Int>;
 
 	static inline var ENCODING_CSV = "csv";
 	static inline var ENCODING_BASE64 = "base64";
 	static inline var COMPRESSION_GZIP = "gzip";
 	static inline var COMPRESSION_ZLIB = "zlib";
 
-	public function new() {
-		super();
+	public function new(map) {
+		super(map);
 	}
 
 	override function loadFromXml(xml:Xml) {
@@ -42,8 +46,12 @@ class TileLayer extends Layer {
 			} else {
 				trace("oops !"); return;
 			}
-
-
+		}
+		switch(map.orientation) {
+		case Orientation.Hexagonal:
+			tiles = HexagonalMap.fromVector(data, map.width, map.height);
+		default:
+			tiles = new Map<Coordinates, Int>(); // Implement it
 		}
 	}
 }

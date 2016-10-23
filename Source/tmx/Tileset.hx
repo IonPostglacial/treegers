@@ -11,6 +11,7 @@ class Tileset {
 	public var tileCount:Int = 0;
 	public var columns:Int = 0;
 	public var properties(default,null):Map<String, Dynamic> = new Map();
+	public var image:openfl.display.BitmapData;
 
 	public function new() {}
 
@@ -24,5 +25,10 @@ class Tileset {
 		margin = new Def(margin).or(Std.parseInt(xml.get("margin")));
 		tileCount = new Def(tileCount).or(Std.parseInt(xml.get("tilecount")));
 		columns = new Def(columns).or(Std.parseInt(xml.get("columns")));
+		var imageElements = xml.elementsNamed('image');
+		for (imageElement in imageElements) {
+			var imagePath = new Def("").or(imageElement.get("source"));
+			image = openfl.Assets.getBitmapData("assets/" + imagePath);
+		}
 	}
 }

@@ -14,7 +14,6 @@ import game.components.Health;
 import game.components.Visible;
 import game.components.Health;
 import game.components.Position;
-import drawing.Shape;
 import geometry.Coordinates;
 import geometry.Hexagon;
 
@@ -32,7 +31,6 @@ class VisiblyHealthyNode extends Node<VisiblyHealthyNode> {
 
 class VisibleSystem extends System implements TileChangeListener {
 	var stage:Stage;
-	var tiles(default, null):TileManager;
 	var visibles:NodeList<VisibleNode>;
 	var healthies:NodeList<VisiblyHealthyNode>;
 
@@ -52,13 +50,11 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	public function tileChanged(position:Coordinates, oldType:TileType, newType:TileType) {
-		tiles.setTileTypeAt(position, newType);
+		stage.tileRenderer.setTileTypeAt(position, newType);
 	}
 
 	override public function addToEngine(engine:Engine) {
 		super.addToEngine(engine);
-
-		this.tiles = new TileManager(stage);
 		visibles = engine.getNodeList(VisibleNode);
 		healthies = engine.getNodeList(VisiblyHealthyNode);
 		visibles.nodeAdded.add(function (node:VisibleNode) {
@@ -66,12 +62,12 @@ class VisibleSystem extends System implements TileChangeListener {
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			stage.foreground.addChild(node.visible.sprite);
-			node.visible.tile = tiles.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
+			node.visible.tile = stage.tileRenderer.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
 		});
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
 			stage.foreground.removeChild(node.visible.sprite);
 			if (node.visible.tile != null) {
-				tiles.removeTile(node.visible.tile);
+				stage.tileRenderer.removeTile(node.visible.tile);
 			}
 		});
 		healthies.nodeAdded.add(function (node:VisiblyHealthyNode) {
@@ -103,7 +99,7 @@ class VisibleSystem extends System implements TileChangeListener {
 	function drawBackground() {
 		stage.background.graphics.beginFill(0x000000);
 		stage.background.graphics.lineStyle(0, 0x000000);
-		stage.background.graphics.drawRect(0, 0, 800, 600);
+		stage.background.graphics.drawRect(0, 0, stage.background.width, stage.background.height);
 		stage.background.graphics.endFill();
 	}
 }

@@ -36,9 +36,10 @@ import game.systems.CollectSystem;
 
 
 class Stage {
-	public var tiledMap:tmx.TiledMap;
-	public var map(default, null):HexagonalMap<TileType>;
-	public var hexagonRadius(default, null):Float = 32;
+	public var tiledMap(default,null):tmx.TiledMap;
+	public var tileRenderer(default,null):TileRenderer;
+	public var map(default,null):HexagonalMap<TileType>;
+	public var hexagonRadius(default,null):Float = 32;
 	public var coordinates:CoordinatesSystem = new HexagonalCoordinates(32);
 	public var background:Sprite;
 	public var foreground:Sprite;
@@ -80,6 +81,8 @@ class Stage {
 		this.tiledMap = new tmx.TiledMap();
 		this.tiledMap.loadFromXml(Xml.parse(mapXml));
 		this.map = HexagonalMap.fromVector(this.tiledMap.tileLayers[0].data, width, height);
+		this.tileRenderer = new TileRenderer(this.tiledMap);
+		this.background.addChild(this.tileRenderer);
 	}
 
 	function loadSystems() {
