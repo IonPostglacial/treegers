@@ -14,7 +14,8 @@ import game.components.Movement;
 import game.components.Position;
 import geometry.Hexagon;
 import geometry.Coordinates;
-import drawing.Shape;
+
+using rendering.ExtraShape;
 
 
 enum Order {
@@ -43,7 +44,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.hover = new Sprite();
 		this.hover.graphics.lineStyle(2, 0xFF0000);
 		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
-			Shape.hexagon(this.hover.graphics, new Hexagon(0, 0, stage.map.hexSideLength));
+			this.hover.graphics.drawHexagon(new Hexagon(0, 0, stage.map.hexSideLength));
 		} else {
 			this.hover.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight);
 		}

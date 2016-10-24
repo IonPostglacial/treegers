@@ -1,4 +1,4 @@
-package game;
+package rendering;
 
 import openfl.Assets;
 import openfl.display.Tile;
@@ -6,7 +6,6 @@ import openfl.display.Tilemap;
 import openfl.display.Tileset;
 import openfl.geom.Rectangle;
 
-import drawing.Shape;
 import geometry.Coordinates;
 import geometry.Map2D;
 import geometry.HexagonalMap;
@@ -48,21 +47,21 @@ class MapRenderer extends Tilemap {
 		var rectWidth = map.tilesets[0].tileWidth;
 		var rectHeight = map.tilesets[0].tileHeight;
 		var i = 0;
-		for (tileType in 0...TileType.Last) {
+		for (tileType in 0...map.tilesets[0].tileCount) {
 			tilesTypeToTilesId.push(tileset.addRect(new Rectangle(rectWidth * (i - 1), 0,
 				rectWidth, rectHeight)));
 			i += 1;
 		}
 	}
 
-	public inline function createTileAt(type:TileType, x:Float, y:Float):Tile {
+	public inline function createTileAt(type:Int, x:Float, y:Float):Tile {
 		var tile = new Tile(tilesTypeToTilesId[type], 0, 0);
 		moveTile(tile, x, y);
 		this.addTile(tile);
 		return tile;
 	}
 
-	public function setTileTypeAt(position:Coordinates, type:TileType) {
+	public function setTileTypeAt(position:Coordinates, type:Int) {
 		var oldTile = tiles.get(position);
 		var index = -1;
 		if (oldTile != null) {

@@ -34,7 +34,7 @@ import game.systems.CollectSystem;
 
 class Stage {
 	public var map(default,null):tmx.TiledMap;
-	public var mapRenderer(default,null):MapRenderer;
+	public var mapRenderer(default,null):rendering.MapRenderer;
 	public var hexagonRadius(default,null):Float = 32;
 	public var background:Sprite;
 	public var foreground:Sprite;
@@ -75,7 +75,7 @@ class Stage {
 		var mapXml = openfl.Assets.getText("assets/" + name);
 		this.map = new tmx.TiledMap();
 		this.map.loadFromXml(Xml.parse(mapXml));
-		this.mapRenderer = new MapRenderer(this.map);
+		this.mapRenderer = new rendering.MapRenderer(this.map);
 		this.background.addChild(this.mapRenderer);
 	}
 
