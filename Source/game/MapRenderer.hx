@@ -15,7 +15,7 @@ import geometry.OrthogonalMap;
 import tmx.TiledMap;
 
 
-class TileRenderer extends Tilemap {
+class MapRenderer extends Tilemap {
 	var tilesTypeToTilesId:Array<Int> = [];
 	var tiles:Map2D<Tile>;
 	var map:TiledMap;

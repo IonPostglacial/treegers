@@ -49,7 +49,7 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	public function tileChanged(position:Coordinates, oldType:TileType, newType:TileType) {
-		stage.tileRenderer.setTileTypeAt(position, newType);
+		stage.mapRenderer.setTileTypeAt(position, newType);
 	}
 
 	override public function addToEngine(engine:Engine) {
@@ -57,16 +57,16 @@ class VisibleSystem extends System implements TileChangeListener {
 		visibles = engine.getNodeList(VisibleNode);
 		healthies = engine.getNodeList(VisiblyHealthyNode);
 		visibles.nodeAdded.add(function (node:VisibleNode) {
-			var pixPosition = stage.coordinates.toPixel(node.position);
+			var pixPosition = stage.map.coordinates.toPixel(node.position);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			stage.foreground.addChild(node.visible.sprite);
-			node.visible.tile = stage.tileRenderer.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
+			node.visible.tile = stage.mapRenderer.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
 		});
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
 			stage.foreground.removeChild(node.visible.sprite);
 			if (node.visible.tile != null) {
-				stage.tileRenderer.removeTile(node.visible.tile);
+				stage.mapRenderer.removeTile(node.visible.tile);
 			}
 		});
 		healthies.nodeAdded.add(function (node:VisiblyHealthyNode) {
@@ -84,10 +84,10 @@ class VisibleSystem extends System implements TileChangeListener {
 		healthSprite.graphics.beginFill(HEALTH_COLOR);
 		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius, GAUGE_HEIGHT);
 		healthSprite.name = "health";
-		if (stage.tiledMap.orientation == tmx.Orientation.Hexagonal) {
-			healthSprite.x -= stage.tiledMap.hexSideLength / 2;
+		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
+			healthSprite.x -= stage.map.hexSideLength / 2;
 		}
-		healthSprite.y -= 0.5 * stage.tiledMap.tileHeight + GAUGE_HEIGHT;
+		healthSprite.y -= 0.5 * stage.map.tileHeight + GAUGE_HEIGHT;
 		return healthSprite;
 	}
 

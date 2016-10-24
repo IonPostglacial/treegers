@@ -3,7 +3,10 @@ package tmx;
 import geometry.CoordinatesSystem;
 import geometry.HexagonalCoordinates;
 import geometry.OrthogonalCoordinates;
-
+import geometry.Grid2D;
+import geometry.HexagonalGrid;
+import geometry.OrthogonalGrid;
+import geometry.Map2D;
 
 using StringTools;
 using tmx.XmlDef;
@@ -33,8 +36,14 @@ class TiledMap {
 	public var properties(default,null):Map<String, Dynamic> = new Map();
 
 	public var coordinates:CoordinatesSystem;
+	public var grid:Grid2D;
+	public var bgTiles(get,never):Map2D<Int>;
 
 	public function new() {}
+
+	public function get_bgTiles() {
+		return this.tileLayers[0].tiles;
+	}
 
 	public function loadFromXml(xml:Xml) {
 		var root = xml.firstElement();
@@ -56,8 +65,10 @@ class TiledMap {
 		switch (orientation) {
 			case Orientation.Hexagonal:
 				coordinates = new HexagonalCoordinates(hexSideLength);
+				grid = new HexagonalGrid(width, height);
 			default:
 				coordinates = new OrthogonalCoordinates(tileWidth, tileHeight);
+				grid = new OrthogonalGrid(width, height);
 		}
 
 		for (element in root.elements()) {

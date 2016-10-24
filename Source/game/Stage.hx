@@ -18,10 +18,6 @@ import game.components.Position;
 import game.components.Collectible;
 
 import geometry.Coordinates;
-import geometry.HexagonalMap;
-import geometry.CoordinatesSystem;
-import geometry.HexagonalCoordinates;
-import geometry.OrthogonalCoordinates;
 
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
@@ -37,11 +33,9 @@ import game.systems.CollectSystem;
 
 
 class Stage {
-	public var tiledMap(default,null):tmx.TiledMap;
-	public var tileRenderer(default,null):TileRenderer;
-	public var map(default,null):geometry.Map2D<TileType>;
+	public var map(default,null):tmx.TiledMap;
+	public var mapRenderer(default,null):MapRenderer;
 	public var hexagonRadius(default,null):Float = 32;
-	public var coordinates:CoordinatesSystem;
 	public var background:Sprite;
 	public var foreground:Sprite;
 
@@ -59,13 +53,13 @@ class Stage {
 		loadEntities(width, height);
 	}
 
-	public function tileAt(position:Coordinates) {
-		return map.get(position);
+	public function tileAt(position:Coordinates):TileType {
+		return map.bgTiles.get(position);
 	}
 
 	public function setTileAt(position:Coordinates, value:TileType) {
-		var oldTileType = map.get(position);
-		map.set(position, value);
+		var oldTileType = map.bgTiles.get(position);
+		map.bgTiles.set(position, value);
 		for (listener in tileChangeListener) {
 			listener.tileChanged(position, oldTileType, value);
 		}
@@ -79,16 +73,10 @@ class Stage {
 
 	function loadMap(name:String, width:Int, height:Int) {
 		var mapXml = openfl.Assets.getText("assets/" + name);
-		this.tiledMap = new tmx.TiledMap();
-		this.tiledMap.loadFromXml(Xml.parse(mapXml));
-		this.map = this.tiledMap.tileLayers[0].tiles;
-		if (this.tiledMap.orientation == tmx.Orientation.Hexagonal) {
-			this.coordinates = new HexagonalCoordinates(this.tiledMap.hexSideLength);
-		} else {
-			this.coordinates = new OrthogonalCoordinates(this.tiledMap.tileWidth, this.tiledMap.tileHeight);
-		}
-		this.tileRenderer = new TileRenderer(this.tiledMap);
-		this.background.addChild(this.tileRenderer);
+		this.map = new tmx.TiledMap();
+		this.map.loadFromXml(Xml.parse(mapXml));
+		this.mapRenderer = new MapRenderer(this.map);
+		this.background.addChild(this.mapRenderer);
 	}
 
 	function loadSystems() {

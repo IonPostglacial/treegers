@@ -42,24 +42,24 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.events = [];
 		this.hover = new Sprite();
 		this.hover.graphics.lineStyle(2, 0xFF0000);
-		if (stage.tiledMap.orientation == tmx.Orientation.Hexagonal) {
-			Shape.hexagon(this.hover.graphics, new Hexagon(0, 0, stage.tiledMap.hexSideLength));
+		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
+			Shape.hexagon(this.hover.graphics, new Hexagon(0, 0, stage.map.hexSideLength));
 		} else {
-			this.hover.graphics.drawRect(0, 0, stage.tiledMap.tileWidth, stage.tiledMap.tileHeight);
+			this.hover.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight);
 		}
 		this.stage.foreground.addChild(this.hover);
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
-			var mousePosition = stage.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));
+			var mousePosition = stage.map.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));
 			pointedCoords = mousePosition;
 		});
 		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
-			var mousePosition = stage.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));
-			var mousePoint = stage.coordinates.toPixel(mousePosition);
+			var mousePosition = stage.map.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));
+			var mousePoint = stage.map.coordinates.toPixel(mousePosition);
 			this.hover.x = mousePoint.x;
 			this.hover.y = mousePoint.y;
 		});
 		for (vehicle in Type.allEnums(Vehicle)) {
-			var obstacles = new ObstacleGrid(stage.map, vehicle);
+			var obstacles = new ObstacleGrid(stage.map.bgTiles, stage.map.grid, vehicle);
 			this.pathfinders.push(new graph.Pathfinder(obstacles));
 		}
 		super(ControledNode, updateNode);

@@ -29,18 +29,18 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
-			var pixPosition = stage.coordinates.toPixel(node.position);
+			var pixPosition = stage.map.coordinates.toPixel(node.position);
 			if(node.movement.oldPosition == null) {
 				node.visible.sprite.x = pixPosition.x;
 				node.visible.sprite.y = pixPosition.y;
 			} else {
-				var oldPixPosition = stage.coordinates.toPixel(node.movement.oldPosition);
+				var oldPixPosition = stage.map.coordinates.toPixel(node.movement.oldPosition);
 				var newPixPosition = Point.interpolate(pixPosition, oldPixPosition, node.movement.delta);
 				node.visible.sprite.x = newPixPosition.x;
 				node.visible.sprite.y = newPixPosition.y;
 			}
 			if (node.visible.tile != null) {
-				stage.tileRenderer.moveTile(node.visible.tile, node.visible.sprite.x, node.visible.sprite.y);
+				stage.mapRenderer.moveTile(node.visible.tile, node.visible.sprite.x, node.visible.sprite.y);
 			}
 		}
 	}

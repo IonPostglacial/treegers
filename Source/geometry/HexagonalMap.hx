@@ -16,17 +16,10 @@ class HexagonalMapIterator<T> {
 	public inline function next() return this.hexMap.data[i];
 }
 
-class HexagonalMap<T> extends HexagonalGrid implements Map2D<T> {
-	public var data:Vector<T>;
-	public var defaultData(default,null):Null<T>;
+class HexagonalMap<T> extends  Map2D<T> {
 
 	public function new(width, height, ?value:T) {
-		super(width, height);
-		if (value == null) {
-			data = new Vector<T>(width * height);
-		} else {
-			data = Vector.fromArrayCopy([for (i in 0...width * height) value]);
-		}
+		super(width, height, value);
 	}
 
 	public static function fromVector<T>(data:Vector<T>, width, height):HexagonalMap<T> {
@@ -37,44 +30,19 @@ class HexagonalMap<T> extends HexagonalGrid implements Map2D<T> {
 		return map;
 	}
 
-	public function get(coordinates:Coordinates):T {
-		return data[indexOf(coordinates.x, coordinates.y)];
+	override function indexOf(x:Int, y:Int):Int {
+		return x + Std.int(y/2) + width * y;
 	}
 
-	public function set(coordinates:Coordinates, value:T) {
-		data[indexOf(coordinates.x, coordinates.y)] = value;
+	override function contains(x:Int, y:Int):Bool {
+		return x + Std.int(y / 2) >= 0 && x + Std.int(y / 2) < width && y >= 0 && y < height;
 	}
 
-	public function remove(coordinates:Coordinates):Bool {
-		data[indexOf(coordinates.x, coordinates.y)] = defaultData;
-		return true;
+	override function keys() {
+		return new HexagonalGridIterator(width, height);
 	}
 
-	public function exists(coordinates):Bool {
-		return contains(coordinates.x, coordinates.y);
-	}
-
-	public function iterator() {
+	override function iterator() {
 		return new HexagonalMapIterator<T>(this);
-	}
-
-	public function keys() {
-		return cells();
-	}
-
-	public function toString() {
-		var buffer = new StringBuf();
-		buffer.add("{ ");
-		for (coordinates in keys()) {
-			buffer.add(coordinates);
-			buffer.add(": ");
-			buffer.add(get(coordinates));
-		}
-		buffer.add(" }");
-		return buffer.toString();
-	}
-
-	override public function get_size():Int {
-		return data.length;
 	}
 }

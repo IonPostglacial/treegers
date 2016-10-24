@@ -31,10 +31,10 @@ class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		var selection = new Sprite();
 		selection.name = "selection";
 		selection.graphics.lineStyle(2, 0xFFFF00);
-		if (stage.tiledMap.orientation == tmx.Orientation.Hexagonal) {
-			Shape.hexagon(selection.graphics, new Hexagon(0, 0, stage.tiledMap.hexSideLength));
+		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
+			Shape.hexagon(selection.graphics, new Hexagon(0, 0, stage.map.hexSideLength));
 		} else {
-			selection.graphics.drawRect(0, 0, stage.tiledMap.tileWidth, stage.tiledMap.tileHeight);
+			selection.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight);
 		}
 		return selection;
 	}

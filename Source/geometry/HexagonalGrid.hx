@@ -1,9 +1,6 @@
 package geometry;
 
-import graph.Pathfindable;
-
-
-class HexagonalGrid implements Pathfindable<Coordinates> {
+class HexagonalGrid implements Grid2D {
 	static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
 
 	public var width:Int;
