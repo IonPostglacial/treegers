@@ -24,8 +24,8 @@ class HexagonalCoordinates implements CoordinatesSystem {
 	}
 
 	public function toPixel(coordinates:Coordinates):Point {
-		var x = coordinates.x * hexWidth + coordinates.y * hexWidth / 2;
-		var y = effectiveHeight * coordinates.y;
+		var x = Math.floor(coordinates.x * hexWidth + coordinates.y * hexWidth / 2);
+		var y = Math.floor(effectiveHeight * coordinates.y);
 
 		return new Point(x, y);
 	}
