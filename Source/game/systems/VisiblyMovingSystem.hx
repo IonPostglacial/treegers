@@ -38,7 +38,8 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 				node.visible.sprite.y = newPixPosition.y;
 			}
 			if (node.visible.tile != null) {
-				stage.mapRenderer.moveTile(node.visible.tile, node.visible.sprite.x, node.visible.sprite.y);
+				node.visible.tile.x = node.visible.sprite.x;
+				node.visible.tile.y = node.visible.sprite.y;
 			}
 		}
 	}

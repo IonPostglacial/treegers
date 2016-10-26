@@ -34,8 +34,6 @@ import game.systems.CollectSystem;
 
 class Stage {
 	public var map(default,null):tmx.TiledMap;
-	public var mapRenderer(default,null):rendering.MapRenderer;
-	public var hexagonRadius(default,null):Float = 32;
 	public var background:Sprite;
 	public var foreground:Sprite;
 
@@ -43,14 +41,14 @@ class Stage {
 	var tickProvider:ITickProvider;
 	var tileChangeListener:Array<TileChangeListener> = [];
 
-	public function new(width:Int, height:Int) {
+	public function new(mapPath:String) {
 		this.background = new Sprite();
 		this.foreground = new Sprite();
 		openfl.Lib.current.addChild(this.background);
 		openfl.Lib.current.addChild(this.foreground);
-		loadMap("simple-stage.tmx", width, height);
+		loadMap(mapPath);
 		loadSystems();
-		loadEntities(width, height);
+		loadEntities();
 	}
 
 	public function tileAt(position:Coordinates):TileType {
@@ -71,12 +69,10 @@ class Stage {
 		tickProvider.start();
 	}
 
-	function loadMap(name:String, width:Int, height:Int) {
+	function loadMap(name:String) {
 		var mapXml = openfl.Assets.getText("assets/" + name);
 		this.map = new tmx.TiledMap();
 		this.map.loadFromXml(Xml.parse(mapXml));
-		this.mapRenderer = new rendering.MapRenderer(this.map);
-		this.background.addChild(this.mapRenderer);
 	}
 
 	function loadSystems() {
@@ -100,7 +96,7 @@ class Stage {
 		engine.addSystem(system, priority);
 	}
 
-	function loadEntities(width:Float, height:Float) {
+	function loadEntities() {
 		var button = new Entity()
 		.add(new Position(0, 10))
 		.add(new Visible(TileType.Button))

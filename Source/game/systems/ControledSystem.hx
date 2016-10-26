@@ -44,7 +44,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.hover = new Sprite();
 		this.hover.graphics.lineStyle(2, 0xFF0000);
 		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
-			this.hover.graphics.drawHexagon(new Hexagon(0, 0, stage.map.hexSideLength));
+			this.hover.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight * 0.75);
 		} else {
 			this.hover.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight);
 		}

@@ -15,7 +15,7 @@ class Main extends Sprite {
 
 	public function new() {
 		super();
-		game = new Stage(14, 11);
+		game = new Stage("simple-stage.tmx");
 		game.start();
 	}
 }

@@ -33,7 +33,7 @@ class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		selection.name = "selection";
 		selection.graphics.lineStyle(2, 0xFFFF00);
 		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
-			selection.graphics.drawHexagon(new Hexagon(0, 0, stage.map.hexSideLength));
+			selection.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight * 0.75);
 		} else {
 			selection.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight);
 		}

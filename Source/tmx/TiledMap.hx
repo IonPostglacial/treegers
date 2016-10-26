@@ -64,7 +64,7 @@ class TiledMap {
 
 		switch (orientation) {
 			case Orientation.Hexagonal:
-				coordinates = new HexagonalCoordinates(hexSideLength);
+				coordinates = new HexagonalCoordinates(tileWidth, tileHeight, hexSideLength);
 				grid = new HexagonalGrid(width, height);
 			default:
 				coordinates = new OrthogonalCoordinates(tileWidth, tileHeight);

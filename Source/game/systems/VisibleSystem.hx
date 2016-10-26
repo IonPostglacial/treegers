@@ -32,6 +32,7 @@ class VisibleSystem extends System implements TileChangeListener {
 	var stage:Stage;
 	var visibles:NodeList<VisibleNode>;
 	var healthies:NodeList<VisiblyHealthyNode>;
+	var mapRenderer(default,null):rendering.MapRenderer;
 
 	static var HEALTH_COLOR = 0x00FF00;
 	static var GAUGE_LHEIGHT = 2;
@@ -49,10 +50,12 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	public function tileChanged(position:Coordinates, oldType:TileType, newType:TileType) {
-		stage.mapRenderer.setTileTypeAt(position, newType);
+		this.mapRenderer.setTileTypeAt(position, newType);
 	}
 
 	override public function addToEngine(engine:Engine) {
+		this.mapRenderer = new rendering.MapRenderer(this.stage.map);
+		this.stage.background.addChild(this.mapRenderer);
 		super.addToEngine(engine);
 		visibles = engine.getNodeList(VisibleNode);
 		healthies = engine.getNodeList(VisiblyHealthyNode);
@@ -61,12 +64,12 @@ class VisibleSystem extends System implements TileChangeListener {
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			stage.foreground.addChild(node.visible.sprite);
-			node.visible.tile = stage.mapRenderer.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
+			node.visible.tile = this.mapRenderer.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
 		});
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
 			stage.foreground.removeChild(node.visible.sprite);
 			if (node.visible.tile != null) {
-				stage.mapRenderer.removeTile(node.visible.tile);
+				this.mapRenderer.removeTile(node.visible.tile);
 			}
 		});
 		healthies.nodeAdded.add(function (node:VisiblyHealthyNode) {
@@ -82,18 +85,16 @@ class VisibleSystem extends System implements TileChangeListener {
 		var healthSprite = new Sprite();
 		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
 		healthSprite.graphics.beginFill(HEALTH_COLOR);
-		healthSprite.graphics.drawRect(0, 0, stage.hexagonRadius, GAUGE_HEIGHT);
+		healthSprite.graphics.drawRect(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
 		healthSprite.name = "health";
-		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
-			healthSprite.x -= stage.map.hexSideLength / 2;
-		}
-		healthSprite.y -= 0.5 * stage.map.tileHeight + GAUGE_HEIGHT;
+
+		healthSprite.y -= 2 * GAUGE_HEIGHT;
 		return healthSprite;
 	}
 
 	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
 		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
-		healthSprite.width = stage.hexagonRadius * (node.health.level / node.health.max);
+		healthSprite.width = stage.map.tileWidth * (node.health.level / node.health.max);
 		healthSprite.graphics.endFill();
 	}
 
