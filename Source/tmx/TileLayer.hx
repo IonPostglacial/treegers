@@ -2,8 +2,8 @@ package tmx;
 
 import haxe.ds.Vector;
 import haxe.io.Bytes;
+import haxe.io.Int32Array;
 
-import lime.utils.Int32Array;
 import openfl.utils.ByteArray;
 import openfl.utils.CompressionAlgorithm;
 
@@ -36,10 +36,8 @@ class TileLayer extends Layer {
 				var dataBytes = ByteArray.fromBytes(decodedData);
 				if (dataElement.get("compression") == COMPRESSION_ZLIB) {
 					dataBytes.uncompress(CompressionAlgorithm.ZLIB);
-				} else {
-					dataBytes.uncompress(CompressionAlgorithm.DEFLATE);
 				}
-				var uncompressedData = Int32Array.fromBytes(dataBytes.toArrayBuffer());
+				var uncompressedData = Int32Array.fromBytes(dataBytes);
 
 				data = new Vector(uncompressedData.length);
 				for (i in 0...uncompressedData.length) {
