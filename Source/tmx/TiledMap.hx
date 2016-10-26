@@ -23,6 +23,8 @@ class TiledMap {
 	public var height(default,null):Int = 0;
 	public var tileWidth(default,null):Int = 0;
 	public var tileHeight(default,null):Int = 0;
+	public var effectiveTileWidth(default,null):Int = 0;
+	public var effectiveTileHeight(default,null):Int = 0;
 	public var hexSideLength(default,null):Int = 0;
 	public var staggerAxis(default,null):StaggerAxis = StaggerAxis.X;
 	public var staggerIndex(default,null):StaggerIndex = StaggerIndex.Event;
@@ -55,6 +57,8 @@ class TiledMap {
 		height = Std.parseInt(root.defget("height", "0"));
 		tileWidth = Std.parseInt(root.defget("tilewidth", "0"));
 		tileHeight = Std.parseInt(root.defget("tileheight", "0"));
+		effectiveTileWidth = tileWidth;
+		effectiveTileHeight = tileHeight;
 		hexSideLength = Std.parseInt(root.defget("hexsidelength", "0"));
 		staggerAxis = root.defget("staggeraxis", staggerAxis);
 		staggerIndex = root.defget("staggerindex", staggerIndex);
@@ -66,6 +70,7 @@ class TiledMap {
 			case Orientation.Hexagonal:
 				coordinates = new HexagonalCoordinates(tileWidth, tileHeight, hexSideLength);
 				grid = new HexagonalGrid(width, height);
+				effectiveTileHeight = Std.int(0.75 * effectiveTileHeight);
 			default:
 				coordinates = new OrthogonalCoordinates(tileWidth, tileHeight);
 				grid = new OrthogonalGrid(width, height);

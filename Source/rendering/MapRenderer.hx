@@ -27,8 +27,6 @@ class MapRenderer extends Tilemap {
 		super(openfl.Lib.current.stage.stageWidth, openfl.Lib.current.stage.stageHeight, tileset);
 		if (map.orientation == tmx.Orientation.Hexagonal) {
 			tiles = new HexagonalMap<Tile>(map.width, map.height);
-			//tilesOffsetX -= 0.5 * map.tileWidth;
-			//tilesOffsetY -= 0.5 * map.tileHeight;
 		} else {
 			tiles = new OrthogonalMap<Tile>(map.width, map.height);
 		}
@@ -70,8 +68,6 @@ class MapRenderer extends Tilemap {
 		}
 		var pixPosition = map.coordinates.toPixel(position);
 		var newTile = new Tile(tilesTypeToTilesId[type], 0, 0);
-		trace(position);
-		trace(pixPosition);
 		moveTile(newTile, pixPosition.x, pixPosition.y);
 		tiles.set(position, newTile);
 		if (index >= 0) {

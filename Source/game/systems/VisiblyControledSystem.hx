@@ -5,13 +5,9 @@ import openfl.display.Sprite;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
-import geometry.Hexagon;
-
 import game.components.Controled;
 import game.components.Visible;
 import game.components.Position;
-
-using rendering.ExtraShape;
 
 
 class VisiblyControledNode extends Node<VisiblyControledNode> {
@@ -32,11 +28,7 @@ class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		var selection = new Sprite();
 		selection.name = "selection";
 		selection.graphics.lineStyle(2, 0xFFFF00);
-		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
-			selection.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight * 0.75);
-		} else {
-			selection.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight);
-		}
+		selection.graphics.drawRect(0, 0, stage.map.effectiveTileWidth, stage.map.effectiveTileHeight);
 		return selection;
 	}
 

@@ -12,10 +12,8 @@ import game.actions.Move;
 import game.components.Controled;
 import game.components.Movement;
 import game.components.Position;
-import geometry.Hexagon;
-import geometry.Coordinates;
 
-using rendering.ExtraShape;
+import geometry.Coordinates;
 
 
 enum Order {
@@ -43,11 +41,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.events = [];
 		this.hover = new Sprite();
 		this.hover.graphics.lineStyle(2, 0xFF0000);
-		if (stage.map.orientation == tmx.Orientation.Hexagonal) {
-			this.hover.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight * 0.75);
-		} else {
-			this.hover.graphics.drawRect(0, 0, stage.map.tileWidth, stage.map.tileHeight);
-		}
+		this.hover.graphics.drawRect(0, 0, stage.map.effectiveTileWidth, stage.map.effectiveTileHeight);
 		this.stage.foreground.addChild(this.hover);
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
 			var mousePosition = stage.map.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));
