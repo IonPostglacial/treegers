@@ -14,6 +14,7 @@ import game.components.Movement;
 import game.components.Position;
 
 import geometry.Coordinates;
+import geometry.Vector2D;
 
 
 enum Order {
@@ -44,11 +45,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.hover.graphics.drawRect(0, 0, stage.map.effectiveTileWidth, stage.map.effectiveTileHeight);
 		this.stage.foreground.addChild(this.hover);
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
-			var mousePosition = stage.map.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));
+			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX, e.stageY));
 			pointedCoords = mousePosition;
 		});
 		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
-			var mousePosition = stage.map.coordinates.fromPixel(new openfl.geom.Point(e.stageX, e.stageY));
+			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX, e.stageY));
 			var mousePoint = stage.map.coordinates.toPixel(mousePosition);
 			this.hover.x = mousePoint.x;
 			this.hover.y = mousePoint.y;

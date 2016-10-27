@@ -1,7 +1,5 @@
 package game.systems;
 
-import openfl.geom.Point;
-
 import ash.core.Engine;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
@@ -33,7 +31,7 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 				node.visible.sprite.y = pixPosition.y;
 			} else {
 				var oldPixPosition = stage.map.coordinates.toPixel(node.movement.oldPosition);
-				var newPixPosition = Point.interpolate(pixPosition, oldPixPosition, node.movement.delta);
+				var newPixPosition = pixPosition.interpolate(oldPixPosition, node.movement.delta);
 				node.visible.sprite.x = newPixPosition.x;
 				node.visible.sprite.y = newPixPosition.y;
 			}

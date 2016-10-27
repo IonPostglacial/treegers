@@ -1,6 +1,5 @@
 package geometry;
 
-
 class HexagonalGridIterator {
 	var width:Int;
 	var height:Int;

@@ -1,8 +1,5 @@
 package geometry;
 
-import openfl.geom.Point;
-
-
 class OrthogonalCoordinates implements CoordinatesSystem {
 	var width:Float = 1;
 	var height:Float = 1;
@@ -16,11 +13,11 @@ class OrthogonalCoordinates implements CoordinatesSystem {
 		this.heightRatio = 1 / height;
 	}
 
-	public function fromPixel(point:Point):Coordinates {
+	public function fromPixel(point:Vector2D):Coordinates {
 		return new Coordinates(Std.int(point.x  * widthRatio), Std.int(point.y * heightRatio));
 	}
 
-	public function toPixel(coordinates:Coordinates):Point {
-		return new Point(coordinates.x  * width, coordinates.y * height);
+	public function toPixel(coordinates:Coordinates):Vector2D {
+		return new Vector2D(coordinates.x  * width, coordinates.y * height);
 	}
 }
