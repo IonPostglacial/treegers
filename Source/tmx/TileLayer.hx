@@ -4,9 +4,6 @@ import haxe.ds.Vector;
 import haxe.io.Bytes;
 import haxe.io.Int32Array;
 
-import openfl.utils.ByteArray;
-import openfl.utils.CompressionAlgorithm;
-
 import geometry.Coordinates;
 import geometry.Map2D;
 import geometry.HexagonalMap;
@@ -33,12 +30,17 @@ class TileLayer extends Layer {
 			var rawData = StringTools.trim(dataElement.firstChild().nodeValue);
 			if (dataElement.get("encoding") == ENCODING_BASE64) {
 				var decodedData = haxe.crypto.Base64.decode(rawData);
-				var dataBytes = ByteArray.fromBytes(decodedData);
-				if (dataElement.get("compression") == COMPRESSION_ZLIB) {
-					dataBytes.uncompress(CompressionAlgorithm.ZLIB);
+				var uncompressedData:Int32Array;
+				switch (dataElement.get("compression")) {
+				case null:
+					uncompressedData = Int32Array.fromBytes(decodedData);
+				case COMPRESSION_ZLIB:
+					var dataBytes = haxe.zip.Uncompress.run(decodedData);
+					uncompressedData = Int32Array.fromBytes(dataBytes);
+				default:
+					uncompressedData = new Int32Array(0);
+					trace("unsupported data format");
 				}
-				var uncompressedData = Int32Array.fromBytes(dataBytes);
-
 				data = new Vector(uncompressedData.length);
 				for (i in 0...uncompressedData.length) {
 					data[i] = uncompressedData[i];
