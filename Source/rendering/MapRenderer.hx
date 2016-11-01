@@ -15,18 +15,12 @@ import tmx.TiledMap;
 
 
 class MapRenderer extends Tilemap {
-	var tiles:Map2D<Tile>;
 	var map:TiledMap;
 
 	public function new(map:TiledMap) {
 		this.map = map;
 		tileset = new Tileset(map.tilesets[0].image);
 		super(openfl.Lib.current.stage.stageWidth, openfl.Lib.current.stage.stageHeight, tileset);
-		if (map.orientation == tmx.Orientation.Hexagonal) {
-			tiles = HexagonalMap.fromArray(__tiles, map.width, map.height);
-		} else {
-			tiles = OrthogonalMap.fromArray(__tiles, map.width, map.height);
-		}
 		allocateIds(map);
 		populateMap(map);
 	}
@@ -56,7 +50,7 @@ class MapRenderer extends Tilemap {
 	}
 
 	public function setTileTypeAt(position:Coordinates, type:Int) {
-		var oldTile = tiles.get(position);
+		var oldTile = this.getTileAt(this.map.tileLayers[0].tiles.indexOf(position.x, position.y));
 		var index = -1;
 		if (oldTile != null) {
 			index = this.getTileIndex(oldTile);
