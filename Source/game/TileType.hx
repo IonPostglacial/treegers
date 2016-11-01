@@ -14,7 +14,7 @@ package game;
 	var ArrowB = 10;
 	var ArrowF = 11;
 	var ArrowC = 12;
-	var RollinBall = 13;
+	var RollingBall = 13;
 	var Last = 14;
 
 	public function crossableWith(vehicle:Vehicle):Bool return switch (this) {

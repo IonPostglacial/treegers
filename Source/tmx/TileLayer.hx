@@ -1,6 +1,5 @@
 package tmx;
 
-import haxe.ds.Vector;
 import haxe.io.Bytes;
 import haxe.io.Int32Array;
 
@@ -11,7 +10,7 @@ import geometry.OrthogonalMap;
 
 
 class TileLayer extends Layer {
-	public var data(default, null):Vector<Int>;
+	public var data(default, null):Array<Int>;
 	public var tiles(default,null):Map2D<Int>;
 
 	static inline var ENCODING_CSV = "csv";
@@ -41,9 +40,9 @@ class TileLayer extends Layer {
 					uncompressedData = new Int32Array(0);
 					trace("unsupported data format");
 				}
-				data = new Vector(uncompressedData.length);
+				data = new Array();
 				for (i in 0...uncompressedData.length) {
-					data[i] = uncompressedData[i];
+					data.push(uncompressedData[i]);
 				}
 			} else {
 				trace("oops !"); return;
@@ -51,9 +50,9 @@ class TileLayer extends Layer {
 		}
 		switch(orientation) {
 		case Orientation.Hexagonal:
-			tiles = HexagonalMap.fromVector(data, width, height);
+			tiles = HexagonalMap.fromArray(data, width, height);
 		default:
-			tiles = OrthogonalMap.fromVector(data, width, height);
+			tiles = OrthogonalMap.fromArray(data, width, height);
 		}
 	}
 }

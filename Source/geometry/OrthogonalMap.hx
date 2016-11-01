@@ -22,11 +22,9 @@ class OrthogonalMap<T> extends Map2D<T> {
 		super(width, height, value);
 	}
 
-	public static function fromVector<T>(data:Vector<T>, width, height):OrthogonalMap<T> {
+	public static function fromArray<T>(data:Array<T>, width, height):OrthogonalMap<T> {
 		var map = new OrthogonalMap<T>(width, height);
-		for (i in 0...map.data.length) {
-			map.data[i] = data[i];
-		}
+		map.data = data;
 		return map;
 	}
 

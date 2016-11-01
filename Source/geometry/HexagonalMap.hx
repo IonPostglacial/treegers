@@ -22,11 +22,9 @@ class HexagonalMap<T> extends  Map2D<T> {
 		super(width, height, value);
 	}
 
-	public static function fromVector<T>(data:Vector<T>, width, height):HexagonalMap<T> {
+	public static function fromArray<T>(data:Array<T>, width, height):HexagonalMap<T> {
 		var map = new HexagonalMap<T>(width, height);
-		for (i in 0...map.data.length) {
-			map.data[i] = data[i];
-		}
+		map.data = data;
 		return map;
 	}
 

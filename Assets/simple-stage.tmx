@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="hexagonal" renderorder="right-down" width="14" height="11" tilewidth="55" tileheight="64" hexsidelength="32" staggeraxis="y" staggerindex="odd" nextobjectid="1">
+<map version="1.0" orientation="hexagonal" renderorder="right-down" width="14" height="11" tilewidth="55" tileheight="64" hexsidelength="32" staggeraxis="y" staggerindex="odd" nextobjectid="15">
  <tileset firstgid="1" name="basemap" tilewidth="55" tileheight="64" tilecount="14">
   <image source="tileset.png" width="770" height="64"/>
+  <terraintypes>
+   <terrain name="Water" tile="1"/>
+  </terraintypes>
+  <tile id="1" terrain="0,0,0,0"/>
  </tileset>
- <layer name="Calque de Tile 1" width="14" height="11">
+ <layer name="Background" width="14" height="11">
   <data encoding="base64" compression="zlib">
    eJxjZmBgYEbCTHgwMw5MrB5sfGLsYSJTDzH6cLmJkB58ZhHjLkJm8EBpDhL1URI/pOpjx6KHE4deANA3AYw=
   </data>
  </layer>
+ <objectgroup name="Entities">
+  <object id="9" gid="1" x="80" y="109" width="55" height="64"/>
+  <object id="10" gid="13" x="297" y="395" width="55" height="64"/>
+  <object id="11" gid="4" x="270" y="544" width="55" height="64">
+   <properties>
+    <property name="switch" value="1"/>
+   </properties>
+  </object>
+  <object id="12" gid="3" x="107" y="256" width="55" height="64">
+   <properties>
+    <property name="switched" value="1"/>
+   </properties>
+  </object>
+  <object id="13" gid="3" x="134" y="304" width="55" height="64">
+   <properties>
+    <property name="switched" value="1"/>
+   </properties>
+  </object>
+  <object id="14" gid="3" x="162" y="350" width="55" height="64">
+   <properties>
+    <property name="switched" value="1"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

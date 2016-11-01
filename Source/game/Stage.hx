@@ -8,14 +8,7 @@ import ash.core.Engine;
 import ash.core.Entity;
 import ash.core.System;
 
-import game.components.Button;
-import game.components.Controled;
-import game.components.Visible;
-import game.components.Health;
-import game.components.LinearWalker;
-import game.components.Movement;
 import game.components.Position;
-import game.components.Collectible;
 
 import geometry.Coordinates;
 
@@ -97,27 +90,41 @@ class Stage {
 	}
 
 	function loadEntities() {
-		var button = new Entity()
-		.add(new Position(0, 10))
-		.add(new Visible(TileType.Button))
-		.add(new Button(false, [new Position(0, 4), new Position(0, 5), new Position(0, 6)], TileType.Water, TileType.Ground));
-
-		var rollingBall = new Entity()
-		.add(new Position(2, 7))
-		.add(new Visible(TileType.RollinBall))
-		.add(new Collectible([new Health(0, 100, 2)]))
-		.add(new Movement(Vehicle.Foot, 1.5))
-		.add(new LinearWalker(-1, 0));
-
-		var grunt = new Entity()
-		.add(new Position(0, 1))
-		.add(new Health(100, 100, 2))
-		.add(new Visible(TileType.Grunt))
-		.add(new Movement(Vehicle.Foot, 0.5))
-		.add(new Controled());
-
-		engine.addEntity(button);
-		engine.addEntity(rollingBall);
-		engine.addEntity(grunt);
+		var switchesMap = new Map<String, tmx.TileObject>();
+		var switchedMap = new Map<String, Array<tmx.TileObject>>();
+		for (object in map.objectLayers[0].objects) {
+			object.coords = this.map.coordinates.fromPixel(new geometry.Vector2D(object.x + object.width / 2, object.y - object.height / 2));
+			switch (object.gid) {
+			case TileType.Button:
+				var switchId = object.properties.get("switch");
+				switchesMap.set(switchId, object);
+			case TileType.RollingBall:
+				engine.addEntity(Entities.rollingBallAt(object.coords));
+			case TileType.Grunt:
+				engine.addEntity(Entities.gruntAt(object.coords));
+			default:
+				var switchId = object.properties.get("switched");
+				if (switchId != null) {
+					var switchedObjects = switchedMap.get(switchId);
+					if (switchedObjects == null) switchedObjects = [];
+					switchedObjects.push(object);
+					switchedMap.set(switchId, switchedObjects);
+				}
+			}
+		}
+		for (switchId in switchesMap.keys()) {
+			var switchObject = switchesMap.get(switchId);
+			var switchedObjects = switchedMap.get(switchId);
+			var switchedTileId1 = TileType.None;
+			var switchedTileId2 = switchedTileId1;
+			if (switchedObjects == null) {
+				switchedObjects = [];
+			} else if (switchedObjects.length > 0) {
+				switchedTileId1 = map.bgTiles.get(switchedObjects[0].coords);
+				switchedTileId2 = switchedObjects[0].gid;
+			}
+			var switchesCoords = switchedObjects.map(function (switchedObject) return switchedObject.coords);
+			engine.addEntity(Entities.buttonAt(switchObject.coords, switchesCoords, switchedTileId1, switchedTileId2));
+		}
 	}
 }

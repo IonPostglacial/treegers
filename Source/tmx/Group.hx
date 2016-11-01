@@ -1,5 +1,0 @@
-package tmx;
-
-class Group {
-
-}

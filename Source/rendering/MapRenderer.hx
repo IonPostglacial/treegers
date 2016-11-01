@@ -15,7 +15,6 @@ import tmx.TiledMap;
 
 
 class MapRenderer extends Tilemap {
-	var tilesTypeToTilesId:Array<Int> = [];
 	var tiles:Map2D<Tile>;
 	var map:TiledMap;
 
@@ -24,9 +23,9 @@ class MapRenderer extends Tilemap {
 		tileset = new Tileset(map.tilesets[0].image);
 		super(openfl.Lib.current.stage.stageWidth, openfl.Lib.current.stage.stageHeight, tileset);
 		if (map.orientation == tmx.Orientation.Hexagonal) {
-			tiles = new HexagonalMap<Tile>(map.width, map.height);
+			tiles = HexagonalMap.fromArray(__tiles, map.width, map.height);
 		} else {
-			tiles = new OrthogonalMap<Tile>(map.width, map.height);
+			tiles = OrthogonalMap.fromArray(__tiles, map.width, map.height);
 		}
 		allocateIds(map);
 		populateMap(map);
@@ -44,14 +43,13 @@ class MapRenderer extends Tilemap {
 		var rectHeight = map.tilesets[0].tileHeight;
 		var i = 0;
 		for (tileType in 0...map.tilesets[0].tileCount) {
-			tilesTypeToTilesId.push(tileset.addRect(new Rectangle(rectWidth * i, 0,
-				rectWidth, rectHeight)));
+			tileset.addRect(new Rectangle(rectWidth * i, 0, rectWidth, rectHeight));
 			i += 1;
 		}
 	}
 
 	public inline function createTileAt(type:Int, x:Float, y:Float):Tile {
-		var tile = new Tile(tilesTypeToTilesId[type - map.tilesets[0].firstGid], 0, 0);
+		var tile = new Tile(type - map.tilesets[0].firstGid, 0, 0);
 		moveTile(tile, x, y);
 		this.addTile(tile);
 		return tile;
@@ -65,9 +63,8 @@ class MapRenderer extends Tilemap {
 			this.removeTile(oldTile);
 		}
 		var pixPosition = map.coordinates.toPixel(position);
-		var newTile = new Tile(tilesTypeToTilesId[type- map.tilesets[0].firstGid], 0, 0);
+		var newTile = new Tile(type - map.tilesets[0].firstGid, 0, 0);
 		moveTile(newTile, pixPosition.x, pixPosition.y);
-		tiles.set(position, newTile);
 		if (index >= 0) {
 			this.addTileAt(newTile, index);
 		} else {

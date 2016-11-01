@@ -85,6 +85,9 @@ class TiledMap {
 			case "layer":
 				tileLayers.push(new TileLayer(this));
 				mapElement = tileLayers[tileLayers.length - 1];
+			case "objectgroup":
+				objectLayers.push(new ObjectsLayer(this));
+				mapElement = objectLayers[objectLayers.length - 1];
 			}
 			if (mapElement != null) {
 				mapElement.loadFromXml(element);

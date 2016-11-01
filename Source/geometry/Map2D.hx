@@ -1,23 +1,17 @@
 package geometry;
 
-import haxe.ds.Vector;
-
 
 class Map2D<T> implements haxe.Constraints.IMap<Coordinates, T> {
 	public var width(default,null):Int;
 	public var height(default,null):Int;
-	public var data:Vector<T>;
+	public var data:Array<T>;
 	public var defaultData(default,null):Null<T>;
 	public var size(get, never):Int;
 
 	private function new(width, height, ?value:T) {
 		this.width = width;
 		this.height = height;
-		if (value == null) {
-			data = new Vector<T>(width * height);
-		} else {
-			data = Vector.fromArrayCopy([for (i in 0...width * height) value]);
-		}
+		this.data = [for (i in 0...width * height) value];
 	}
 
 	public function indexOf(x:Int, y:Int) {
