@@ -16,7 +16,7 @@ class VisiblyControledNode extends Node<VisiblyControledNode> {
 	public var position:Position;
 }
 
-class VisibleControledSystem extends ListIteratingSystem<VisiblyControledNode> {
+class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 	var stage:Stage;
 
 	public function new(stage:Stage) {

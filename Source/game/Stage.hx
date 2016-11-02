@@ -79,7 +79,7 @@ class Stage {
 		addSystem(new CollectSystem(this), 2);
 		addSystem(new VisibleSystem(this), 3);
 		addSystem(new VisiblyMovingSystem(this), 4);
-		addSystem(new VisibleControledSystem(this), 4);
+		addSystem(new VisiblyControledSystem(this), 4);
 	}
 
 	function addSystem(system:System, priority:Int) {
