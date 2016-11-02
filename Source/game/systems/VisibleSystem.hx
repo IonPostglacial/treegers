@@ -50,7 +50,7 @@ class VisibleSystem extends System implements TileChangeListener {
 	}
 
 	public function tileChanged(position:Coordinates, oldType:TileType, newType:TileType) {
-		this.mapRenderer.setTileTypeAt(position, newType);
+		this.mapRenderer.setTileTypeAt(0, position, newType);
 	}
 
 	override public function addToEngine(engine:Engine) {
@@ -64,7 +64,7 @@ class VisibleSystem extends System implements TileChangeListener {
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			stage.foreground.addChild(node.visible.sprite);
-			node.visible.tile = this.mapRenderer.createTileAt(node.visible.tileType, pixPosition.x, pixPosition.y);
+			node.visible.tile = this.mapRenderer.createObjectTile(node.visible.tileType, pixPosition.x, pixPosition.y);
 		});
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
 			stage.foreground.removeChild(node.visible.sprite);

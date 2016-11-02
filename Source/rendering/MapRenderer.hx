@@ -28,47 +28,41 @@ class MapRenderer extends Tilemap {
 	inline function populateMap(map:TiledMap) {
 		var baseLayer = map.tileLayers[0];
 		for (position in baseLayer.tiles.keys()) {
-			this.setTileTypeAt(position, baseLayer.tiles.get(position));
+			var pixPosition = map.coordinates.toPixel(position);
+			var tileId = baseLayer.tiles.get(position) - map.tilesets[0].firstGid;
+			this.addTile(new Tile(tileId, pixPosition.x, pixPosition.y));
 		}
 	}
 
 	inline function allocateIds(map:TiledMap) {
-		var rectWidth = map.tilesets[0].tileWidth;
-		var rectHeight = map.tilesets[0].tileHeight;
-		var i = 0;
-		for (tileType in 0...map.tilesets[0].tileCount) {
-			tileset.addRect(new Rectangle(rectWidth * i, 0, rectWidth, rectHeight));
-			i += 1;
+		for (mapTileset in map.tilesets) {
+			var rectWidth = mapTileset.tileWidth;
+			var rectHeight = mapTileset.tileHeight;
+			var i = 0;
+			for (tileType in 0...mapTileset.tileCount) {
+				tileset.addRect(new Rectangle(rectWidth * i, 0, rectWidth, rectHeight));
+				i += 1;
+			}
 		}
 	}
 
-	public inline function createTileAt(type:Int, x:Float, y:Float):Tile {
-		var tile = new Tile(type - map.tilesets[0].firstGid, 0, 0);
-		moveTile(tile, x, y);
+	public inline function createObjectTile(type:Int, x:Float, y:Float):Tile {
+		var tile = new Tile(type - map.tilesets[0].firstGid, x, y);
 		this.addTile(tile);
 		return tile;
 	}
 
-	public function setTileTypeAt(position:Coordinates, type:Int) {
-		var oldTile = this.getTileAt(this.map.tileLayers[0].tiles.indexOf(position.x, position.y));
-		var index = -1;
-		if (oldTile != null) {
-			index = this.getTileIndex(oldTile);
-			this.removeTile(oldTile);
+	public inline function getTileFromCoords(layerId:Int, position:Coordinates):Tile {
+		var tileIndex = 0;
+		for (layerIndex in 0...layerId) {
+			tileIndex += this.map.tileLayers[layerId].tiles.size;
 		}
-		var pixPosition = map.coordinates.toPixel(position);
-		var newTile = new Tile(type - map.tilesets[0].firstGid, 0, 0);
-		moveTile(newTile, pixPosition.x, pixPosition.y);
-		if (index >= 0) {
-			this.addTileAt(newTile, index);
-		} else {
-			this.addTile(newTile);
-		}
+		tileIndex += this.map.tileLayers[layerId].tiles.indexOf(position.x, position.y);
+		return this.getTileAt(tileIndex);
 	}
 
-	public inline function moveTile(tile:Tile, x:Float, y:Float) {
-		var tileset = map.tilesets[0];
-		tile.x = x;
-		tile.y = y;
+	public inline function setTileTypeAt(layerId:Int, position:Coordinates, type:Int) {
+		var tile = this.getTileFromCoords(layerId, position);
+		tile.id = type - map.tilesets[0].firstGid;
 	}
 }
