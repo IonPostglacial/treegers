@@ -87,6 +87,7 @@ class VisibleSystem extends System implements TileObjectListener {
 		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
 		healthSprite.graphics.beginFill(HEALTH_COLOR);
 		healthSprite.graphics.drawRect(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
+		healthSprite.scrollRect = new openfl.geom.Rectangle(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
 		healthSprite.name = "health";
 
 		healthSprite.y -= 2 * GAUGE_HEIGHT;
