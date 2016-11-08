@@ -39,8 +39,8 @@ class ButtonSystem extends System {
 			}
 			if (buttonAlreadyPressed != buttonCurrentlyPressed) {
 				buttonNode.button.flip();
-				for (position in buttonNode.button.affectedTiles) {
-					stage.setTileAt(position, buttonNode.button.currentTileType);
+				for (tileObject in buttonNode.button.affectedTiles) {
+					this.stage.setTileObjectStatus(tileObject, buttonNode.button.triggered);
 				}
 			}
 		}

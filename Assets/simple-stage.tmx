@@ -9,12 +9,10 @@
  </tileset>
  <layer name="Background" width="14" height="11">
   <data encoding="base64" compression="zlib">
-   eJxjZmBgYEbCTHgwMw5MrB5sfGLsYSJTDzH6cLmJkB58ZhHjLkJm8EBpDhL1URI/pOpjx6KHE4deANA3AYw=
+   eJyVkdEKABAMRZdliP//XhS1xmYeTlI73AsCAC7aIBigwsshNufx6DL3crRMnoz7PhKe5WhUsY8sQ3Sesf9irvkjC++BcHbyvBt3LW92SRe/KD07DMoBvQ==
   </data>
  </layer>
- <objectgroup name="Entities">
-  <object id="9" gid="1" x="80" y="109" width="55" height="64"/>
-  <object id="10" gid="13" x="297" y="395" width="55" height="64"/>
+ <objectgroup name="Ground Entities">
   <object id="11" gid="4" x="270" y="544" width="55" height="64">
    <properties>
     <property name="switch" value="1"/>
@@ -35,5 +33,9 @@
     <property name="switched" value="1"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup name="Entities">
+  <object id="9" gid="1" x="80" y="109" width="55" height="64"/>
+  <object id="10" gid="13" x="297" y="395" width="55" height="64"/>
  </objectgroup>
 </map>

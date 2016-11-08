@@ -27,12 +27,13 @@ import game.systems.CollectSystem;
 
 class Stage {
 	public var map(default,null):tmx.TiledMap;
+	public var obstacleGrids(default,null):Array<ObstacleGrid>;
 	public var background:Sprite;
 	public var foreground:Sprite;
 
 	var engine = new Engine();
 	var tickProvider:ITickProvider;
-	var tileChangeListener:Array<TileChangeListener> = [];
+	var tileObjectsListeners:Array<TileObjectListener> = [];
 
 	public function new(mapPath:String) {
 		this.background = new Sprite();
@@ -48,11 +49,18 @@ class Stage {
 		return map.bgTiles.get(position);
 	}
 
-	public function setTileAt(position:Coordinates, value:TileType) {
-		var oldTileType = map.bgTiles.get(position);
-		map.bgTiles.set(position, value);
-		for (listener in tileChangeListener) {
-			listener.tileChanged(position, oldTileType, value);
+	public inline function tileCrossableFor(coords:Coordinates, vehicle:Vehicle):Bool {
+		return this.obstacleGrids[Type.enumIndex(vehicle)].isCrossable(coords);
+	}
+
+	public inline function addTileObjectsListeners(listener:TileObjectListener) {
+		tileObjectsListeners.push(listener);
+	}
+
+	public function setTileObjectStatus(tileObject:tmx.TileObject, active:Bool) {
+		tileObject.active = active;
+		for (listener in tileObjectsListeners) {
+			listener.tileObjectStatusChanged(tileObject, active);
 		}
 	}
 
@@ -66,6 +74,13 @@ class Stage {
 		var mapXml = openfl.Assets.getText("assets/" + name);
 		this.map = new tmx.TiledMap();
 		this.map.loadFromXml(Xml.parse(mapXml));
+		var obstacleGrids = [];
+		for (vehicle in Type.allEnums(Vehicle)) {
+			var obstacles = new ObstacleGrid(this.map, vehicle);
+			this.addTileObjectsListeners(obstacles);
+			obstacleGrids.push(obstacles);
+		}
+		this.obstacleGrids = obstacleGrids;
 	}
 
 	function loadSystems() {
@@ -82,36 +97,39 @@ class Stage {
 		addSystem(new VisiblyControledSystem(this), 4);
 	}
 
-	function addSystem(system:System, priority:Int) {
-		if (Std.is(system, TileChangeListener)) {
-			tileChangeListener.push(cast system);
+	inline function addSystem(system:System, priority:Int) {
+		if (Std.is(system, TileObjectListener)) {
+			this.tileObjectsListeners.push(cast system);
 		}
-		engine.addSystem(system, priority);
+		this.engine.addSystem(system, priority);
 	}
 
 	function loadEntities() {
 		var switchesMap = new Map<String, tmx.TileObject>();
 		var switchedMap = new Map<String, Array<tmx.TileObject>>();
-		for (object in map.objectLayers[0].objects) {
-			object.coords = this.map.coordinates.fromPixel(new geometry.Vector2D(object.x + object.width / 2, object.y - object.height / 2));
-			switch (object.gid) {
-			case TileType.Button:
-				var switchId = object.properties.get("switch");
-				switchesMap.set(switchId, object);
-			case TileType.RollingBall:
-				engine.addEntity(Entities.rollingBallAt(object.coords));
-			case TileType.Grunt:
-				engine.addEntity(Entities.gruntAt(object.coords));
-			default:
-				var switchId = object.properties.get("switched");
-				if (switchId != null) {
-					var switchedObjects = switchedMap.get(switchId);
-					if (switchedObjects == null) switchedObjects = [];
-					switchedObjects.push(object);
-					switchedMap.set(switchId, switchedObjects);
+		for (objectLayer in map.objectLayers) {
+			for (object in objectLayer.objects) {
+				switch (object.gid) {
+				case TileType.Button:
+					var switchId = object.properties.get("switch");
+					switchesMap.set(switchId, object);
+				case TileType.RollingBall:
+					engine.addEntity(Entities.rollingBallAt(object.id, object.coords));
+				case TileType.Grunt:
+					engine.addEntity(Entities.gruntAt(object.id, object.coords));
+				default:
+					this.setTileObjectStatus(object, false);
+					var switchId = object.properties.get("switched");
+					if (switchId != null) {
+						var switchedObjects = switchedMap.get(switchId);
+						if (switchedObjects == null) switchedObjects = [];
+						switchedObjects.push(object);
+						switchedMap.set(switchId, switchedObjects);
+					}
 				}
 			}
 		}
+
 		for (switchId in switchesMap.keys()) {
 			var switchObject = switchesMap.get(switchId);
 			var switchedObjects = switchedMap.get(switchId);
@@ -123,8 +141,7 @@ class Stage {
 				switchedTileId1 = map.bgTiles.get(switchedObjects[0].coords);
 				switchedTileId2 = switchedObjects[0].gid;
 			}
-			var switchesCoords = switchedObjects.map(function (switchedObject) return switchedObject.coords);
-			engine.addEntity(Entities.buttonAt(switchObject.coords, switchesCoords, switchedTileId1, switchedTileId2));
+			engine.addEntity(Entities.buttonAt(switchObject.id, switchObject.coords, switchedObjects, switchedTileId1, switchedTileId2));
 		}
 	}
 }

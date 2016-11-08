@@ -1,6 +1,7 @@
 package tmx;
 
 class TileObject {
+	public var active:Bool = true;
 	public var id:Int = 0;
 	public var gid:Int = 0;
 	public var x:Int = 0;

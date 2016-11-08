@@ -54,9 +54,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			this.hover.x = mousePoint.x;
 			this.hover.y = mousePoint.y;
 		});
-		for (vehicle in Type.allEnums(Vehicle)) {
-			var obstacles = new ObstacleGrid(stage.map.bgTiles, stage.map.grid, vehicle);
-			this.pathfinders.push(new graph.Pathfinder(obstacles));
+		for (obstacleGrid in stage.obstacleGrids) {
+			this.pathfinders.push(new graph.Pathfinder(obstacleGrid));
 		}
 		super(ControledNode, updateNode);
 	}

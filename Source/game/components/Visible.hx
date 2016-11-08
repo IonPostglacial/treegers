@@ -7,12 +7,12 @@ import openfl.display.Tile;
 
 
 class Visible {
-	public var tileType:TileType;
+	public var objectId:Int;
 	public var sprite(default, null):Sprite;
 	public var tile:Null<Tile>;
 
-	public function new(tileType) {
+	public function new(objectId:Int) {
 		this.sprite = new Sprite();
-		this.tileType = tileType;
+		this.objectId = objectId;
 	}
 }

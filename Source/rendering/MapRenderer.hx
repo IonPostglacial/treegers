@@ -16,16 +16,18 @@ import tmx.TiledMap;
 
 class MapRenderer extends Tilemap {
 	var map:TiledMap;
+	var tilesByObjectsId:Map<Int, Tile> = new Map();
 
 	public function new(map:TiledMap) {
 		this.map = map;
 		tileset = new Tileset(map.tilesets[0].image);
 		super(openfl.Lib.current.stage.stageWidth, openfl.Lib.current.stage.stageHeight, tileset);
-		allocateIds(map);
-		populateMap(map);
+		loadTilesets(map);
+		loadTileLayer(map);
+		loadObjectsLayer(map);
 	}
 
-	inline function populateMap(map:TiledMap) {
+	inline function loadTileLayer(map:TiledMap) {
 		var baseLayer = map.tileLayers[0];
 		for (position in baseLayer.tiles.keys()) {
 			var pixPosition = map.coordinates.toPixel(position);
@@ -34,7 +36,18 @@ class MapRenderer extends Tilemap {
 		}
 	}
 
-	inline function allocateIds(map:TiledMap) {
+	inline function loadObjectsLayer(map:TiledMap) {
+		for(objectLayer in map.objectLayers) {
+			for (tiledObject in objectLayer.objects) {
+				var normalizedPosition = map.coordinates.toPixel(tiledObject.coords);
+				var objectTile = this.createObjectTile(tiledObject.gid, normalizedPosition.x, normalizedPosition.y);
+				tilesByObjectsId.set(tiledObject.id, objectTile);
+				this.addTile(objectTile);
+			}
+		}
+	}
+
+	inline function loadTilesets(map:TiledMap) {
 		for (mapTileset in map.tilesets) {
 			var rectWidth = mapTileset.tileWidth;
 			var rectHeight = mapTileset.tileHeight;
@@ -46,10 +59,12 @@ class MapRenderer extends Tilemap {
 		}
 	}
 
-	public inline function createObjectTile(type:Int, x:Float, y:Float):Tile {
-		var tile = new Tile(type - map.tilesets[0].firstGid, x, y);
-		this.addTile(tile);
-		return tile;
+	inline function createObjectTile(type:Int, x:Float, y:Float):Tile {
+		return new Tile(type - map.tilesets[0].firstGid, x, y);
+	}
+
+	public inline function getTileForObjectId(objectId:Int):Tile {
+		return tilesByObjectsId.get(objectId);
 	}
 
 	public inline function getTileFromCoords(layerId:Int, position:Coordinates):Tile {
@@ -59,10 +74,5 @@ class MapRenderer extends Tilemap {
 		}
 		tileIndex += this.map.tileLayers[layerId].tiles.indexOf(position.x, position.y);
 		return this.getTileAt(tileIndex);
-	}
-
-	public inline function setTileTypeAt(layerId:Int, position:Coordinates, type:Int) {
-		var tile = this.getTileFromCoords(layerId, position);
-		tile.id = type - map.tilesets[0].firstGid;
 	}
 }

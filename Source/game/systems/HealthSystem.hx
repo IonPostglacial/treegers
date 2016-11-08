@@ -16,11 +16,11 @@ class HealthyNode extends Node<HealthyNode> {
 }
 
 class HealthSystem extends ListIteratingSystem<HealthyNode> {
-	var game:Stage;
+	var stage:Stage;
 	var engine:Engine;
 
-	public function new(game:Stage) {
-		this.game = game;
+	public function new(stage:Stage) {
+		this.stage = stage;
 		super(HealthyNode, updateNode);
 	}
 
@@ -30,11 +30,11 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	}
 
 	function updateNode(node:HealthyNode, deltaTime:Float) {
-		switch(game.tileAt(node.position)) {
+		switch(stage.tileAt(node.position)) {
 		case Pikes:
 			node.health.level -= 1;
 		case type:
-			if (!type.crossableWith(node.movement.vehicle)) {
+			if (!stage.tileCrossableFor(node.position, node.movement.vehicle)) {
 				node.health.level = 0;
 			}
 		}

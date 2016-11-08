@@ -10,6 +10,7 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
+import game.TileObjectListener;
 import game.components.Health;
 import game.components.Visible;
 import game.components.Health;
@@ -28,7 +29,7 @@ class VisiblyHealthyNode extends Node<VisiblyHealthyNode> {
 	public var visible:Visible;
 }
 
-class VisibleSystem extends System implements TileChangeListener {
+class VisibleSystem extends System implements TileObjectListener {
 	var stage:Stage;
 	var visibles:NodeList<VisibleNode>;
 	var healthies:NodeList<VisiblyHealthyNode>;
@@ -49,8 +50,8 @@ class VisibleSystem extends System implements TileChangeListener {
 		}
 	}
 
-	public function tileChanged(position:Coordinates, oldType:TileType, newType:TileType) {
-		this.mapRenderer.setTileTypeAt(0, position, newType);
+	public function tileObjectStatusChanged(tileObject:tmx.TileObject, active:Bool):Void {
+		this.mapRenderer.getTileForObjectId(tileObject.id).visible = active;
 	}
 
 	override public function addToEngine(engine:Engine) {
@@ -64,7 +65,7 @@ class VisibleSystem extends System implements TileChangeListener {
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			stage.foreground.addChild(node.visible.sprite);
-			node.visible.tile = this.mapRenderer.createObjectTile(node.visible.tileType, pixPosition.x, pixPosition.y);
+			node.visible.tile = this.mapRenderer.getTileForObjectId(node.visible.objectId);
 		});
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
 			stage.foreground.removeChild(node.visible.sprite);
@@ -94,7 +95,7 @@ class VisibleSystem extends System implements TileChangeListener {
 
 	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
 		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
-		healthSprite.width = stage.map.tileWidth * (node.health.level / node.health.max);
+		healthSprite.width = Math.floor(stage.map.tileWidth * (node.health.level / node.health.max));
 		healthSprite.graphics.endFill();
 	}
 
