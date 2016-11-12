@@ -4,10 +4,10 @@ import haxe.ds.Vector;
 
 
 class Button {
-	public var isPressed(default,null):Bool = false;
-	public var triggered(default,default):Bool = false;
-	public var isToggle(default,null):Bool;
-	public var affectedTiles(default,null):Array<tmx.TileObject>;
+	public var isPressed:Bool = false;
+	public var triggered:Bool = false;
+	public var isToggle:Bool;
+	public var affectedTiles:Iterable<tmx.TileObject>;
 
 	public function new(isToggle, affectedTiles, upTileTiles, pushedTileType) {
 		this.isToggle = isToggle;

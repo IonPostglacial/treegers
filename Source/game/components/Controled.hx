@@ -4,8 +4,8 @@ import game.actions.Action;
 
 class Controled {
 	public var actions:Array<Action>;
-	public var currentAction(get,never):Action;
 	public var selected:Bool;
+	public var currentAction(get,never):Action;
 
 	public function new() {
 		this.actions = [];

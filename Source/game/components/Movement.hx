@@ -6,9 +6,9 @@ import geometry.Coordinates;
 class Movement {
 	public var vehicle:Vehicle;
 	public var period:Float;
+	public var oldPosition(default, set):Coordinates;
 	public var delta(get, never):Float;
 	public var ready(get, never):Bool;
-	public var oldPosition(default, set):Coordinates;
 	var timeSinceLastMove:Float;
 
 	public function new(vehicle, period) {

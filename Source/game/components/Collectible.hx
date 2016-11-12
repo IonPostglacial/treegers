@@ -3,8 +3,8 @@ package game.components;
 import haxe.ds.Option;
 
 class Collectible {
-	public var components:Array<Dynamic>;
-	public var effectDuration(default,null):Option<Float>;
+	public var components:Iterable<Dynamic>;
+	public var effectDuration:Option<Float>;
 	public var collected:Bool = false;
 	public var expires(get,never):Bool;
 
