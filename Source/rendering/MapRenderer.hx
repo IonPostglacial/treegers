@@ -37,7 +37,7 @@ class MapRenderer extends Tilemap {
 	}
 
 	inline function loadObjectsLayer(map:TiledMap) {
-		for(objectLayer in map.objectLayers) {
+		for (objectLayer in map.objectLayers) {
 			for (tiledObject in objectLayer.objects) {
 				var normalizedPosition = map.coordinates.toPixel(tiledObject.coords);
 				var objectTile = this.createObjectTile(tiledObject.gid, normalizedPosition.x, normalizedPosition.y);
@@ -51,10 +51,12 @@ class MapRenderer extends Tilemap {
 		for (mapTileset in map.tilesets) {
 			var rectWidth = mapTileset.tileWidth;
 			var rectHeight = mapTileset.tileHeight;
-			var i = 0;
-			for (tileType in 0...mapTileset.tileCount) {
-				tileset.addRect(new Rectangle(rectWidth * i, 0, rectWidth, rectHeight));
-				i += 1;
+			var widthInTiles = Std.int(mapTileset.image.width / rectWidth);
+			var heightInTiles = Std.int(mapTileset.image.height / rectHeight);
+			for (y in 0... heightInTiles) {
+				for (x in 0...widthInTiles) {
+					tileset.addRect(new Rectangle(rectWidth * x, rectHeight * y, rectWidth, rectHeight));
+				}
 			}
 		}
 	}
