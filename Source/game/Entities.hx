@@ -37,6 +37,6 @@ class Entities {
 		.add(new Visible(id))
 		.add(new Collectible([new Health(0, 100, 2)]))
 		.add(new Movement(Vehicle.Foot, 0.5))
-		.add(new LinearWalker(-1, 0));
+		.add(new LinearWalker(1, 0));
 	}
 }

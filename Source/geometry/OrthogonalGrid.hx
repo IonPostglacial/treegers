@@ -37,7 +37,7 @@ class OrthogonalGrid implements Grid2D {
 	}
 
 	public inline function distanceBetween(p1:Coordinates, p2:Coordinates):Int {
-		return max(abs(p1.x - p2.x), abs(p1.y - p2.y));
+		return abs(p1.x - p2.x) + abs(p1.y - p2.y);
 	}
 
 	public inline function neighborsOf(p:Coordinates):Array<Coordinates> {

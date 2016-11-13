@@ -2,27 +2,20 @@ package game;
 
 @:enum abstract TileType(Int) from Int to Int {
 	var None = 0;
-	var Grunt = 1;
-	var Water = 2;
-	var Ground = 3;
-	var Button = 4;
-	var Pikes = 5;
+	var Grunt = 107;
+	var Water = 1;
+	var Ground = 6;
+	var Button = 136;
+	var Pikes = 48;
 	var Cliff = 6;
-	var ArrowA = 7;
-	var ArrowD = 8;
-	var ArrowE = 9;
-	var ArrowB = 10;
-	var ArrowF = 11;
-	var ArrowC = 12;
-	var RollingBall = 13;
-	var Last = 14;
-
-	public function crossableWith(vehicle:Vehicle):Bool return switch (this) {
-		case TileType.None: false;
-		case TileType.Water: std.Type.enumEq(vehicle, Boat) || std.Type.enumEq(vehicle, Plane);
-		case TileType.Cliff: false;
-		default:true;
-	}
+	var ArrowA = 76;
+	var ArrowB = 77;
+	var ArrowC = 78;
+	var ArrowD = 79;
+	var ArrowE = 80;
+	var ArrowF = 81;
+	var RollingBall = 121;
+	var Last = 121;
 
 	public function isArrow():Bool return switch(this) {
 		case TileType.ArrowA,
@@ -36,9 +29,9 @@ package game;
 
 	public function dx():Int return switch(this) {
 		case TileType.ArrowA: 1;
-		case TileType.ArrowB: 0;
-		case TileType.ArrowC: -1;
-		case TileType.ArrowD: -1;
+		case TileType.ArrowB: -1;
+		case TileType.ArrowC: 0;
+		case TileType.ArrowD: 0;
 		case TileType.ArrowE: 0;
 		case TileType.ArrowF: 1;
 		default:0;
@@ -46,9 +39,9 @@ package game;
 
 	public function dy():Int return switch(this) {
 		case TileType.ArrowA: 0;
-		case TileType.ArrowB: 1;
+		case TileType.ArrowB: 0;
 		case TileType.ArrowC: 1;
-		case TileType.ArrowD: 0;
+		case TileType.ArrowD: -1;
 		case TileType.ArrowE: -1;
 		case TileType.ArrowF: -1;
 		default:0;

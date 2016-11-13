@@ -80,7 +80,7 @@ class TiledMap {
 			var mapElement:Null<XmlLoadable> = null;
 			switch (element.nodeName) {
 			case "tileset":
-				tilesets.push(new Tileset());
+				tilesets.push(new Tileset(orientation));
 				mapElement = tilesets[tilesets.length - 1];
 			case "layer":
 				tileLayers.push(new TileLayer(this));

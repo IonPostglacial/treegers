@@ -15,8 +15,12 @@ class Tileset {
 	public var columns:Int = 0;
 	public var properties(default,null):Map<String, Dynamic> = new Map();
 	public var image:openfl.display.BitmapData;
+	public var terrains:Map<Int, Array<Null<Int>>> = new Map();
+	var terrainsNumberByTile = 0;
 
-	public function new() {}
+	public function new(orientation:Orientation) {
+		terrainsNumberByTile = orientation.adjacentTilesNumber();
+	}
 
 	public function loadFromXml(xml:Xml) {
 		name = xml.defget("name", name);
@@ -32,6 +36,12 @@ class Tileset {
 		for (imageElement in imageElements) {
 			var imagePath = imageElement.defget("source", "");
 			image = openfl.Assets.getBitmapData("assets/" + imagePath);
+		}
+		var tileElements = xml.elementsNamed('tile');
+		for (tileElement in tileElements) {
+			var tileTerrain = tileElement.defget("terrain", "").split(",").map(Std.parseInt);
+			var tileId = Std.parseInt(tileElement.get("id"));
+			this.terrains.set(firstGid + tileId, tileTerrain);
 		}
 	}
 }

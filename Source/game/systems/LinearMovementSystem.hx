@@ -40,7 +40,8 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 			node.movement.oldPosition = node.position.copy();
 			node.position.x += node.linearWalker.dx;
 			node.position.y += node.linearWalker.dy;
-			if (!stage.tileAt(node.position).crossableWith(node.movement.vehicle)) {
+
+			if (!stage.tileCrossableFor(node.position, node.movement.vehicle)) {
 				engine.removeEntity(node.entity);
 			}
 		}

@@ -17,6 +17,7 @@ class ObstacleGrid implements Pathfindable<Coordinates> implements TileObjectLis
 
 	public inline function new(map:tmx.TiledMap, vehicle) {
 		this.map = map;
+		this.vehicle = vehicle;
 		this.obstacles = if (map.orientation == tmx.Orientation.Hexagonal) {
 			new HexagonalMap(map.width, map.height);
 		} else {
@@ -24,10 +25,9 @@ class ObstacleGrid implements Pathfindable<Coordinates> implements TileObjectLis
 		}
 		for (coords in map.bgTiles.keys()) {
 			var tileType:TileType = map.bgTiles.get(coords);
-			var crossable = tileType.crossableWith(vehicle);
+			var crossable = this.crossable(tileType);
 			this.obstacles.set(coords, crossable || activeCrossableTileObject(coords));
 		}
-		this.vehicle = vehicle;
 	}
 
 	public function distanceBetween(p1:Coordinates, p2:Coordinates):Int {
@@ -44,6 +44,19 @@ class ObstacleGrid implements Pathfindable<Coordinates> implements TileObjectLis
 		return this.obstacles.get(p);
 	}
 
+	function crossable(gid:Int):Bool {
+		var tileTerrains = this.map.tilesets[0].terrains.get(gid);
+		if (tileTerrains == null) {
+			return true;
+		}
+		for (terrain in tileTerrains) {
+			if (this.vehicle == Vehicle.Foot && terrain == Type.enumIndex(Terrain.Water)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public function tileObjectStatusChanged(tileObject:tmx.TileObject, active:Bool):Void {
 		var tileType:TileType;
 		if (active) {
@@ -51,7 +64,7 @@ class ObstacleGrid implements Pathfindable<Coordinates> implements TileObjectLis
 		} else {
 			tileType = map.bgTiles.get(tileObject.coords);
 		}
-		this.obstacles.set(tileObject.coords, tileType.crossableWith(this.vehicle));
+		this.obstacles.set(tileObject.coords, this.crossable(tileType));
 	}
 
 	public function activeCrossableTileObject(p:Coordinates):Bool {
@@ -59,7 +72,7 @@ class ObstacleGrid implements Pathfindable<Coordinates> implements TileObjectLis
 			for (tileObject in objectLayer.objects) {
 				var tileType:TileType = tileObject.gid;
 				if (tileObject.active && tileObject.coords.equals(p)) {
-					return tileType.crossableWith(this.vehicle);
+					return this.crossable(tileType);
 				}
 			}
 		}
