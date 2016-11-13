@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" nextobjectid="22">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" nextobjectid="26">
  <tileset firstgid="1" name="BFS Tileset" tilewidth="32" tileheight="32" tilecount="300">
   <image source="bfs-tileset.png" width="480" height="640"/>
   <terraintypes>
@@ -105,47 +105,12 @@
  </tileset>
  <layer name="Ground" width="25" height="20">
   <data encoding="base64" compression="zlib">
-   eJztk0sLwjAMxzsnogfBoeLjoIIDFcHNByooKkwPgo/v/21MIcVSm7abj5OHH9uyJP8mTTzGmPcDKoBPkFd8c2ivaWy+5p+gCxQI+oRvFXPx8wVo6xExWTWETuAQk1ZjAkQav9hSB4/bE8wI/0jJL96nREwWqNp1NejmwjZblEZs0OD+F+JcV7xbVWeXorfCn/f3BtSBokSLPWfIVFea/oZAAxjgs6lolgz9cNVIgAXmbwNliQ4wVGqy3Rt1hyHWMQLGwAY4A1vUcN0lk8Yca1lLuZfAETi9qXGX/BPMKVix1zmVv/nuHSwapl134VO7/ef7PAAdKRmp
+   eJztk1sLgkAQhdeSqCBIKro8VJBQEaRdqKAowQqCLv//33SElYbNXXcN6qWHD1eZmeOZmbUYY9YXyIG8BFsSayvyxZyIHihIGEhia6AOqsDh3/qSnKwasY6jkWOqMQVeQpyf4iPKOxDK5BxI4j2hfnyegXlCThZk3pM8JO3FmWXbE1+hEcVfJf9147MVdfYGvaX9vYMGKBLa7LVDKl8m/XVBEwz5syVolhT90NUIwZLX74AKoQtGgic6vzR/dIYu9zEGE7AFF7DjGrp3SaWx4F42pPYKHMHpQ40HiQ95zZg1e99T+q5z98S7bkpgMPs/v+UJIG4Zow==
   </data>
  </layer>
  <objectgroup name="Ground Entities">
   <object id="1" gid="33" x="607" y="96" width="32" height="32"/>
   <object id="2" gid="33" x="606" y="158" width="32" height="32"/>
-  <object id="9" gid="39" x="160" y="192" width="32" height="32">
-   <properties>
-    <property name="switched" value="north-west"/>
-   </properties>
-  </object>
-  <object id="11" gid="39" x="159" y="224" width="32" height="32">
-   <properties>
-    <property name="switched" value="north-west"/>
-   </properties>
-  </object>
-  <object id="12" gid="39" x="160" y="257" width="32" height="32">
-   <properties>
-    <property name="switched" value="north-west"/>
-   </properties>
-  </object>
-  <object id="15" gid="39" x="545" y="383" width="32" height="32">
-   <properties>
-    <property name="switched" value="east"/>
-   </properties>
-  </object>
-  <object id="16" gid="39" x="544" y="352" width="32" height="32">
-   <properties>
-    <property name="switched" value="east"/>
-   </properties>
-  </object>
-  <object id="17" gid="39" x="544" y="320" width="32" height="32">
-   <properties>
-    <property name="switched" value="east"/>
-   </properties>
-  </object>
-  <object id="18" gid="39" x="544" y="289" width="32" height="32">
-   <properties>
-    <property name="switched" value="east"/>
-   </properties>
-  </object>
   <object id="19" gid="136" x="95.1048" y="383.306" width="32" height="32">
    <properties>
     <property name="switch" value="east"/>
@@ -154,6 +119,21 @@
   <object id="20" gid="136" x="160.271" y="288.035" width="32" height="32">
    <properties>
     <property name="switch" value="north-west"/>
+   </properties>
+  </object>
+  <object id="23" gid="71" x="160.607" y="223.489" width="32" height="32">
+   <properties>
+    <property name="switched" value="north-west"/>
+   </properties>
+  </object>
+  <object id="24" gid="71" x="544.703" y="318.065" width="32" height="32">
+   <properties>
+    <property name="switched" value="east"/>
+   </properties>
+  </object>
+  <object id="25" gid="71" x="544.703" y="351.843" width="32" height="32">
+   <properties>
+    <property name="switched" value="east"/>
    </properties>
   </object>
  </objectgroup>
