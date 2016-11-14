@@ -9,7 +9,7 @@ class Button {
 	public var isToggle:Bool;
 	public var affectedTiles:Iterable<tmx.TileObject>;
 
-	public function new(isToggle, affectedTiles, upTileTiles, pushedTileType) {
+	public function new(isToggle, affectedTiles) {
 		this.isToggle = isToggle;
 		this.affectedTiles = affectedTiles;
 	}

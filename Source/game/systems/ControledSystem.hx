@@ -95,9 +95,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			}
 		}
 		var tileType = stage.tileAt(node.position);
-		if (tileType.isArrow()) {
-			var newPath = [new Coordinates(node.position.x + tileType.dx(), node.position.y + tileType.dy()), node.position];
+		switch (stage.obstacles(node.movement.vehicle).asArrow(tileType)) {
+		case TileArrow.Arrow(dx, dy):
+			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy), node.position];
 			node.controled.actions = [new Move(node.entity, newPath)];
+		case None: // pass
 		}
 	}
 }

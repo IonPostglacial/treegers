@@ -30,13 +30,10 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	}
 
 	function updateNode(node:HealthyNode, deltaTime:Float) {
-		switch(stage.tileAt(node.position)) {
-		case Pikes:
+		if (!stage.obstacles(node.movement.vehicle).isCrossable(node.position)) {
+			node.health.level = 0;
+		} else if (stage.obstacles(node.movement.vehicle).isHurting(stage.tileAt(node.position))) {
 			node.health.level -= 1;
-		case type:
-			if (!stage.tileCrossableFor(node.position, node.movement.vehicle)) {
-				node.health.level = 0;
-			}
 		}
 		if (node.health.level <= 0) {
 			engine.removeEntity(node.entity);

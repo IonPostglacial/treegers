@@ -24,11 +24,11 @@ class Entities {
 		.add(new Controled());
 	}
 
-	public static function buttonAt(id:Int, coordinates:Coordinates, switched:Array<tmx.TileObject>, tiledId1:Int, tileId2:Int):Entity {
+	public static function buttonAt(id:Int, coordinates:Coordinates, switched:Array<tmx.TileObject>):Entity {
 		return new Entity()
 		.add(new Position(coordinates.x, coordinates.y))
 		.add(new Visible(id))
-		.add(new Button(false, switched, tiledId1, tileId2));
+		.add(new Button(false, switched));
 	}
 
 	public static function rollingBallAt(id:Int, coordinates:Coordinates):Entity {

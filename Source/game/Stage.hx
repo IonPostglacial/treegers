@@ -24,6 +24,8 @@ import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
 import game.systems.CollectSystem;
 
+using haxe.EnumTools;
+
 
 class Stage {
 	public var map(default,null):tmx.TiledMap;
@@ -45,12 +47,12 @@ class Stage {
 		loadEntities();
 	}
 
-	public function tileAt(position:Coordinates):TileType {
+	public function tileAt(position:Coordinates):Int {
 		return map.bgTiles.get(position);
 	}
 
-	public inline function tileCrossableFor(coords:Coordinates, vehicle:Vehicle):Bool {
-		return this.obstacleGrids[Type.enumIndex(vehicle)].isCrossable(coords);
+	public inline function obstacles(vehicle:Vehicle):ObstacleGrid {
+		return this.obstacleGrids[Type.enumIndex(vehicle)];
 	}
 
 	public inline function addTileObjectsListeners(listener:TileObjectListener) {
@@ -109,13 +111,18 @@ class Stage {
 		var switchedMap = new Map<String, Array<tmx.TileObject>>();
 		for (objectLayer in map.objectLayers) {
 			for (object in objectLayer.objects) {
-				switch (object.gid) {
-				case TileType.Button:
+				var terrains = this.map.tilesets[0].terrains.get(object.gid);
+				var terrain = Terrain.Grass;
+				if (terrains != null) {
+					terrain = Terrain.createByIndex(terrains[0]);
+				}
+				switch (terrain) {
+				case Terrain.Button:
 					var switchId = object.properties.get("switch");
 					switchesMap.set(switchId, object);
-				case TileType.RollingBall:
+				case Terrain.RollingBall:
 					engine.addEntity(Entities.rollingBallAt(object.id, object.coords));
-				case TileType.Grunt:
+				case Terrain.Grunt:
 					engine.addEntity(Entities.gruntAt(object.id, object.coords));
 				default:
 					this.setTileObjectStatus(object, false);
@@ -133,15 +140,10 @@ class Stage {
 		for (switchId in switchesMap.keys()) {
 			var switchObject = switchesMap.get(switchId);
 			var switchedObjects = switchedMap.get(switchId);
-			var switchedTileId1 = TileType.None;
-			var switchedTileId2 = switchedTileId1;
 			if (switchedObjects == null) {
 				switchedObjects = [];
-			} else if (switchedObjects.length > 0) {
-				switchedTileId1 = map.bgTiles.get(switchedObjects[0].coords);
-				switchedTileId2 = switchedObjects[0].gid;
 			}
-			engine.addEntity(Entities.buttonAt(switchObject.id, switchObject.coords, switchedObjects, switchedTileId1, switchedTileId2));
+			engine.addEntity(Entities.buttonAt(switchObject.id, switchObject.coords, switchedObjects));
 		}
 	}
 }
