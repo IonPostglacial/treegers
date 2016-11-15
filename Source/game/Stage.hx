@@ -24,12 +24,10 @@ import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
 import game.systems.CollectSystem;
 
-using haxe.EnumTools;
-
 
 class Stage {
 	public var map(default,null):tmx.TiledMap;
-	public var obstacleGrids(default,null):Array<ObstacleGrid>;
+	public var groundGrids(default,null):Array<GroundGrid>;
 	public var background:Sprite;
 	public var foreground:Sprite;
 
@@ -51,8 +49,8 @@ class Stage {
 		return map.bgTiles.get(position);
 	}
 
-	public inline function obstacles(vehicle:Vehicle):ObstacleGrid {
-		return this.obstacleGrids[Type.enumIndex(vehicle)];
+	public inline function ground(vehicle:Vehicle):GroundGrid {
+		return this.groundGrids[Type.enumIndex(vehicle)];
 	}
 
 	public inline function addTileObjectsListeners(listener:TileObjectListener) {
@@ -78,11 +76,11 @@ class Stage {
 		this.map.loadFromXml(Xml.parse(mapXml));
 		var obstacleGrids = [];
 		for (vehicle in Type.allEnums(Vehicle)) {
-			var obstacles = new ObstacleGrid(this.map, vehicle);
+			var obstacles = new GroundGrid(this.map, vehicle);
 			this.addTileObjectsListeners(obstacles);
 			obstacleGrids.push(obstacles);
 		}
-		this.obstacleGrids = obstacleGrids;
+		this.groundGrids = obstacleGrids;
 	}
 
 	function loadSystems() {

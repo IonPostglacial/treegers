@@ -54,8 +54,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			this.hover.x = mousePoint.x;
 			this.hover.y = mousePoint.y;
 		});
-		for (obstacleGrid in stage.obstacleGrids) {
-			this.pathfinders.push(new graph.Pathfinder(obstacleGrid));
+		for (groundGrid in stage.groundGrids) {
+			this.pathfinders.push(new graph.Pathfinder(groundGrid));
 		}
 		super(ControledNode, updateNode);
 	}
@@ -94,12 +94,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			case PowerOrdered(goal): // TODO: implement it :p
 			}
 		}
-		var tileType = stage.tileAt(node.position);
-		switch (stage.obstacles(node.movement.vehicle).asArrow(tileType)) {
-		case TileArrow.Arrow(dx, dy):
+		switch (stage.ground(node.movement.vehicle).typeAt(node.position)) {
+		case GroundType.Arrow(dx, dy):
 			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy), node.position];
 			node.controled.actions = [new Move(node.entity, newPath)];
-		case None: // pass
+		default: // pass
 		}
 	}
 }

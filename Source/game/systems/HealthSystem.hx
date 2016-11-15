@@ -30,10 +30,12 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	}
 
 	function updateNode(node:HealthyNode, deltaTime:Float) {
-		if (!stage.obstacles(node.movement.vehicle).isCrossable(node.position)) {
+		switch (stage.ground(node.movement.vehicle).typeAt(node.position)) {
+		case GroundType.Uncrossable:
 			node.health.level = 0;
-		} else if (stage.obstacles(node.movement.vehicle).isHurting(stage.tileAt(node.position))) {
-			node.health.level -= 1;
+		case GroundType.Hurting(level):
+			node.health.level -= level;
+		default: // pass
 		}
 		if (node.health.level <= 0) {
 			engine.removeEntity(node.entity);

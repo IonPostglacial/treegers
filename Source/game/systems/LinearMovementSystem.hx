@@ -32,20 +32,18 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
 		if (node.movement.ready) {
-			var tileType = stage.tileAt(node.position);
-			switch (stage.obstacles(node.movement.vehicle).asArrow(tileType)) {
-			case TileArrow.Arrow(dx, dy):
+			switch (stage.ground(node.movement.vehicle).typeAt(node.position)) {
+			case GroundType.Arrow(dx, dy):
 				node.linearWalker.dx = dx;
 				node.linearWalker.dy = dy;
-			case None: // pass
+			case GroundType.Uncrossable:
+				engine.removeEntity(node.entity);
+				return;
+			default: // pass
 			}
 			node.movement.oldPosition = node.position.copy();
 			node.position.x += node.linearWalker.dx;
 			node.position.y += node.linearWalker.dy;
-
-			if (!stage.obstacles(node.movement.vehicle).isCrossable(node.position)) {
-				engine.removeEntity(node.entity);
-			}
 		}
 	}
 }
