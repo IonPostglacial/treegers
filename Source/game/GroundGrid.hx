@@ -39,7 +39,7 @@ class GroundGrid implements Pathfindable<Coordinates> implements TileObjectListe
 		}
 	}
 
-	public inline function typeAt(coords:Coordinates):GroundType {
+	public inline function at(coords:Coordinates):GroundType {
 		return this.ground.get(coords);
 	}
 

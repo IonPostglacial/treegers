@@ -41,6 +41,7 @@ class MapRenderer extends Tilemap {
 			for (tiledObject in objectLayer.objects) {
 				var normalizedPosition = map.coordinates.toPixel(tiledObject.coords);
 				var objectTile = this.createObjectTile(tiledObject.gid, normalizedPosition.x, normalizedPosition.y);
+				objectTile.visible = tiledObject.active;
 				tilesByObjectsId.set(tiledObject.id, objectTile);
 				this.addTile(objectTile);
 			}

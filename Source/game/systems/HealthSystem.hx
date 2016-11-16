@@ -30,7 +30,7 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	}
 
 	function updateNode(node:HealthyNode, deltaTime:Float) {
-		switch (stage.ground(node.movement.vehicle).typeAt(node.position)) {
+		switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
 		case GroundType.Uncrossable:
 			node.health.level = 0;
 		case GroundType.Hurting(level):

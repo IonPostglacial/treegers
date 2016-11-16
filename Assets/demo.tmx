@@ -119,31 +119,31 @@
   </data>
  </layer>
  <objectgroup name="Ground Entities">
-  <object id="1" gid="33" x="607" y="96" width="32" height="32"/>
-  <object id="2" gid="33" x="606" y="158" width="32" height="32"/>
+  <object id="1" gid="33" x="608" y="96" width="32" height="32"/>
+  <object id="2" gid="33" x="607" y="158" width="32" height="32"/>
   <object id="19" gid="136" x="95.1048" y="383.306" width="32" height="32">
    <properties>
-    <property name="switch" value="east"/>
+    <property name="switch@" value="east"/>
    </properties>
   </object>
   <object id="20" gid="136" x="160.271" y="288.035" width="32" height="32">
    <properties>
-    <property name="switch" value="north-west"/>
+    <property name="switch@" value="north-west"/>
    </properties>
   </object>
-  <object id="23" gid="71" x="160.607" y="223.489" width="32" height="32">
+  <object id="23" gid="71" x="159.607" y="224.489" width="32" height="32">
    <properties>
-    <property name="switched" value="north-west"/>
+    <property name="switch$" value="north-west"/>
    </properties>
   </object>
-  <object id="24" gid="71" x="544.703" y="318.065" width="32" height="32">
+  <object id="24" gid="71" x="543.703" y="320.065" width="32" height="32">
    <properties>
-    <property name="switched" value="east"/>
+    <property name="switch$" value="east"/>
    </properties>
   </object>
-  <object id="25" gid="71" x="544.703" y="351.843" width="32" height="32">
+  <object id="25" gid="71" x="543.703" y="351.843" width="32" height="32">
    <properties>
-    <property name="switched" value="east"/>
+    <property name="switch$" value="east"/>
    </properties>
   </object>
  </objectgroup>

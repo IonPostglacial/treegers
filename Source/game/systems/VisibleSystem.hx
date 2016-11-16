@@ -57,29 +57,37 @@ class VisibleSystem extends System implements TileObjectListener {
 	override public function addToEngine(engine:Engine) {
 		this.mapRenderer = new rendering.MapRenderer(this.stage.map);
 		this.stage.background.addChild(this.mapRenderer);
-		super.addToEngine(engine);
-		visibles = engine.getNodeList(VisibleNode);
-		healthies = engine.getNodeList(VisiblyHealthyNode);
-		visibles.nodeAdded.add(function (node:VisibleNode) {
+		function prepareHealthy (node:VisiblyHealthyNode) {
+			node.visible.sprite.addChild(createHealthSprite(node.health));
+		};
+		function prepareVisibles (node:VisibleNode) {
 			var pixPosition = stage.map.coordinates.toPixel(node.position);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			stage.foreground.addChild(node.visible.sprite);
 			node.visible.tile = this.mapRenderer.getTileForObjectId(node.visible.objectId);
+		};
+		healthies = engine.getNodeList(VisiblyHealthyNode);
+		for (node in healthies) {
+			prepareHealthy(node);
+		}
+		healthies.nodeAdded.add(prepareHealthy);
+		healthies.nodeRemoved.add(function (node:VisiblyHealthyNode) {
+			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("health"));
 		});
+		visibles = engine.getNodeList(VisibleNode);
+		for (node in visibles) {
+			prepareVisibles(node);
+		}
+		visibles.nodeAdded.add(prepareVisibles);
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
 			stage.foreground.removeChild(node.visible.sprite);
 			if (node.visible.tile != null) {
 				this.mapRenderer.removeTile(node.visible.tile);
 			}
 		});
-		healthies.nodeAdded.add(function (node:VisiblyHealthyNode) {
-			node.visible.sprite.addChild(createHealthSprite(node.health));
-		});
-		healthies.nodeRemoved.add(function (node:VisiblyHealthyNode) {
-			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("health"));
-		});
 		drawBackground();
+		super.addToEngine(engine);
 	}
 
 	inline function createHealthSprite(health:Health):Sprite {
@@ -87,6 +95,7 @@ class VisibleSystem extends System implements TileObjectListener {
 		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
 		healthSprite.graphics.beginFill(HEALTH_COLOR);
 		healthSprite.graphics.drawRect(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
+		healthSprite.graphics.endFill();
 		healthSprite.scrollRect = new openfl.geom.Rectangle(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
 		healthSprite.name = "health";
 
@@ -96,8 +105,9 @@ class VisibleSystem extends System implements TileObjectListener {
 
 	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
 		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
-		healthSprite.width = Math.floor(stage.map.tileWidth * (node.health.level / node.health.max));
-		healthSprite.graphics.endFill();
+		if (healthSprite != null) {
+			healthSprite.width = Math.floor(stage.map.tileWidth * (node.health.level / node.health.max));
+		}
 	}
 
 	function drawBackground() {

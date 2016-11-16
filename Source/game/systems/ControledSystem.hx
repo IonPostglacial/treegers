@@ -54,7 +54,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			this.hover.x = mousePoint.x;
 			this.hover.y = mousePoint.y;
 		});
-		for (groundGrid in stage.groundGrids) {
+		for (groundGrid in stage.ground.grids) {
 			this.pathfinders.push(new graph.Pathfinder(groundGrid));
 		}
 		super(ControledNode, updateNode);
@@ -94,7 +94,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			case PowerOrdered(goal): // TODO: implement it :p
 			}
 		}
-		switch (stage.ground(node.movement.vehicle).typeAt(node.position)) {
+		switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
 		case GroundType.Arrow(dx, dy):
 			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy), node.position];
 			node.controled.actions = [new Move(node.entity, newPath)];

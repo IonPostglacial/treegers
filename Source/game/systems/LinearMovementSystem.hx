@@ -32,7 +32,7 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
 		if (node.movement.ready) {
-			switch (stage.ground(node.movement.vehicle).typeAt(node.position)) {
+			switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
 			case GroundType.Arrow(dx, dy):
 				node.linearWalker.dx = dx;
 				node.linearWalker.dy = dy;
