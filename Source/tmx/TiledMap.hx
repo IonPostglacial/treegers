@@ -1,5 +1,7 @@
 package tmx;
 
+import Type;
+
 import geometry.CoordinatesSystem;
 import geometry.HexagonalCoordinates;
 import geometry.OrthogonalCoordinates;
@@ -49,22 +51,9 @@ class TiledMap {
 
 	public function loadFromXml(xml:Xml) {
 		var root = xml.firstElement();
-
-		version = root.defget("version", version);
-		orientation = root.defget("orientation", orientation);
-		renderOrder = root.defget("renderorder", renderOrder);
-		width = Std.parseInt(root.defget("width", "0"));
-		height = Std.parseInt(root.defget("height", "0"));
-		tileWidth = Std.parseInt(root.defget("tilewidth", "0"));
-		tileHeight = Std.parseInt(root.defget("tileheight", "0"));
+		root.fillObject(TiledMap, this);
 		effectiveTileWidth = tileWidth;
 		effectiveTileHeight = tileHeight;
-		hexSideLength = Std.parseInt(root.defget("hexsidelength", "0"));
-		staggerAxis = root.defget("staggeraxis", staggerAxis);
-		staggerIndex = root.defget("staggerindex", staggerIndex);
-		backgroundColor = Std.parseInt(root.defget("backgroundcolor", "0"));
-		var nextObjId = Std.parseInt(root.defget("nextobjectid", "").replace("#", "0x"));
-		nextObjectId = nextObjId != null ? nextObjId : 0;
 
 		switch (orientation) {
 			case Orientation.Hexagonal:

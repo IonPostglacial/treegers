@@ -23,25 +23,20 @@ class Tileset {
 	}
 
 	public function loadFromXml(xml:Xml) {
-		name = xml.defget("name", name);
-		source = xml.defget("source", source);
-		firstGid = Std.parseInt(xml.defget("firstgid", "0"));
-		tileWidth = Std.parseInt(xml.defget("tilewidth", "0"));
-		tileHeight = Std.parseInt(xml.defget("tileheight", "0"));
-		spacing = Std.parseInt(xml.defget("spacing", "0"));
-		margin = Std.parseInt(xml.defget("margin", "0"));
-		tileCount = Std.parseInt(xml.defget("tilecount", "0"));
-		columns = Std.parseInt(xml.defget("columns", "0"));
+		xml.fillObject(Tileset, this);
 		var imageElements = xml.elementsNamed('image');
 		for (imageElement in imageElements) {
-			var imagePath = imageElement.defget("source", "");
+			var imagePath = imageElement.get("source");
 			image = openfl.Assets.getBitmapData("assets/" + imagePath);
 		}
 		var tileElements = xml.elementsNamed('tile');
 		for (tileElement in tileElements) {
-			var tileTerrain = tileElement.defget("terrain", "").split(",").map(Std.parseInt);
-			var tileId = Std.parseInt(tileElement.get("id"));
-			this.terrains.set(firstGid + tileId, tileTerrain);
+			var rawTerrain = tileElement.get("terrain");
+			if (rawTerrain != null) {
+				var tileTerrain = rawTerrain.split(",").map(Std.parseInt);
+				var tileId = Std.parseInt(tileElement.get("id"));
+				this.terrains.set(firstGid + tileId, tileTerrain);
+			}
 		}
 	}
 }
