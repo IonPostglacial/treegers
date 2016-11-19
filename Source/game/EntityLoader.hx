@@ -46,18 +46,13 @@ class EntityLoader {
 		var switchedMap = new Map<String, Array<tmx.TileObject>>();
 		for (objectLayer in map.objectLayers) {
 			for (object in objectLayer.objects) {
-				var terrains = map.tilesets[0].terrains.get(object.gid);
-				var terrain = Terrain.Grass;
-				if (terrains != null) {
-					terrain = Terrain.createByIndex(terrains[0]);
-				}
-				switch (terrain) {
-				case Terrain.Button:
+				switch (object.type) {
+				case "Button":
 					var switchId = object.properties.get("switch@");
 					switchesMap.set(switchId, object);
-				case Terrain.RollingBall:
+				case "RollingBall":
 					engine.addEntity(rollingBallAt(object.id, object.coords));
-				case Terrain.Grunt:
+				case "Grunt":
 					engine.addEntity(gruntAt(object.id, object.coords));
 				default:
 					object.active = false;

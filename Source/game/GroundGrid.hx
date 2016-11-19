@@ -24,8 +24,8 @@ class GroundGrid implements Pathfindable<Coordinates> implements TileObjectListe
 		} else {
 			new OrthogonalMap(map.width, map.height);
 		}
-		for (coords in map.bgTiles.keys()) {
-			var tileType = map.bgTiles.get(coords);
+		for (coords in map.bg.tiles.keys()) {
+			var tileType = map.bg.tiles.get(coords);
 			var groundType = tileTypeToGroundType(tileType);
 			this.ground.set(coords, groundType);
 		}
@@ -89,7 +89,7 @@ class GroundGrid implements Pathfindable<Coordinates> implements TileObjectListe
 		if (active) {
 			tileType = tileObject.gid;
 		} else {
-			tileType = map.bgTiles.get(tileObject.coords);
+			tileType = map.bg.tiles.get(tileObject.coords);
 		}
 		this.ground.set(tileObject.coords, this.tileTypeToGroundType(tileType));
 	}

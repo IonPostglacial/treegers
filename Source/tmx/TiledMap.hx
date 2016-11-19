@@ -41,12 +41,12 @@ class TiledMap {
 
 	public var coordinates:CoordinatesSystem;
 	public var grid:Grid2D;
-	public var bgTiles(get,never):Map2D<Int>;
+	public var bg(get,never):TileLayer;
 
 	public function new() {}
 
-	public function get_bgTiles() {
-		return this.tileLayers[0].tiles;
+	public function get_bg() {
+		return this.tileLayers[0];
 	}
 
 	public function loadFromXml(xml:Xml) {
