@@ -7,6 +7,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Health;
 import game.components.Movement;
 import game.components.Position;
+import game.mapmanagement.GroundType;
 
 
 class HealthyNode extends Node<HealthyNode> {

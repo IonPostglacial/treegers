@@ -7,7 +7,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Movement;
 import game.components.LinearWalker;
 import game.components.Position;
-
+import game.mapmanagement.GroundType;
 
 
 class LinearWalkingNode extends Node<LinearWalkingNode> {

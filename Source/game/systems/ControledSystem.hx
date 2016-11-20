@@ -13,6 +13,8 @@ import game.components.Controled;
 import game.components.Movement;
 import game.components.Position;
 
+import game.mapmanagement.GroundType;
+
 import geometry.Coordinates;
 import geometry.Vector2D;
 

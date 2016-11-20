@@ -10,7 +10,7 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.TileObjectListener;
+import game.mapmanagement.TileObjectListener;
 import game.components.Health;
 import game.components.Visible;
 import game.components.Health;

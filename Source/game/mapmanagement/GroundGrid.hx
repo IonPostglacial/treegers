@@ -1,4 +1,4 @@
-package game;
+package game.mapmanagement;
 
 import graph.Pathfindable;
 import geometry.Coordinates;

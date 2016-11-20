@@ -18,6 +18,8 @@ import game.systems.PathMovementSystem;
 import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
 import game.systems.CollectSystem;
+import game.mapmanagement.GroundManager;
+import game.mapmanagement.TileObjectListener;
 
 
 class Stage {
@@ -27,6 +29,7 @@ class Stage {
 	public var foreground:Sprite;
 
 	var engine = new Engine();
+	var entityLoader = new EntityLoader();
 	var tickProvider:ITickProvider;
 
 	public function new(mapPath:String) {
@@ -38,7 +41,7 @@ class Stage {
 		this.map = new tmx.TiledMap();
 		this.map.loadFromXml(Xml.parse(mapXml));
 		this.ground = new GroundManager(this.map);
-		EntityLoader.loadFromMap(this.engine, this.map);
+		entityLoader.loadFromMap(this.engine, this.map);
 		loadSystems();
 	}
 

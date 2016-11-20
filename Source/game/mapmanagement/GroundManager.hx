@@ -1,4 +1,4 @@
-package game;
+package game.mapmanagement;
 
 class GroundManager {
 	public var grids(default,null):Array<GroundGrid> = [];

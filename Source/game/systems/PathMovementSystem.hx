@@ -6,6 +6,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Movement;
 import game.components.PathWalker;
 import game.components.Position;
+import game.mapmanagement.GroundType;
 
 
 class PathWalkingNode extends Node<PathWalkingNode> {
