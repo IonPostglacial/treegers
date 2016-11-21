@@ -3,7 +3,6 @@ package game;
 import ash.core.Engine;
 import ash.core.Entity;
 
-import game.components.Position;
 import game.components.Button;
 import game.components.Controled;
 import game.components.Visible;
@@ -12,15 +11,24 @@ import game.components.LinearWalker;
 import game.components.Movement;
 import game.components.Position;
 import game.components.Collectible;
+import game.components.OwningComponent;
 
 import game.mapmanagement.Vehicle;
 
 import geometry.Coordinates;
 
 class EntityLoader {
+	static inline var RELATED_COMPONENT_SIGIL = "=";
+	static inline var COMPONENT_RELATION_SEPARATOR = ":";
 	var entityBuilders = new Map<String, Int->Coordinates->Entity>();
 
 	public function new() {
+		this.entityBuilders.set("Button", function (id:Int, coordinates:Coordinates):Entity {
+			return new Entity()
+			.add(new Position(coordinates.x, coordinates.y))
+			.add(new Visible(id))
+			.add(new Button(false));
+		});
 		this.entityBuilders.set("Grunt", function (id:Int, coordinates:Coordinates):Entity {
 			return new Entity()
 			.add(new Position(coordinates.x, coordinates.y))
@@ -39,45 +47,60 @@ class EntityLoader {
 		});
 	}
 
-	function makeButton(id:Int, coordinates:Coordinates, switched:Array<tmx.TileObject>):Entity {
-		return new Entity()
-		.add(new Position(coordinates.x, coordinates.y))
-		.add(new Visible(id))
-		.add(new Button(false, switched));
-	}
-
 	public function loadFromMap(engine:Engine, map:tmx.TiledMap) {
-		var switchesMap = new Map<String, tmx.TileObject>();
-		var switchedMap = new Map<String, Array<tmx.TileObject>>();
+		var objectsById = new Map<Int, Entity>();
+		var relationsByObjectsId = new Map<Int, Map<String, Array<tmx.TileObject>>>();
 		for (objectLayer in map.objectLayers) {
 			for (object in objectLayer.objects) {
-				if (object.type == "Button") {
-					var switchId = object.properties.get("switch@");
-					switchesMap.set(switchId, object);
-				} else if (object.type == "") {
-					object.active = false;
-					var switchId = object.properties.get("switch$");
-					if (switchId != null) {
-						var switchedObjects = switchedMap.get(switchId);
-						if (switchedObjects == null) switchedObjects = [];
-						switchedObjects.push(object);
-						switchedMap.set(switchId, switchedObjects);
-					}
+				var builderFunction = this.entityBuilders.get(object.type);
+				if (builderFunction != null) {
+					var entity = builderFunction(object.id, object.coords);
+					engine.addEntity(entity);
+					objectsById.set(object.id, entity);
 				} else {
-					var builderFunction = this.entityBuilders.get(object.type);
-					if (builderFunction != null) {
-						engine.addEntity(builderFunction(object.id, object.coords));
+					object.active = false;
+				}
+				for (property in object.properties.keys()) {
+					if (property.charAt(0) != RELATED_COMPONENT_SIGIL) {
+						continue; // TODO : we will want to overload components presets
 					}
+					var ownerId = Std.parseInt(object.properties.get(property));
+					if (ownerId == null) {
+						continue; // TODO: maybe add a warning
+					}
+					var ownerRelations = relationsByObjectsId.get(ownerId);
+					if (ownerRelations == null) ownerRelations = new Map();
+
+					var ownedObjects = ownerRelations.get(property);
+					if (ownedObjects == null) ownedObjects = [];
+
+					ownedObjects.push(object);
+					ownerRelations.set(property, ownedObjects);
+					relationsByObjectsId.set(ownerId, ownerRelations);
 				}
 			}
 		}
-		for (switchId in switchesMap.keys()) {
-			var switchObject = switchesMap.get(switchId);
-			var switchedObjects = switchedMap.get(switchId);
-			if (switchedObjects == null) {
-				switchedObjects = [];
+		for (ownerId in objectsById.keys()) {
+			var owner = objectsById.get(ownerId);
+			var ownedRelations = relationsByObjectsId.get(ownerId);
+			if (owner == null || ownedRelations == null) {
+				continue; // TODO: maybe add a warning if relations have no owner
 			}
-			engine.addEntity(makeButton(switchObject.id, switchObject.coords, switchedObjects));
+			for (relation in ownedRelations.keys()) {
+				var componentRelation = relation.split(COMPONENT_RELATION_SEPARATOR);
+				if (componentRelation.length != 2 || componentRelation[0].length == 0) {
+					continue; // TODO: maybe add a warning
+				}
+				var componentName = componentRelation[0].substr(1);
+				var componentClass = Type.resolveClass("game.components." + componentName);
+				var component = owner.get(componentClass);
+				if (!Std.is(component, OwningComponent)) {
+					continue; // TODO: maybe add a warning
+				}
+				for (object in ownedRelations.get(relation)) {
+					component.addRelatedObject(componentRelation[1], object);
+				}
+			}
 		}
 	}
 }

@@ -126,17 +126,17 @@
   </object>
   <object id="23" gid="71" x="159.607" y="224.489" width="32" height="32">
    <properties>
-    <property name="switch$" value="north-west"/>
+    <property name="=Button:linked-tile" value="20"/>
    </properties>
   </object>
   <object id="24" gid="71" x="543.703" y="320.065" width="32" height="32">
    <properties>
-    <property name="switch$" value="east"/>
+    <property name="=Button:linked-tile" value="19"/>
    </properties>
   </object>
   <object id="25" gid="71" x="543.703" y="351.843" width="32" height="32">
    <properties>
-    <property name="switch$" value="east"/>
+    <property name="=Button:linked-tile" value="19"/>
    </properties>
   </object>
  </objectgroup>
