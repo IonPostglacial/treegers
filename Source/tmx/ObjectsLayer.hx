@@ -2,8 +2,6 @@ package tmx;
 
 import geometry.CoordinatesSystem;
 
-using tmx.XmlDef;
-
 
 class ObjectsLayer extends Layer {
 	public var objects(default,null):Array<TileObject> = [];
@@ -19,7 +17,7 @@ class ObjectsLayer extends Layer {
 		var objectElements = xml.elementsNamed("object");
 		for (objectElement in objectElements) {
 			var object = new TileObject();
-			objectElement.fillObject(TileObject, object);
+			ObjectExt.fromMap(objectElement, TileObject, object);
 			object.coords = this.coordinates.fromPixel(new geometry.Vector2D(object.x + object.width / 2, object.y - object.height / 2));
 			for (element in objectElement.elements()) {
 				if (element.nodeName == "properties") {

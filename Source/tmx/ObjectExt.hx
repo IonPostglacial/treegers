@@ -2,9 +2,13 @@ package tmx;
 
 import Type;
 
+typedef StringReadOnlyMap = {
+	function get(str:String):String;
+}
 
-class XmlDef {
-	public static function fillObject<T>(xml:Xml, c:Class<T>, object:T) {
+
+class ObjectExt {
+	public static function fromMap<T>(xml:StringReadOnlyMap, c:Class<T>, object:T) {
 		for (field in Type.getInstanceFields(c)) {
 			var currentFieldValue = Reflect.field(object, field);
 			var newFieldValue:Dynamic = null;

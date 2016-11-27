@@ -1,8 +1,5 @@
 package tmx;
 
-using tmx.XmlDef;
-
-
 class Tileset {
 	public var firstGid:Int = 0;
 	public var source:String = "";
@@ -23,7 +20,7 @@ class Tileset {
 	}
 
 	public function loadFromXml(xml:Xml) {
-		xml.fillObject(Tileset, this);
+		ObjectExt.fromMap(xml, Tileset, this);
 		var imageElements = xml.elementsNamed('image');
 		for (imageElement in imageElements) {
 			var imagePath = imageElement.get("source");

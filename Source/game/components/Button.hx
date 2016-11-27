@@ -6,7 +6,7 @@ import haxe.ds.Vector;
 class Button implements OwningComponent {
 	public var isPressed:Bool = false;
 	public var triggered:Bool = false;
-	public var isToggle:Bool;
+	public var isToggle:Bool = false;
 	public var affectedTiles:Array<tmx.TileObject> = [];
 
 	public function new(isToggle) {

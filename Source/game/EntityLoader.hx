@@ -19,6 +19,7 @@ import geometry.Coordinates;
 
 class EntityLoader {
 	static inline var RELATED_COMPONENT_SIGIL = "=";
+	static inline var ADD_COMPONENT_SIGIL = "+";
 	static inline var COMPONENT_RELATION_SEPARATOR = ":";
 	var entityBuilders = new Map<String, Int->Coordinates->Entity>();
 
@@ -47,36 +48,67 @@ class EntityLoader {
 		});
 	}
 
+	function addObjectRelation(relationsByObjectsId:Map<Int, Map<String, Array<tmx.TileObject>>>, propertyName:String, owned:tmx.TileObject) {
+		var ownerId = Std.parseInt(owned.properties.get(propertyName));
+		if (ownerId == null) {
+			return; // TODO: maybe add a warning
+		}
+		var ownerRelations = relationsByObjectsId.get(ownerId);
+		if (ownerRelations == null) ownerRelations = new Map();
+
+		var ownedObjects = ownerRelations.get(propertyName);
+		if (ownedObjects == null) ownedObjects = [];
+
+		ownedObjects.push(owned);
+		ownerRelations.set(propertyName, ownedObjects);
+		relationsByObjectsId.set(ownerId, ownerRelations);
+	}
+
 	public function loadFromMap(engine:Engine, map:tmx.TiledMap) {
 		var objectsById = new Map<Int, Entity>();
 		var relationsByObjectsId = new Map<Int, Map<String, Array<tmx.TileObject>>>();
 		for (objectLayer in map.objectLayers) {
 			for (object in objectLayer.objects) {
 				var builderFunction = this.entityBuilders.get(object.type);
+				var entity:Null<Entity> = null;
 				if (builderFunction != null) {
-					var entity = builderFunction(object.id, object.coords);
+					entity = builderFunction(object.id, object.coords);
 					engine.addEntity(entity);
 					objectsById.set(object.id, entity);
 				} else {
 					object.active = false;
 				}
 				for (property in object.properties.keys()) {
-					if (property.charAt(0) != RELATED_COMPONENT_SIGIL) {
-						continue; // TODO : we will want to overload components presets
+					switch(property.charAt(0)) {
+					case RELATED_COMPONENT_SIGIL:
+						addObjectRelation(relationsByObjectsId, property, object);
+					case ADD_COMPONENT_SIGIL:
+						// override components preset
+						if (entity == null) {
+							continue; // TODO: add a warning
+						}
+						var componentName = property.substr(1);
+						var componentClass = Type.resolveClass("game.components." + componentName);
+						var component = entity.get(componentClass);
+						if (component == null) {
+							// create empty component
+							component = Type.createEmptyInstance(componentClass);
+						}
+						var propsArray = object.properties.get(property).split(",");
+						var componentProperties = new Map<String,String>();
+						for (propVal in propsArray) {
+							var propValArray = propVal.split(":");
+							if (propValArray.length != 2) {
+								continue; // TODO: add a warning
+							}
+							componentProperties.set(propValArray[0], propValArray[1]);
+						}
+						tmx.ObjectExt.fromMap(componentProperties, componentClass, component);
+						trace(componentProperties);
+						trace(component);
+					default:
+						// pass
 					}
-					var ownerId = Std.parseInt(object.properties.get(property));
-					if (ownerId == null) {
-						continue; // TODO: maybe add a warning
-					}
-					var ownerRelations = relationsByObjectsId.get(ownerId);
-					if (ownerRelations == null) ownerRelations = new Map();
-
-					var ownedObjects = ownerRelations.get(property);
-					if (ownedObjects == null) ownedObjects = [];
-
-					ownedObjects.push(object);
-					ownerRelations.set(property, ownedObjects);
-					relationsByObjectsId.set(ownerId, ownerRelations);
 				}
 			}
 		}

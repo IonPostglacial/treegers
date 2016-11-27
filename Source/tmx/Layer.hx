@@ -1,8 +1,5 @@
 package tmx;
 
-using tmx.XmlDef;
-
-
 class Layer {
 	public var name:String = "<unnamed>";
 	public var opacity:Float = 1.0;
@@ -21,6 +18,6 @@ class Layer {
 	}
 
 	public function loadFromXml(xml:Xml) {
-		xml.fillObject(Layer, this);
+		ObjectExt.fromMap(xml, Layer, this);
 	}
 }

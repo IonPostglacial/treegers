@@ -11,7 +11,7 @@ import geometry.OrthogonalGrid;
 import geometry.Map2D;
 
 using StringTools;
-using tmx.XmlDef;
+
 
 typedef XmlLoadable = {
 	function loadFromXml(xml:Xml):Void;
@@ -51,7 +51,7 @@ class TiledMap {
 
 	public function loadFromXml(xml:Xml) {
 		var root = xml.firstElement();
-		root.fillObject(TiledMap, this);
+		ObjectExt.fromMap(root, TiledMap, this);
 		effectiveTileWidth = tileWidth;
 		effectiveTileHeight = tileHeight;
 

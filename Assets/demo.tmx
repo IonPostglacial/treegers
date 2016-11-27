@@ -114,16 +114,8 @@
  <objectgroup name="Ground Entities">
   <object id="1" gid="33" x="608" y="96" width="32" height="32"/>
   <object id="2" gid="33" x="607" y="158" width="32" height="32"/>
-  <object id="19" type="Button" gid="136" x="95.1048" y="383.306" width="32" height="32">
-   <properties>
-    <property name="switch@" value="east"/>
-   </properties>
-  </object>
-  <object id="20" type="Button" gid="136" x="160.271" y="288.035" width="32" height="32">
-   <properties>
-    <property name="switch@" value="north-west"/>
-   </properties>
-  </object>
+  <object id="19" type="Button" gid="136" x="95.1048" y="383.306" width="32" height="32"/>
+  <object id="20" type="Button" gid="136" x="160.271" y="288.035" width="32" height="32"/>
   <object id="23" gid="71" x="159.607" y="224.489" width="32" height="32">
    <properties>
     <property name="=Button:linked-tile" value="20"/>
@@ -143,6 +135,10 @@
  <objectgroup name="Entities">
   <object id="5" type="Grunt" gid="107" x="65" y="95" width="32" height="32"/>
   <object id="3" type="RollingBall" gid="121" x="94" y="284" width="32" height="32"/>
-  <object id="4" type="RollingBall" gid="121" x="96" y="347" width="32" height="32"/>
+  <object id="4" type="RollingBall" gid="121" x="96" y="347" width="32" height="32">
+   <properties>
+    <property name="+LinearWalker" value="dx:0,dy:1"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>
