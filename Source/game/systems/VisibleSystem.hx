@@ -86,7 +86,6 @@ class VisibleSystem extends System implements TileObjectListener {
 				this.mapRenderer.removeTile(node.visible.tile);
 			}
 		});
-		drawBackground();
 		super.addToEngine(engine);
 	}
 
@@ -104,16 +103,12 @@ class VisibleSystem extends System implements TileObjectListener {
 	}
 
 	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
-		var healthSprite = cast (node.visible.sprite.getChildByName("health"), Sprite);
+		var healthSprite = node.visible.sprite.getChildByName("health");
 		if (healthSprite != null) {
-			healthSprite.width = Math.floor(stage.map.tileWidth * (node.health.level / node.health.max));
+			var newWidth = Math.floor(stage.map.tileWidth * (node.health.level / node.health.max));
+			if (healthSprite.width != newWidth) {
+				healthSprite.width = newWidth;
+			}
 		}
-	}
-
-	function drawBackground() {
-		stage.background.graphics.beginFill(0x000000);
-		stage.background.graphics.lineStyle(0, 0x000000);
-		stage.background.graphics.drawRect(0, 0, stage.background.width, stage.background.height);
-		stage.background.graphics.endFill();
 	}
 }

@@ -21,7 +21,7 @@ class MapRenderer extends Tilemap {
 	public function new(map:TiledMap) {
 		this.map = map;
 		tileset = new Tileset(map.tilesets[0].image);
-		super(openfl.Lib.current.stage.stageWidth, openfl.Lib.current.stage.stageHeight, tileset);
+		super(map.effectiveTileWidth * map.width, map.effectiveTileHeight * map.height, tileset);
 		loadTilesets(map);
 		loadTileLayer(map);
 		loadObjectsLayer(map);

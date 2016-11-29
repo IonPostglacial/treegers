@@ -2,6 +2,7 @@ package game.systems;
 
 import openfl.display.Sprite;
 
+import ash.core.Engine;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
@@ -32,14 +33,15 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		return selection;
 	}
 
+	override public function addToEngine(engine:Engine) {
+		this.nodeAddedFunction = function (node) {
+			node.visible.sprite.addChildAt(createSelectionSprite(), 0);
+		};
+		super.addToEngine(engine);
+	}
+
 	function updateNode(node:VisiblyControledNode, deltaTime:Float) {
 		var selection = node.visible.sprite.getChildByName("selection");
-		if (node.controled.selected) {
-			if (selection == null) {
-				node.visible.sprite.addChildAt(createSelectionSprite(), 0);
-			}
-		} else if (selection != null) {
-			node.visible.sprite.removeChild(selection);
-		}
+		selection.visible = node.controled.selected;
 	}
 }
