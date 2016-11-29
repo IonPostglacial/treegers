@@ -104,8 +104,6 @@ class EntityLoader {
 							componentProperties.set(propValArray[0], propValArray[1]);
 						}
 						tmx.ObjectExt.fromMap(componentProperties, componentClass, component);
-						trace(componentProperties);
-						trace(component);
 					default:
 						// pass
 					}
