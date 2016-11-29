@@ -10,7 +10,7 @@ import geometry.Coordinates;
 
 class Move implements Action {
 	public var done(get, never):Bool;
-	public var path:Array<Coordinates>;
+	var path:Array<Coordinates>;
 	var entity:Entity;
 
 	public function new(entity, path) {
