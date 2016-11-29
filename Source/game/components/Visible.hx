@@ -9,7 +9,7 @@ import openfl.display.Tile;
 class Visible {
 	public var objectId:Int;
 	public var sprite(default, null):Sprite;
-	public var tile:Null<Tile>;
+	public var tile:Null<Tile> = null;
 
 	public function new(objectId:Int) {
 		this.sprite = new Sprite();

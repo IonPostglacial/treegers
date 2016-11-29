@@ -47,8 +47,7 @@ class CollectSystem extends System {
 		for (collectible in collectibles) {
 			for (mover in movers) {
 				if (mover.entity != collectible.entity && mover.position.equals(collectible.position)) {
-					switch (collectible.collectible.effectDuration) {
-					case Some(time):
+					if (collectible.collectible.effectDuration != null) {
 						var backup = [];
 						for (component in collectible.collectible.components) {
 							var oldComponent = mover.entity.get(Type.getClass(component));
@@ -56,8 +55,7 @@ class CollectSystem extends System {
 								backup.push(oldComponent);
 							}
 						}
-						mover.entity.add(new Collector(backup, time));
-					default: // Nothing to do
+						mover.entity.add(new Collector(backup, collectible.collectible.effectDuration));
 					}
 					for (component in collectible.collectible.components) {
 						mover.entity.add(component);

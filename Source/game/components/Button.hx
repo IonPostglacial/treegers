@@ -1,7 +1,5 @@
 package game.components;
 
-import haxe.ds.Vector;
-
 
 class Button implements OwningComponent {
 	public var isPressed:Bool = false;
