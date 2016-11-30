@@ -83,6 +83,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	}
 
 	function updateNode(node:ControledNode, deltaTime:Float) {
+		node.controled.selectedThisRound = false;
 		for (event in events) {
 			switch (event) {
 			case MovementOrdered(goal):
@@ -92,6 +93,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				}
 			case TargetSelected(position):
 				node.controled.selected = !node.controled.selected && node.position.equals(position);
+				node.controled.selectedThisRound = true;
 			case GroupSelected(area): // TODO: implement it :p
 			case PowerOrdered(goal): // TODO: implement it :p
 			}

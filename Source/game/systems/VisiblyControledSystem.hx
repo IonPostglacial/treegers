@@ -28,6 +28,7 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 	inline function createSelectionSprite():Sprite {
 		var selection = new Sprite();
 		selection.name = "selection";
+		selection.visible = false;
 		selection.graphics.lineStyle(2, 0xFFFF00);
 		selection.graphics.drawRect(0, 0, stage.map.effectiveTileWidth, stage.map.effectiveTileHeight);
 		return selection;
@@ -41,7 +42,9 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 	}
 
 	function updateNode(node:VisiblyControledNode, deltaTime:Float) {
-		var selection = node.visible.sprite.getChildByName("selection");
-		selection.visible = node.controled.selected;
+		if (node.controled.selectedThisRound) {
+			var selection = node.visible.sprite.getChildByName("selection");
+			selection.visible = node.controled.selected;
+		}
 	}
 }

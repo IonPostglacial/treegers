@@ -36,7 +36,7 @@ class VisibleSystem extends System implements TileObjectListener {
 	var mapRenderer(default,null):rendering.MapRenderer;
 
 	static var HEALTH_COLOR = 0x00FF00;
-	static var GAUGE_LHEIGHT = 2;
+	static var GAUGE_LHEIGHT = 1;
 	static var GAUGE_HEIGHT = 5;
 
 	public function new(stage:Stage) {
@@ -91,11 +91,12 @@ class VisibleSystem extends System implements TileObjectListener {
 
 	inline function createHealthSprite(health:Health):Sprite {
 		var healthSprite = new Sprite();
-		healthSprite.graphics.lineStyle(GAUGE_LHEIGHT, 0x000000);
-		healthSprite.graphics.beginFill(HEALTH_COLOR);
+		healthSprite.graphics.beginFill(0x000000);
 		healthSprite.graphics.drawRect(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
 		healthSprite.graphics.endFill();
-		healthSprite.scrollRect = new openfl.geom.Rectangle(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
+		healthSprite.graphics.beginFill(HEALTH_COLOR);
+		healthSprite.graphics.drawRect(GAUGE_LHEIGHT, GAUGE_LHEIGHT, stage.map.tileWidth - 2 * GAUGE_LHEIGHT, GAUGE_HEIGHT - 2 * GAUGE_LHEIGHT);
+		healthSprite.graphics.endFill();
 		healthSprite.name = "health";
 
 		healthSprite.y -= 2 * GAUGE_HEIGHT;
@@ -103,12 +104,12 @@ class VisibleSystem extends System implements TileObjectListener {
 	}
 
 	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
-		var healthSprite = node.visible.sprite.getChildByName("health");
-		if (healthSprite != null) {
+		if (node.health.changedThisRound) {
+			var healthSprite = cast(node.visible.sprite.getChildByName("health"), Sprite);
 			var newWidth = Math.floor(stage.map.tileWidth * (node.health.level / node.health.max));
-			if (healthSprite.width != newWidth) {
-				healthSprite.width = newWidth;
-			}
+			healthSprite.graphics.beginFill(0x000000);
+			healthSprite.graphics.drawRect(newWidth, 0, stage.map.tileWidth - newWidth, GAUGE_HEIGHT);
+			healthSprite.graphics.endFill();
 		}
 	}
 }
