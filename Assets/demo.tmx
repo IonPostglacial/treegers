@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" nextobjectid="26">
- <tileset firstgid="1" name="BFS Tileset" tilewidth="32" tileheight="32" tilecount="300">
-  <image source="bfs-tileset.png" width="480" height="640"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="64" tileheight="64" nextobjectid="15">
+ <tileset firstgid="1" name="BFS Tileset" tilewidth="64" tileheight="64" tilecount="300">
+  <image source="bfs-tileset.png" width="960" height="1280"/>
   <terraintypes>
    <terrain name="Water" tile="0"/>
    <terrain name="Grass" tile="17"/>
@@ -108,36 +108,36 @@
  </tileset>
  <layer name="Ground" width="25" height="20">
   <data encoding="base64" compression="zlib">
-   eJztk1sLgkAQhdeSqCBIKro8VJBQEaRdqKAowQqCLv//33SElYbNXXcN6qWHD1eZmeOZmbUYY9YXyIG8BFsSayvyxZyIHihIGEhia6AOqsDh3/qSnKwasY6jkWOqMQVeQpyf4iPKOxDK5BxI4j2hfnyegXlCThZk3pM8JO3FmWXbE1+hEcVfJf9147MVdfYGvaX9vYMGKBLa7LVDKl8m/XVBEwz5syVolhT90NUIwZLX74AKoQtGgic6vzR/dIYu9zEGE7AFF7DjGrp3SaWx4F42pPYKHMHpQ40HiQ95zZg1e99T+q5z98S7bkpgMPs/v+UJIG4Zow==
+   eJzt0z0LwkAMBuBUC34sigrqpFQHJ6mKuFkH6eIX+P9/jG8hgajncXftojg8cEv7XpJLRETRj6lB3dPAM2MCV2hAE1pwhx6bqrOYBWQU381hCCPOkf+lBmUyOnDinDGsIDNYl8jYKgu+b9cwjzgg4wYbOCo7zpA7JCxkHkuuv/2hJ68ZSUCGS50pPb+BqjOkTl2r78xlB/OAWdrIW4lVvwt9su93Tu67Lj2Wd3Om9122uTjMZK/6Kmdfh4rn/vf9HoRjFw8=
   </data>
  </layer>
  <objectgroup name="Ground Entities">
-  <object id="1" gid="33" x="608" y="96" width="32" height="32"/>
-  <object id="2" gid="33" x="607" y="158" width="32" height="32"/>
-  <object id="19" type="Button" gid="136" x="95.1048" y="383.306" width="32" height="32"/>
-  <object id="20" type="Button" gid="136" x="160.271" y="288.035" width="32" height="32"/>
-  <object id="23" gid="71" x="159.607" y="224.489" width="32" height="32">
+  <object id="1" type="Button" gid="136" x="704" y="896" width="64" height="64"/>
+  <object id="2" type="Button" gid="136" x="256" y="384" width="64" height="64"/>
+  <object id="7" gid="71" x="320" y="640" width="64" height="64">
    <properties>
-    <property name="=Button:linked-tile" value="20"/>
+    <property name="=Button:linked-tile" value="2"/>
    </properties>
   </object>
-  <object id="24" gid="71" x="543.703" y="320.065" width="32" height="32">
+  <object id="8" gid="71" x="320" y="704" width="64" height="64">
    <properties>
-    <property name="=Button:linked-tile" value="19"/>
+    <property name="=Button:linked-tile" value="2"/>
    </properties>
   </object>
-  <object id="25" gid="71" x="543.703" y="351.843" width="32" height="32">
+  <object id="9" gid="33" x="704" y="256" width="64" height="64"/>
+  <object id="10" gid="71" x="896" y="768" width="64" height="64">
    <properties>
-    <property name="=Button:linked-tile" value="19"/>
+    <property name="=Button:linked-tile" value="1"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="Entities">
-  <object id="5" type="Grunt" gid="107" x="65" y="95" width="32" height="32"/>
-  <object id="3" type="RollingBall" gid="121" x="94" y="284" width="32" height="32"/>
-  <object id="4" type="RollingBall" gid="121" x="96" y="347" width="32" height="32">
+  <object id="11" type="Grunt" gid="107" x="320" y="320" width="64" height="64"/>
+  <object id="12" type="Grunt" gid="106" x="960" y="576" width="64" height="64"/>
+  <object id="13" type="RollingBall" gid="121" x="960" y="896" width="64" height="64"/>
+  <object id="14" type="RollingBall" gid="121" x="256" y="448" width="64" height="64">
    <properties>
-    <property name="+LinearWalker" value="dx:0,dy:1"/>
+    <property name="+LinearWalker" value="dx:0,dy:-1"/>
    </properties>
   </object>
  </objectgroup>
