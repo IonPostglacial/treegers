@@ -5,17 +5,15 @@
  */
 package;
 
-import openfl.display.Sprite;
 
 import game.Stage;
 
 
-class Main extends Sprite {
+class Main {
 	var game:Stage;
 
 	public function new() {
-		super();
-		game = new Stage("demo.tmx");
+		game = new Stage("demo.tmx", 800, 600);
 		game.start();
 	}
 }

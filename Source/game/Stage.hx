@@ -27,16 +27,19 @@ class Stage {
 	public var ground(default,null):GroundManager;
 	public var background:Sprite;
 	public var foreground:Sprite;
+	public var camera(default,null):openfl.geom.Rectangle;
 
 	var engine = new Engine();
 	var entityLoader = new EntityLoader();
 	var tickProvider:ITickProvider;
 
-	public function new(mapPath:String) {
+	public function new(mapPath:String, width:Int, height:Int) {
 		this.background = new Sprite();
 		this.foreground = new Sprite();
+		openfl.Lib.current.scrollRect = new openfl.geom.Rectangle(0, 0, width, height);
 		openfl.Lib.current.addChild(this.background);
 		openfl.Lib.current.addChild(this.foreground);
+		this.camera = openfl.Lib.current.scrollRect;
 		var mapXml = openfl.Assets.getText("assets/" + mapPath);
 		this.map = new tmx.TiledMap();
 		this.map.loadFromXml(Xml.parse(mapXml));

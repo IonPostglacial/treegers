@@ -38,6 +38,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var events:Array<Order>;
 	var pointedCoords:Coordinates;
 	var pathfinders:Array<graph.Pathfinder<Coordinates>> = [];
+	static var SCROLL_MARGIN = 64;
+	static var SCROLL_SPEED = 8;
 
 	public function new(stage:Stage) {
 		this.stage = stage;
@@ -47,11 +49,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.hover.graphics.drawRect(0, 0, stage.map.effectiveTileWidth, stage.map.effectiveTileHeight);
 		this.stage.foreground.addChild(this.hover);
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
-			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX, e.stageY));
+			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX + stage.camera.x, e.stageY + stage.camera.y));
 			pointedCoords = mousePosition;
 		});
 		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
-			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX, e.stageY));
+			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX + stage.camera.x, e.stageY + stage.camera.y));
 			var mousePoint = stage.map.coordinates.toPixel(mousePosition);
 			this.hover.x = mousePoint.x;
 			this.hover.y = mousePoint.y;
@@ -63,6 +65,24 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	}
 
 	override function update(deltaTime:Float) {
+		var relativeX = Lib.current.mouseX - stage.camera.x;
+		var relativeY = Lib.current.mouseY - stage.camera.y;
+		var maxX = Lib.current.width - stage.camera.width;
+		var maxY = Lib.current.height - stage.camera.height;
+
+		if (relativeX < SCROLL_MARGIN) {
+			stage.camera.x = Math.max(stage.camera.x - SCROLL_SPEED, 0);
+		}
+		if (relativeX > stage.camera.width - SCROLL_MARGIN) {
+			stage.camera.x = Math.min(stage.camera.x + SCROLL_SPEED, maxX);
+		}
+		if (relativeY < SCROLL_MARGIN) {
+			stage.camera.y = Math.max(stage.camera.y - SCROLL_SPEED, 0);
+		}
+		if (relativeY > stage.camera.height - SCROLL_MARGIN) {
+			stage.camera.y = Math.min(stage.camera.y + SCROLL_SPEED, maxY);
+		}
+		Lib.current.scrollRect = stage.camera;
 		if (pointedCoords != null) {
 			var targetSelected = false;
 			for (node in nodeList) {
