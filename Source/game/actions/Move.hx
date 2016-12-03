@@ -29,6 +29,8 @@ class Move implements Action {
 		if (walker != null && walker.path.length == 0) {
 			entity.remove(PathWalker);
 		}
-		entity.add(new PathWalker(path));
+		var newWalker = new PathWalker();
+		newWalker.path = path;
+		entity.add(newWalker);
 	}
 }

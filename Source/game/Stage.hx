@@ -10,6 +10,7 @@ import ash.core.System;
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
 import game.systems.VisibleSystem;
+import game.systems.VisibleWithGaugeSystem;
 import game.systems.VisiblyControledSystem;
 import game.systems.VisiblyMovingSystem;
 import game.systems.HealthSystem;
@@ -18,6 +19,7 @@ import game.systems.PathMovementSystem;
 import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
 import game.systems.CollectSystem;
+import game.systems.ManaSystem;
 import game.mapmanagement.GroundManager;
 import game.mapmanagement.TileObjectListener;
 
@@ -58,12 +60,14 @@ class Stage {
 		addSystem(new ControledSystem(this), 1);
 		addSystem(new ActionSystem(this), 2);
 		addSystem(new HealthSystem(this), 2);
+		addSystem(new ManaSystem(this), 2);
 		addSystem(new LinearMovementSystem(this), 2);
 		addSystem(new PathMovementSystem(this), 2);
 		addSystem(new MovementSystem(this), 2);
 		addSystem(new ButtonSystem(this), 2);
 		addSystem(new CollectSystem(this), 2);
 		addSystem(new VisibleSystem(this), 3);
+		addSystem(new VisibleWithGaugeSystem(this), 4);
 		addSystem(new VisiblyMovingSystem(this), 4);
 		addSystem(new VisiblyControledSystem(this), 4);
 	}

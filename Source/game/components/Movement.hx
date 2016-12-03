@@ -5,19 +5,14 @@ import game.mapmanagement.Vehicle;
 
 
 class Movement {
-	public var vehicle:Vehicle;
-	public var period:Float;
-	public var oldPosition(default, set):Coordinates;
+	public var vehicle:Vehicle = Vehicle.Foot;
+	public var period:Float = 0.5;
+	public var oldPosition(default, set):Coordinates = null;
 	public var delta(get, never):Float;
 	public var ready(get, never):Bool;
-	var timeSinceLastMove:Float;
+	var timeSinceLastMove:Float = 0;
 
-	public function new(vehicle, period) {
-		this.vehicle = vehicle;
-		this.period = period;
-		this.timeSinceLastMove = 0;
-		this.oldPosition = null;
-	}
+	public function new() {}
 
 	public function get_ready():Bool {
 		return timeSinceLastMove >= period;

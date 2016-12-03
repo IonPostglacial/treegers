@@ -21,30 +21,26 @@ class EntityLoader {
 	static inline var RELATED_COMPONENT_SIGIL = "=";
 	static inline var ADD_COMPONENT_SIGIL = "+";
 	static inline var COMPONENT_RELATION_SEPARATOR = ":";
-	var entityBuilders = new Map<String, Int->Coordinates->Entity>();
+	var entityBuilders = new Map<String, Entity->Int->Coordinates->Void>();
 
 	public function new() {
-		this.entityBuilders.set("Button", function (id:Int, coordinates:Coordinates):Entity {
-			return new Entity()
-			.add(new Position(coordinates.x, coordinates.y))
-			.add(new Visible(id))
-			.add(new Button(false));
+		this.entityBuilders.set("Button", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+			entity.add(new Button());
 		});
-		this.entityBuilders.set("Grunt", function (id:Int, coordinates:Coordinates):Entity {
-			return new Entity()
-			.add(new Position(coordinates.x, coordinates.y))
-			.add(new Health(100, 100, 2))
-			.add(new Visible(id))
-			.add(new Movement(Vehicle.Foot, 0.5))
+		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+			var health = new Health();
+			entity.add(health)
+			.add(new Movement())
 			.add(new Controled());
 		});
-		this.entityBuilders.set("RollingBall", function (id:Int, coordinates:Coordinates):Entity {
-			return new Entity()
-			.add(new Position(coordinates.x, coordinates.y))
-			.add(new Visible(id))
-			.add(new Collectible([new Health(0, 100, 2)]))
-			.add(new Movement(Vehicle.Foot, 0.5))
-			.add(new LinearWalker(1, 0));
+		this.entityBuilders.set("RollingBall", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+			var health = new Health();
+			health.level = 0;
+			var collectible = new Collectible();
+			collectible.components = [health];
+			entity.add(collectible)
+			.add(new Movement())
+			.add(new LinearWalker());
 		});
 	}
 
@@ -72,7 +68,10 @@ class EntityLoader {
 				var builderFunction = this.entityBuilders.get(object.type);
 				var entity:Null<Entity> = null;
 				if (builderFunction != null) {
-					entity = builderFunction(object.id, object.coords);
+					entity = new Entity()
+						.add(new Position(object.coords.x, object.coords.y))
+						.add(new Visible(object.id));
+					builderFunction(entity, object.id, object.coords);
 					engine.addEntity(entity);
 					objectsById.set(object.id, entity);
 				} else {
@@ -92,7 +91,8 @@ class EntityLoader {
 						var component = entity.get(componentClass);
 						if (component == null) {
 							// create empty component
-							component = Type.createEmptyInstance(componentClass);
+							component = Type.createInstance(componentClass, []);
+							entity.add(component);
 						}
 						var propsArray = object.properties.get(property).split(",");
 						var componentProperties = new Map<String,String>();

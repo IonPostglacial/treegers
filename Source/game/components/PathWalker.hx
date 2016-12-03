@@ -4,9 +4,7 @@ import geometry.Coordinates;
 
 
 class PathWalker {
-	public var path:Array<Coordinates>;
+	public var path:Array<Coordinates> = [];
 
-	public function new(path) {
-		this.path = path;
-	}
+	public function new() {}
 }

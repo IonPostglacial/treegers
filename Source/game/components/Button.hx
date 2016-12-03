@@ -7,9 +7,7 @@ class Button implements OwningComponent {
 	public var isToggle:Bool = false;
 	public var affectedTiles:Array<tmx.TileObject> = [];
 
-	public function new(isToggle) {
-		this.isToggle = isToggle;
-	}
+	public function new() {}
 
 	public function flip() {
 		isPressed = !isPressed;

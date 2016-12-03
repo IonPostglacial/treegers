@@ -1,14 +1,10 @@
 package game.components;
 
-class Health {
-	public var level:Float;
-	public var max:Float;
-	public var armor:Float;
+class Health implements GaugeableComponent {
+	public var level:Float = 100;
+	public var max:Float = 100;
+	public var armor:Float = 2;
 	public var changedThisRound:Bool = false;
 
-	public function new(level, max, armor) {
-		this.level = level;
-		this.max = max;
-		this.armor = armor;
-	}
+	public function new() {}
 }
