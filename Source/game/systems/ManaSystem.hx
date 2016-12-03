@@ -22,6 +22,9 @@ class ManaSystem extends ListIteratingSystem<ManaNode> {
 	function updateNode(node:ManaNode, deltaTime:Float) {
 		if (node.mana.level < node.mana.max) {
 			node.mana.level = Math.min(node.mana.level + deltaTime * node.mana.recovery, node.mana.max);
+			node.mana.changedThisRound = true;
+		} else {
+			node.mana.changedThisRound = false;
 		}
 	}
 }

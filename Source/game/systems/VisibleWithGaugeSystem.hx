@@ -78,7 +78,6 @@ class VisibleWithGaugeSystem extends System {
 
 	inline function creatingGauge<T:WithVisible>(gaugeName:String, color:Int, offset:Int) {
 		return function(node:T):Bool {
-			trace("create gauge: " + gaugeName);
 			var gauge = new Sprite();
 			gauge.graphics.beginFill(0x000000);
 			gauge.graphics.drawRect(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
@@ -94,10 +93,12 @@ class VisibleWithGaugeSystem extends System {
 		}
 	}
 
-	inline function updateGauge(sprite:Sprite, gaugeName:String, gaugeable:GaugeableComponent) {
+	inline function updateGauge(sprite:Sprite, gaugeName:String, gaugeable:GaugeableComponent, color:Int) {
 		if (gaugeable.changedThisRound) {
 			var gauge = cast(sprite.getChildByName(gaugeName), Sprite);
 			var newWidth = Math.floor(stage.map.tileWidth * (gaugeable.level / gaugeable.max));
+			gauge.graphics.beginFill(color);
+			gauge.graphics.drawRect(GAUGE_LHEIGHT, GAUGE_LHEIGHT, stage.map.tileWidth - 2 * GAUGE_LHEIGHT, GAUGE_HEIGHT - 2 * GAUGE_LHEIGHT);
 			gauge.graphics.beginFill(0x000000);
 			gauge.graphics.drawRect(newWidth, 0, stage.map.tileWidth - newWidth, GAUGE_HEIGHT);
 			gauge.graphics.endFill();
@@ -105,10 +106,10 @@ class VisibleWithGaugeSystem extends System {
 	}
 
 	function updateHealthyNode(node:VisiblyHealthyNode, deltaTime:Float) {
-		this.updateGauge(node.visible.sprite, "health", node.health);
+		this.updateGauge(node.visible.sprite, "health", node.health, HEALTH_COLOR);
 	}
 
 	function updateManaedNode(node:VisiblyManaedNode, deltaTime:Float) {
-		this.updateGauge(node.visible.sprite, "mana", node.mana);
+		this.updateGauge(node.visible.sprite, "mana", node.mana, TOOLED_COLOR);
 	}
 }
