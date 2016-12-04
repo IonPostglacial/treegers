@@ -1,5 +1,5 @@
 package game.components;
 
-interface OwningComponent {
+interface IOwningComponent {
 	function addRelatedObject(relation:String, object:Dynamic):Void;
 }

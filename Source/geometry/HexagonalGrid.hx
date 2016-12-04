@@ -1,6 +1,6 @@
 package geometry;
 
-class HexagonalGrid implements Grid2D {
+class HexagonalGrid implements I2DGrid {
 	static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
 
 	public var width:Int;

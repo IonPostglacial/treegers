@@ -9,8 +9,8 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.mapmanagement.TileObjectListener;
-import game.components.GaugeableComponent;
+import game.mapmanagement.ITileObjectListener;
+import game.components.IGaugeableComponent;
 import game.components.Health;
 import game.components.Mana;
 import game.components.Visible;
@@ -93,7 +93,7 @@ class VisibleWithGaugeSystem extends System {
 		}
 	}
 
-	inline function updateGauge(sprite:Sprite, gaugeName:String, gaugeable:GaugeableComponent, color:Int) {
+	inline function updateGauge(sprite:Sprite, gaugeName:String, gaugeable:IGaugeableComponent, color:Int) {
 		if (gaugeable.changedThisRound) {
 			var gauge = cast(sprite.getChildByName(gaugeName), Sprite);
 			var newWidth = Math.floor(stage.map.tileWidth * (gaugeable.level / gaugeable.max));

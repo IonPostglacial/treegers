@@ -1,6 +1,6 @@
 package geometry;
 
-class OrthogonalCoordinates implements CoordinatesSystem {
+class OrthogonalCoordinates implements ICoordinatesSystem {
 	var width:Float = 1;
 	var height:Float = 1;
 	var widthRatio:Float = 1;

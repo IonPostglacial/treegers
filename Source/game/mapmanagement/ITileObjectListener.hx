@@ -1,5 +1,5 @@
 package game.mapmanagement;
 
-interface TileObjectListener {
+interface ITileObjectListener {
 	function tileObjectStatusChanged(tileObject:tmx.TileObject, active:Bool):Void;
 }

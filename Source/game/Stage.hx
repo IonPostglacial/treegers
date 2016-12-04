@@ -21,7 +21,7 @@ import game.systems.ButtonSystem;
 import game.systems.CollectSystem;
 import game.systems.ManaSystem;
 import game.mapmanagement.GroundManager;
-import game.mapmanagement.TileObjectListener;
+import game.mapmanagement.ITileObjectListener;
 
 
 class Stage {
@@ -73,7 +73,7 @@ class Stage {
 	}
 
 	inline function addSystem(system:System, priority:Int) {
-		if (Std.is(system, TileObjectListener)) {
+		if (Std.is(system, ITileObjectListener)) {
 			this.ground.addTileObjectsListeners(cast system);
 		}
 		this.engine.addSystem(system, priority);

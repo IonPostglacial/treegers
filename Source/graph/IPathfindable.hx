@@ -7,9 +7,9 @@ package graph;
 
 
 /*
- * The Pathfindable interface shoudl be implemented by classes representing graphs on which we want to perform pathfinding.
+ * The IPathfindable interface should be implemented by classes representing graphs on which we want to perform pathfinding.
  */
-interface Pathfindable<T> {
+interface IPathfindable<T> {
 	public function neighborsOf(position:T):Iterable<T>;
 	public function distanceBetween(start:T, goal:T):Int;
 }

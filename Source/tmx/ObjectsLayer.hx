@@ -1,11 +1,11 @@
 package tmx;
 
-import geometry.CoordinatesSystem;
+import geometry.ICoordinatesSystem;
 
 
 class ObjectsLayer extends Layer {
 	public var objects(default,null):Array<TileObject> = [];
-	var coordinates:CoordinatesSystem;
+	var coordinates:ICoordinatesSystem;
 
 	public function new(map) {
 		super(map);

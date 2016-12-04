@@ -34,14 +34,14 @@ private class Score<Node_t:Node<Node_t>> {
 
 /*
  * A Pathfinding object can be used to find the shortest path in a graph.
- * A graph is a class implementing interface Pathfindable.
- * The Pathfinding class and the Pathfindable interface are generic, their type parameter is the type of the nodes of the graph.
+ * A graph is a class implementing interface IPathfindable.
+ * The Pathfinding class and the IPathfindable interface are generic, their type parameter is the type of the nodes of the graph.
  * Nodes must be comparable by equality and they must provide a hashCode function.
  * It returns an Array containing every nodes composing the calculated path, starting node and ending node included.
  */
 @:generic
 class Pathfinder<Node_t:Node<Node_t>> {
-	var graph:Pathfindable<Node_t>;
+	var graph:IPathfindable<Node_t>;
 	function compareScore(s1, s2) return s2.estimatedCost - s1.estimatedCost;
 
 	public function new(graph) {

@@ -1,6 +1,6 @@
 package game.components;
 
-interface GaugeableComponent {
+interface IGaugeableComponent {
 	var level:Float;
 	var max:Float;
 	var changedThisRound:Bool;

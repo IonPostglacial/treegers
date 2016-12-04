@@ -9,7 +9,7 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.mapmanagement.TileObjectListener;
+import game.mapmanagement.ITileObjectListener;
 import game.components.Visible;
 import game.components.Position;
 import geometry.Coordinates;
@@ -20,7 +20,7 @@ class VisibleNode extends Node<VisibleNode> {
 	public var position:Position;
 }
 
-class VisibleSystem extends System implements TileObjectListener {
+class VisibleSystem extends System implements ITileObjectListener {
 	var stage:Stage;
 	var visibles:NodeList<VisibleNode>;
 	var mapRenderer(default,null):rendering.MapRenderer;

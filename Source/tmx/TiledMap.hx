@@ -2,10 +2,10 @@ package tmx;
 
 import Type;
 
-import geometry.CoordinatesSystem;
+import geometry.ICoordinatesSystem;
 import geometry.HexagonalCoordinates;
 import geometry.OrthogonalCoordinates;
-import geometry.Grid2D;
+import geometry.I2DGrid;
 import geometry.HexagonalGrid;
 import geometry.OrthogonalGrid;
 import geometry.Map2D;
@@ -39,8 +39,8 @@ class TiledMap {
 	public var imageLayers(default,null):Array<ImageLayer> = [];
 	public var properties(default,null):Map<String, Dynamic> = new Map();
 
-	public var coordinates:CoordinatesSystem;
-	public var grid:Grid2D;
+	public var coordinates:ICoordinatesSystem;
+	public var grid:I2DGrid;
 	public var bg(get,never):TileLayer;
 
 	public function new() {}

@@ -11,7 +11,7 @@ import game.components.LinearWalker;
 import game.components.Movement;
 import game.components.Position;
 import game.components.Collectible;
-import game.components.OwningComponent;
+import game.components.IOwningComponent;
 
 import game.mapmanagement.Vehicle;
 
@@ -124,7 +124,7 @@ class EntityLoader {
 				var componentName = componentRelation[0].substr(1);
 				var componentClass = Type.resolveClass("game.components." + componentName);
 				var component = owner.get(componentClass);
-				if (!Std.is(component, OwningComponent)) {
+				if (!Std.is(component, IOwningComponent)) {
 					continue; // TODO: maybe add a warning
 				}
 				for (object in ownedRelations.get(relation)) {

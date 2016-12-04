@@ -1,7 +1,7 @@
 package game.components;
 
 
-class Button implements OwningComponent {
+class Button implements IOwningComponent {
 	public var isPressed:Bool = false;
 	public var triggered:Bool = false;
 	public var isToggle:Bool = false;

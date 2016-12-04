@@ -2,7 +2,7 @@ package game.mapmanagement;
 
 class GroundManager {
 	public var grids(default,null):Array<GroundGrid> = [];
-	var tileObjectsListeners:Array<TileObjectListener> = [];
+	var tileObjectsListeners:Array<ITileObjectListener> = [];
 
 	public function new(map:tmx.TiledMap) {
 		for (vehicle in Type.allEnums(Vehicle)) {
@@ -23,7 +23,7 @@ class GroundManager {
 		}
 	}
 
-	public inline function addTileObjectsListeners(listener:TileObjectListener) {
+	public inline function addTileObjectsListeners(listener:ITileObjectListener) {
 		this.tileObjectsListeners.push(listener);
 	}
 }

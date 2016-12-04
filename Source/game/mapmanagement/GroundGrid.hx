@@ -1,16 +1,16 @@
 package game.mapmanagement;
 
-import graph.Pathfindable;
+import graph.IPathfindable;
 import geometry.Coordinates;
 import geometry.Map2D;
 import geometry.HexagonalMap;
 import geometry.OrthogonalMap;
-import geometry.Grid2D;
+import geometry.I2DGrid;
 
 using Lambda;
 
 
-class GroundGrid implements Pathfindable<Coordinates> implements TileObjectListener {
+class GroundGrid implements IPathfindable<Coordinates> implements ITileObjectListener {
 	var map:tmx.TiledMap;
 	var ground:Map2D<GroundType>;
 	public var vehicle:Vehicle;

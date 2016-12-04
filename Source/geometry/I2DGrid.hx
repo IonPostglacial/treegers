@@ -1,9 +1,9 @@
 package geometry;
 
-import graph.Pathfindable;
+import graph.IPathfindable;
 
 
-interface Grid2D extends Pathfindable<Coordinates> {
+interface I2DGrid extends IPathfindable<Coordinates> {
 	var size(get,null):Int;
 	function indexOf(x:Int, y:Int):Int;
 	function contains(x:Int, y:Int):Bool;

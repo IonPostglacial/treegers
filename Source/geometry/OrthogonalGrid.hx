@@ -1,6 +1,6 @@
 package geometry;
 
-class OrthogonalGrid implements Grid2D {
+class OrthogonalGrid implements I2DGrid {
 	static var deltas = [-1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1];
 
 	public var width:Int;

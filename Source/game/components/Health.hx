@@ -1,6 +1,6 @@
 package game.components;
 
-class Health implements GaugeableComponent {
+class Health implements IGaugeableComponent {
 	public var level:Float = 100;
 	public var max:Float = 100;
 	public var armor:Float = 2;

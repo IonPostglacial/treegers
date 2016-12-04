@@ -8,7 +8,7 @@ import game.nodes.ActionedNode;
 import geometry.Coordinates;
 
 
-class Move implements Action {
+class Move implements IAction {
 	public var done(get, never):Bool;
 	var path:Array<Coordinates>;
 	var entity:Entity;

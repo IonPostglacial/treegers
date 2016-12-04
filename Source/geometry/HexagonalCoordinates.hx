@@ -1,6 +1,6 @@
 package geometry;
 
-class HexagonalCoordinates implements CoordinatesSystem{
+class HexagonalCoordinates implements ICoordinatesSystem {
 	var hexWidth:Float;
 	var effectiveHeight:Float;
 	var effectiveHeightRatio:Float;
