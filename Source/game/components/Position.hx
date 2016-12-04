@@ -10,8 +10,4 @@ class Position extends geometry.Coordinates {
 	public inline function new(x, y) {
 		super(x, y);
 	}
-
-	public inline function fromCoordinates(coords:geometry.Coordinates) {
-		return new Position(coords.x, coords.y);
-	}
 }

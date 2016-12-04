@@ -13,6 +13,8 @@ class MovementSystem extends ListIteratingSystem<MovingNode> {
 	}
 
 	function updateNode(node:MovingNode, deltaTime:Float) {
-		node.movement.make(deltaTime);
+		if (node.movement.timeSinceLastMove < node.movement.period) {
+			node.movement.timeSinceLastMove += deltaTime;
+		}
 	}
 }

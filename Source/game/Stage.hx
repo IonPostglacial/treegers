@@ -63,13 +63,13 @@ class Stage {
 		addSystem(new ManaSystem(this), 2);
 		addSystem(new LinearMovementSystem(this), 2);
 		addSystem(new PathMovementSystem(this), 2);
-		addSystem(new MovementSystem(this), 2);
 		addSystem(new ButtonSystem(this), 2);
 		addSystem(new CollectSystem(this), 2);
-		addSystem(new VisibleSystem(this), 3);
-		addSystem(new VisibleWithGaugeSystem(this), 4);
-		addSystem(new VisiblyMovingSystem(this), 4);
-		addSystem(new VisiblyControledSystem(this), 4);
+		addSystem(new MovementSystem(this), 3);
+		addSystem(new VisibleSystem(this), 4);
+		addSystem(new VisibleWithGaugeSystem(this), 5);
+		addSystem(new VisiblyMovingSystem(this), 5);
+		addSystem(new VisiblyControledSystem(this), 5);
 	}
 
 	inline function addSystem(system:System, priority:Int) {

@@ -15,12 +15,13 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 	}
 
 	function updateNode(node:ActionedNode, deltaTime:Float) {
-		if (node.controled.currentAction == null) {
+		var currentAction = node.controled.actions[node.controled.actions.length - 1];
+		if (currentAction == null) {
 			return;
 		}
 		var oldPosition = new Position(node.position.x, node.position.y);
-		node.controled.currentAction.execute(stage, node, deltaTime);
-		if (node.controled.currentAction.done) {
+		currentAction.execute(stage, node, deltaTime);
+		if (currentAction.done) {
 			node.controled.actions.pop();
 		}
 	}

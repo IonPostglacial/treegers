@@ -31,7 +31,7 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 	}
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
-		if (node.movement.ready) {
+		if (node.movement.timeSinceLastMove >= node.movement.period) {
 			switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
 			case GroundType.Arrow(dx, dy):
 				node.linearWalker.dx = dx;
@@ -42,6 +42,7 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 			default: // pass
 			}
 			node.movement.oldPosition = node.position.copy();
+			node.movement.timeSinceLastMove -= node.movement.period;
 			node.position.x += node.linearWalker.dx;
 			node.position.y += node.linearWalker.dy;
 		}

@@ -28,7 +28,8 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 			var pixPosition = stage.map.coordinates.toPixel(node.position);
 			if(node.movement.oldPosition != null) {
 				var oldPixPosition = stage.map.coordinates.toPixel(node.movement.oldPosition);
-				pixPosition = pixPosition.interpolate(oldPixPosition, node.movement.delta);
+				var movementDelta = node.movement.timeSinceLastMove / node.movement.period;
+				pixPosition = pixPosition.interpolate(oldPixPosition, movementDelta);
 			}
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;

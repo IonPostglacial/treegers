@@ -9,13 +9,6 @@ class Button implements OwningComponent {
 
 	public function new() {}
 
-	public function flip() {
-		isPressed = !isPressed;
-		if (isToggle || isPressed) {
-			triggered = !triggered;
-		}
-	}
-
 	public function addRelatedObject(relation:String, object:Dynamic) {
 		if (relation == "linked-tile") {
 			this.affectedTiles.push(object);

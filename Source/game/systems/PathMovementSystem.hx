@@ -24,12 +24,13 @@ class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 	}
 
 	function updateNode(node:PathWalkingNode, deltaTime:Float) {
-		if (node.pathWalker.path.length > 0 && node.movement.ready) {
+		if (node.pathWalker.path.length > 0 && node.movement.timeSinceLastMove >= node.movement.period) {
 			var nextPosition = node.pathWalker.path.pop();
 			if (stage.ground.forVehicle(node.movement.vehicle).at(nextPosition) == GroundType.Uncrossable) {
 				node.pathWalker.path = [];
 			} else {
 				node.movement.oldPosition = node.position.copy();
+				node.movement.timeSinceLastMove -= node.movement.period;
 				node.position.x = nextPosition.x;
 				node.position.y = nextPosition.y;
 			}

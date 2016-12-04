@@ -27,6 +27,13 @@ class ButtonSystem extends System {
 		super();
 	}
 
+	function flipButton(button:Button) {
+		button.isPressed = !button.isPressed;
+		if (button.isToggle || button.isPressed) {
+			button.triggered = !button.triggered;
+		}
+	}
+
 	override public function update(deltaTime:Float) {
 		for (buttonNode in buttons) {
 			var buttonAlreadyPressed = buttonNode.button.isPressed;
@@ -38,7 +45,7 @@ class ButtonSystem extends System {
 				}
 			}
 			if (buttonAlreadyPressed != buttonCurrentlyPressed) {
-				buttonNode.button.flip();
+				flipButton(buttonNode.button);
 				for (tileObject in buttonNode.button.affectedTiles) {
 					this.stage.ground.setObjectStatus(tileObject, buttonNode.button.triggered);
 				}
