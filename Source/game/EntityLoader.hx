@@ -8,6 +8,7 @@ import game.components.Controled;
 import game.components.Visible;
 import game.components.Health;
 import game.components.LinearWalker;
+import game.components.Mana;
 import game.components.Movement;
 import game.components.Position;
 import game.components.Collectible;
@@ -28,8 +29,8 @@ class EntityLoader {
 			entity.add(new Button());
 		});
 		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
-			var health = new Health();
-			entity.add(health)
+			entity.add(new Health())
+			.add(new Mana())
 			.add(new Movement())
 			.add(new Controled());
 		});

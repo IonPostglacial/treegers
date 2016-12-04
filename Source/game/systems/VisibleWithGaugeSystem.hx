@@ -63,20 +63,20 @@ class VisibleWithGaugeSystem extends System {
 	override public function addToEngine(engine:Engine) {
 		this.healthies = engine.getNodeList(VisiblyHealthyNode);
 		this.mages = engine.getNodeList(VisiblyManaedNode);
-		this.healthies.foreach(creatingGauge("health", HEALTH_COLOR, 2 * GAUGE_HEIGHT));
-		this.healthies.nodeAdded.add(creatingGauge("health", HEALTH_COLOR, 2 * GAUGE_HEIGHT));
+		this.healthies.foreach(creatingGauge("health", HEALTH_COLOR, 2 * GAUGE_HEIGHT, true));
+		this.healthies.nodeAdded.add(creatingGauge("health", HEALTH_COLOR, 2 * GAUGE_HEIGHT, true));
 		this.healthies.nodeRemoved.add(function (node:VisiblyHealthyNode) {
 			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("health"));
 		});
-		this.mages.foreach(creatingGauge("mana", TOOLED_COLOR, GAUGE_HEIGHT));
-		this.mages.nodeAdded.add(creatingGauge("mana", TOOLED_COLOR, GAUGE_HEIGHT));
+		this.mages.foreach(creatingGauge("mana", TOOLED_COLOR, GAUGE_HEIGHT, false));
+		this.mages.nodeAdded.add(creatingGauge("mana", TOOLED_COLOR, GAUGE_HEIGHT, false));
 		this.mages.nodeRemoved.add(function (node:VisiblyManaedNode) {
 			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("mana"));
 		});
 		super.addToEngine(engine);
 	}
 
-	inline function creatingGauge<T:WithVisible>(gaugeName:String, color:Int, offset:Int) {
+	inline function creatingGauge<T:WithVisible>(gaugeName:String, color:Int, offset:Int, visible:Bool) {
 		return function(node:T):Bool {
 			var gauge = new Sprite();
 			gauge.graphics.beginFill(0x000000);
@@ -86,6 +86,7 @@ class VisibleWithGaugeSystem extends System {
 			gauge.graphics.drawRect(GAUGE_LHEIGHT, GAUGE_LHEIGHT, stage.map.tileWidth - 2 * GAUGE_LHEIGHT, GAUGE_HEIGHT - 2 * GAUGE_LHEIGHT);
 			gauge.graphics.endFill();
 			gauge.name = gaugeName;
+			gauge.visible = visible;
 
 			gauge.y -= offset;
 			node.visible.sprite.addChild(gauge);
@@ -102,6 +103,7 @@ class VisibleWithGaugeSystem extends System {
 			gauge.graphics.beginFill(0x000000);
 			gauge.graphics.drawRect(newWidth, 0, stage.map.tileWidth - newWidth, GAUGE_HEIGHT);
 			gauge.graphics.endFill();
+			gauge.visible = true;
 		}
 	}
 
@@ -110,6 +112,11 @@ class VisibleWithGaugeSystem extends System {
 	}
 
 	function updateManaedNode(node:VisiblyManaedNode, deltaTime:Float) {
-		this.updateGauge(node.visible.sprite, "mana", node.mana, TOOLED_COLOR);
+		if (node.mana.changedThisRound && node.mana.level >= node.mana.max) {
+			var gauge = node.visible.sprite.getChildByName("mana");
+			gauge.visible = false; // we hide the mana gauge when it's full
+		} else {
+			this.updateGauge(node.visible.sprite, "mana", node.mana, TOOLED_COLOR);
+		}
 	}
 }

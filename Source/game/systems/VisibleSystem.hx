@@ -43,7 +43,7 @@ class VisibleSystem extends System implements ITileObjectListener {
 			node.visible.sprite.y = pixPosition.y;
 			stage.foreground.addChild(node.visible.sprite);
 			node.visible.tile = this.mapRenderer.getTileForObjectId(node.visible.objectId);
-		};
+		}
 		visibles = engine.getNodeList(VisibleNode);
 		for (node in visibles) {
 			prepareVisibles(node);

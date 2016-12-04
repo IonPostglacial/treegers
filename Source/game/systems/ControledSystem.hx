@@ -9,7 +9,10 @@ import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
 import game.actions.Move;
+import game.actions.UseMana;
+
 import game.components.Controled;
+import game.components.Mana;
 import game.components.Movement;
 import game.components.Position;
 
@@ -29,6 +32,7 @@ enum Order {
 class ControledNode extends Node<ControledNode> {
 	public var controled:Controled;
 	public var movement:Movement;
+	public var mana:Mana;
 	public var position:Position;
 }
 
@@ -37,6 +41,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var hover:Sprite;
 	var events:Array<Order>;
 	var pointedCoords:Coordinates;
+	var manaCoords:Coordinates;
 	var pathfinders:Array<graph.Pathfinder<Coordinates>> = [];
 	static var SCROLL_MARGIN = 64;
 	static var SCROLL_SPEED = 8;
@@ -52,6 +57,10 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX + stage.camera.x, e.stageY + stage.camera.y));
 			pointedCoords = mousePosition;
 		});
+		Lib.current.addEventListener(MouseEvent.RIGHT_CLICK, function(e) {
+			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX + stage.camera.x, e.stageY + stage.camera.y));
+			manaCoords = mousePosition;
+		});
 		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
 			var mousePosition = stage.map.coordinates.fromPixel(new Vector2D(e.stageX + stage.camera.x, e.stageY + stage.camera.y));
 			var mousePoint = stage.map.coordinates.toPixel(mousePosition);
@@ -64,7 +73,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		super(ControledNode, updateNode);
 	}
 
-	override function update(deltaTime:Float) {
+	function updateCamera(deltaTime:Float) {
 		var relativeX = Lib.current.mouseX - stage.camera.x;
 		var relativeY = Lib.current.mouseY - stage.camera.y;
 		var maxX = Lib.current.width - stage.camera.width;
@@ -83,6 +92,10 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			stage.camera.y = Math.min(stage.camera.y + SCROLL_SPEED, maxY);
 		}
 		Lib.current.scrollRect = stage.camera;
+	}
+
+	override function update(deltaTime:Float) {
+		updateCamera(deltaTime);
 		if (pointedCoords != null) {
 			var targetSelected = false;
 			for (node in nodeList) {
@@ -97,6 +110,10 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				events.push(MovementOrdered(pointedCoords.copy()));
 			}
 			pointedCoords = null;
+		}
+		if (manaCoords != null) {
+			events.push(PowerOrdered(manaCoords.copy()));
+			manaCoords = null;
 		}
 		super.update(deltaTime);
 		events = [];
@@ -115,7 +132,25 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				node.controled.selected = !node.controled.selected && node.position.equals(position);
 				node.controled.selectedThisRound = true;
 			case GroupSelected(area): // TODO: implement it :p
-			case PowerOrdered(goal): // TODO: implement it :p
+			case PowerOrdered(goal): // TODO: implement it properly :p
+				var groundGrid = stage.ground.forVehicle(node.movement.vehicle);
+				var nearestNeighbor = null;
+				var smallestDistance = 0;
+				for (neighbor in groundGrid.neighborsOf(goal)) {
+					var neighborDistance = groundGrid.distanceBetween(node.position, neighbor);
+					if (nearestNeighbor == null || neighborDistance < smallestDistance) {
+						nearestNeighbor = neighbor;
+						smallestDistance = neighborDistance;
+					}
+				}
+				if (nearestNeighbor == null) {
+					break; // the loop
+				}
+				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position, nearestNeighbor);
+				if (path.length == 0 && smallestDistance > 0) {
+					break; // the loop
+				}
+				node.controled.actions = [new UseMana(node.mana, goal), new Move(node.entity, path)];
 			}
 		}
 		switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
