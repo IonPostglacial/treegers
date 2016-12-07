@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" nextobjectid="26">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" nextobjectid="27">
  <tileset firstgid="1" name="BFS Tileset" tilewidth="32" tileheight="32" tilecount="300">
   <image source="bfs-tileset.png" width="480" height="640"/>
   <terraintypes>
@@ -131,6 +131,7 @@
     <property name="=Button:linked-tile" value="19"/>
    </properties>
   </object>
+  <object id="26" type="Shovel" gid="151" x="224" y="96" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="Entities">
   <object id="5" type="Grunt" gid="107" x="65" y="95" width="32" height="32"/>

@@ -9,6 +9,8 @@ import game.components.Movement;
 import game.components.Position;
 import game.mapmanagement.GroundType;
 
+using game.mapmanagement.GroundTypeProperties;
+
 
 class HealthyNode extends Node<HealthyNode> {
 	public var health:Health;
@@ -32,11 +34,11 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 
 	function updateNode(node:HealthyNode, deltaTime:Float) {
 		node.health.changedThisRound = true;
-		switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
-		case GroundType.Uncrossable:
-			node.health.level = 0;
+		switch (stage.ground.at(node.position)) {
 		case GroundType.Hurting(level):
 			node.health.level -= level;
+		case type if (!type.crossableWith(node.movement.vehicle)):
+			node.health.level = 0;
 		default: // pass
 			node.health.changedThisRound = false;
 		}

@@ -14,6 +14,7 @@ import game.components.Position;
 import game.components.Collectible;
 import game.components.IOwningComponent;
 
+import game.mapmanagement.GroundType;
 import game.mapmanagement.Vehicle;
 
 import geometry.Coordinates;
@@ -27,6 +28,13 @@ class EntityLoader {
 	public function new() {
 		this.entityBuilders.set("Button", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
 			entity.add(new Button());
+		});
+		this.entityBuilders.set("Shovel", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+			var collectible = new Collectible();
+			var shovelMana = new Mana();
+			shovelMana.affectedTypes = [GroundType.Hole];
+			collectible.components = [shovelMana];
+			entity.add(collectible);
 		});
 		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
 			entity.add(new Health())

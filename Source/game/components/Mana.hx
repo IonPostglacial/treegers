@@ -1,7 +1,10 @@
 package game.components;
 
+import game.mapmanagement.GroundType;
+
+
 class Mana implements IGaugeableComponent {
-	public var affectedTypes:Array<Int> = [];
+	public var affectedTypes:Array<GroundType> = [];
 	public var level:Float = 100;
 	public var max:Float = 100;
 	public var recovery:Float = 100.0;

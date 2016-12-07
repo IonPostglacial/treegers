@@ -153,7 +153,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				node.controled.actions = [new UseMana(node.mana, goal), new Move(node.entity, path)];
 			}
 		}
-		switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
+		switch (stage.ground.at(node.position)) {
 		case GroundType.Arrow(dx, dy):
 			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy), node.position];
 			node.controled.actions = [new Move(node.entity, newPath)];

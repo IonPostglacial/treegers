@@ -9,6 +9,8 @@ import game.components.LinearWalker;
 import game.components.Position;
 import game.mapmanagement.GroundType;
 
+using game.mapmanagement.GroundTypeProperties;
+
 
 class LinearWalkingNode extends Node<LinearWalkingNode> {
 	public var position:Position;
@@ -32,11 +34,11 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
 		if (node.movement.timeSinceLastMove >= node.movement.period) {
-			switch (stage.ground.forVehicle(node.movement.vehicle).at(node.position)) {
+			switch (stage.ground.at(node.position)) {
 			case GroundType.Arrow(dx, dy):
 				node.linearWalker.dx = dx;
 				node.linearWalker.dy = dy;
-			case GroundType.Uncrossable:
+			case type if (!type.crossableWith(node.movement.vehicle)):
 				engine.removeEntity(node.entity);
 				return;
 			default: // pass
