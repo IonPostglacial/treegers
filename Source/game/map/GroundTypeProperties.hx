@@ -1,4 +1,4 @@
-package game.mapmanagement;
+package game.map;
 
 class GroundTypeProperties {
     public static function crossableWith(type:GroundType, vehicle:Vehicle):Bool {

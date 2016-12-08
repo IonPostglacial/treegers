@@ -21,7 +21,7 @@ class UseMana implements IAction {
 		return _done;
 	}
 
-	public function execute(stage:Stage, node:ActionedNode, deltaTime:Float) {
+	public function execute(node:ActionedNode, deltaTime:Float) {
 		// TODO: do something
 		var isManaLoaded = mana.elapsedLoadTime >= mana.loadTime;
 		if (isManaLoaded) {

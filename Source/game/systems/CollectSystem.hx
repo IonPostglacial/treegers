@@ -5,7 +5,6 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.Stage;
 import game.components.Collectible;
 import game.components.Collector;
 import game.nodes.MovingNode;
@@ -24,13 +23,11 @@ class CollectorNode extends Node<CollectorNode> {
 
 class CollectSystem extends System {
 	var engine:Engine;
-	var stage:Stage;
 	var collectibles:NodeList<CollectibleNode>;
 	var collectors:NodeList<CollectorNode>;
 	var movers:NodeList<MovingNode>;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new() {
 		super();
 	}
 

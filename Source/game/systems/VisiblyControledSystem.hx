@@ -18,10 +18,12 @@ class VisiblyControledNode extends Node<VisiblyControledNode> {
 }
 
 class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
-	var stage:Stage;
+	var selectionWidth:Int;
+	var selectionHeight:Int;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new(selectionWidth:Int, selectionHeight:Int) {
+		this.selectionWidth = selectionWidth;
+		this.selectionHeight = selectionHeight;
 		super(VisiblyControledNode, updateNode);
 	}
 
@@ -30,7 +32,7 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		selection.name = "selection";
 		selection.visible = false;
 		selection.graphics.lineStyle(2, 0xFFFF00);
-		selection.graphics.drawRect(0, 0, stage.map.effectiveTileWidth, stage.map.effectiveTileHeight);
+		selection.graphics.drawRect(0, 0, this.selectionWidth, this.selectionWidth);
 		return selection;
 	}
 

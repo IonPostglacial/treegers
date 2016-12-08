@@ -7,10 +7,7 @@ import game.components.Position;
 
 
 class ActionSystem extends ListIteratingSystem<ActionedNode> {
-	private var stage:Stage;
-
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new() {
 		super(ActionedNode, updateNode);
 	}
 
@@ -20,7 +17,7 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 			return;
 		}
 		var oldPosition = new Position(node.position.x, node.position.y);
-		currentAction.execute(stage, node, deltaTime);
+		currentAction.execute(node, deltaTime);
 		if (currentAction.done) {
 			node.controled.actions.pop();
 		}

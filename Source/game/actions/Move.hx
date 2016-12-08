@@ -24,7 +24,7 @@ class Move implements IAction {
 		return walker == null || walker.path.length == 0;
 	}
 
-	public function execute(stage:Stage, node:ActionedNode, deltaTime:Float) {
+	public function execute(node:ActionedNode, deltaTime:Float) {
 		var walker = entity.get(PathWalker);
 		if (walker != null && walker.path.length == 0) {
 			entity.remove(PathWalker);

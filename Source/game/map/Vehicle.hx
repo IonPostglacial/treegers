@@ -1,3 +1,3 @@
-package game.mapmanagement;
+package game.map;
 
 enum Vehicle { Foot; Boat; Plane; }

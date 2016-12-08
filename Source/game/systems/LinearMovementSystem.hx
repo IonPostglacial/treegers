@@ -7,9 +7,10 @@ import ash.tools.ListIteratingSystem;
 import game.components.Movement;
 import game.components.LinearWalker;
 import game.components.Position;
-import game.mapmanagement.GroundType;
 
-using game.mapmanagement.GroundTypeProperties;
+import game.map.WorldMap;
+import game.map.GroundType;
+using game.map.GroundTypeProperties;
 
 
 class LinearWalkingNode extends Node<LinearWalkingNode> {
@@ -19,11 +20,11 @@ class LinearWalkingNode extends Node<LinearWalkingNode> {
 }
 
 class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
-	var stage:Stage;
+	var worldMap:WorldMap;
 	var engine:Engine;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new(worldMap:WorldMap) {
+		this.worldMap = worldMap;
 		super(LinearWalkingNode, updateNode);
 	}
 
@@ -34,7 +35,7 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
 		if (node.movement.timeSinceLastMove >= node.movement.period) {
-			switch (stage.ground.at(node.position)) {
+			switch (this.worldMap.at(node.position)) {
 			case GroundType.Arrow(dx, dy):
 				node.linearWalker.dx = dx;
 				node.linearWalker.dy = dy;

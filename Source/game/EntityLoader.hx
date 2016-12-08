@@ -14,8 +14,8 @@ import game.components.Position;
 import game.components.Collectible;
 import game.components.IOwningComponent;
 
-import game.mapmanagement.GroundType;
-import game.mapmanagement.Vehicle;
+import game.map.GroundType;
+import game.map.Vehicle;
 
 import geometry.Coordinates;
 

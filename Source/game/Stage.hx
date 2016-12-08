@@ -1,11 +1,8 @@
 package game;
 
-import openfl.display.Sprite;
-
 import ash.tick.ITickProvider;
 import ash.tick.FrameTickProvider;
 import ash.core.Engine;
-import ash.core.System;
 
 import game.systems.ActionSystem;
 import game.systems.ControledSystem;
@@ -20,34 +17,27 @@ import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
 import game.systems.CollectSystem;
 import game.systems.ManaSystem;
-import game.mapmanagement.GroundManager;
-import game.mapmanagement.ITileObjectListener;
+import game.map.WorldMap;
 
 
 class Stage {
-	public var map(default,null):tmx.TiledMap;
-	public var ground(default,null):GroundManager;
-	public var background:Sprite;
-	public var foreground:Sprite;
-	public var camera(default,null):openfl.geom.Rectangle;
+	var map(default,null):tmx.TiledMap;
+	var mapRenderer(default,null):rendering.MapRenderer;
+	var worldMap(default,null):WorldMap;
 
 	var engine = new Engine();
 	var entityLoader = new EntityLoader();
 	var tickProvider:ITickProvider;
 
 	public function new(mapPath:String, width:Int, height:Int) {
-		this.background = new Sprite();
-		this.foreground = new Sprite();
-		openfl.Lib.current.scrollRect = new openfl.geom.Rectangle(0, 0, width, height);
-		openfl.Lib.current.addChild(this.background);
-		openfl.Lib.current.addChild(this.foreground);
-		this.camera = openfl.Lib.current.scrollRect;
 		var mapXml = openfl.Assets.getText("assets/" + mapPath);
 		this.map = new tmx.TiledMap();
 		this.map.loadFromXml(Xml.parse(mapXml));
-		this.ground = new GroundManager(this.map);
+		this.worldMap = new WorldMap(this.map);
 		entityLoader.loadFromMap(this.engine, this.map);
-		loadSystems();
+		this.mapRenderer = new rendering.MapRenderer(this.map);
+		openfl.Lib.current.addChild(this.mapRenderer);
+		loadSystems(width, height);
 	}
 
 	public function start() {
@@ -56,26 +46,24 @@ class Stage {
 		tickProvider.start();
 	}
 
-	function loadSystems() {
-		addSystem(new ControledSystem(this), 1);
-		addSystem(new ActionSystem(this), 2);
-		addSystem(new HealthSystem(this), 2);
-		addSystem(new ManaSystem(this), 2);
-		addSystem(new LinearMovementSystem(this), 2);
-		addSystem(new PathMovementSystem(this), 2);
-		addSystem(new ButtonSystem(this), 2);
-		addSystem(new CollectSystem(this), 2);
-		addSystem(new MovementSystem(this), 3);
-		addSystem(new VisibleSystem(this), 4);
-		addSystem(new VisibleWithGaugeSystem(this), 5);
-		addSystem(new VisiblyMovingSystem(this), 5);
-		addSystem(new VisiblyControledSystem(this), 5);
-	}
+	function loadSystems(width:Int, height:Int) {
+		var selectionWidth = this.map.effectiveTileWidth;
+		var selectionHeight = this.map.effectiveTileHeight;
+		var visibleSystem = new VisibleSystem(this.map.coordinates, this.mapRenderer);
+		this.worldMap.addTileObjectsListeners(visibleSystem);
 
-	inline function addSystem(system:System, priority:Int) {
-		if (Std.is(system, ITileObjectListener)) {
-			this.ground.addTileObjectsListeners(cast system);
-		}
-		this.engine.addSystem(system, priority);
+		this.engine.addSystem(new ControledSystem(this.worldMap, this.map.coordinates, width, height, selectionWidth, selectionHeight), 1);
+		this.engine.addSystem(new ActionSystem(), 2);
+		this.engine.addSystem(new HealthSystem(this.worldMap), 2);
+		this.engine.addSystem(new ManaSystem(), 2);
+		this.engine.addSystem(new LinearMovementSystem(this.worldMap), 2);
+		this.engine.addSystem(new PathMovementSystem(this.worldMap), 2);
+		this.engine.addSystem(new ButtonSystem(this.worldMap), 2);
+		this.engine.addSystem(new CollectSystem(), 2);
+		this.engine.addSystem(new MovementSystem(), 3);
+		this.engine.addSystem(visibleSystem, 4);
+		this.engine.addSystem(new VisibleWithGaugeSystem(this.map.tileWidth), 5);
+		this.engine.addSystem(new VisiblyMovingSystem(this.map.coordinates), 5);
+		this.engine.addSystem(new VisiblyControledSystem(selectionWidth, selectionHeight), 5);
 	}
 }

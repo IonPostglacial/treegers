@@ -9,10 +9,10 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.mapmanagement.ITileObjectListener;
+import game.map.ITileObjectListener;
 import game.components.Visible;
 import game.components.Position;
-import geometry.Coordinates;
+import geometry.ICoordinatesSystem;
 
 
 class VisibleNode extends Node<VisibleNode> {
@@ -21,12 +21,13 @@ class VisibleNode extends Node<VisibleNode> {
 }
 
 class VisibleSystem extends System implements ITileObjectListener {
-	var stage:Stage;
+	var coordinates:ICoordinatesSystem;
 	var visibles:NodeList<VisibleNode>;
-	var mapRenderer(default,null):rendering.MapRenderer;
+	var mapRenderer:rendering.MapRenderer;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new(coordinates:ICoordinatesSystem, mapRenderer:rendering.MapRenderer) {
+		this.coordinates = coordinates;
+		this.mapRenderer = mapRenderer;
 		super();
 	}
 
@@ -35,13 +36,12 @@ class VisibleSystem extends System implements ITileObjectListener {
 	}
 
 	override public function addToEngine(engine:Engine) {
-		this.mapRenderer = new rendering.MapRenderer(this.stage.map);
-		this.stage.background.addChild(this.mapRenderer);
+		openfl.Lib.current.addChildAt(this.mapRenderer, 0);
 		function prepareVisibles (node:VisibleNode) {
-			var pixPosition = stage.map.coordinates.toPixel(node.position);
+			var pixPosition = this.coordinates.toPixel(node.position);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
-			stage.foreground.addChild(node.visible.sprite);
+			openfl.Lib.current.addChild(node.visible.sprite);
 			node.visible.tile = this.mapRenderer.getTileForObjectId(node.visible.objectId);
 		}
 		visibles = engine.getNodeList(VisibleNode);
@@ -50,7 +50,7 @@ class VisibleSystem extends System implements ITileObjectListener {
 		}
 		visibles.nodeAdded.add(prepareVisibles);
 		visibles.nodeRemoved.add(function (node:VisibleNode) {
-			stage.foreground.removeChild(node.visible.sprite);
+			openfl.Lib.current.removeChild(node.visible.sprite);
 			if (node.visible.tile != null) {
 				this.mapRenderer.removeTile(node.visible.tile);
 			}

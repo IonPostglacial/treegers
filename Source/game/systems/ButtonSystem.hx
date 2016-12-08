@@ -5,11 +5,12 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.Stage;
 import game.nodes.MovingNode;
 
 import game.components.Button;
 import game.components.Position;
+
+import game.map.WorldMap;
 
 
 class ButtonNode extends Node<ButtonNode> {
@@ -18,12 +19,12 @@ class ButtonNode extends Node<ButtonNode> {
 }
 
 class ButtonSystem extends System {
-	var stage:Stage;
+	var worldMap:WorldMap;
 	var buttons:NodeList<ButtonNode>;
 	var movers:NodeList<MovingNode>;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new(worldMap:WorldMap) {
+		this.worldMap = worldMap;
 		super();
 	}
 
@@ -47,7 +48,7 @@ class ButtonSystem extends System {
 			if (buttonAlreadyPressed != buttonCurrentlyPressed) {
 				flipButton(buttonNode.button);
 				for (tileObject in buttonNode.button.affectedTiles) {
-					this.stage.ground.setObjectStatus(tileObject, buttonNode.button.triggered);
+					this.worldMap.setObjectStatus(tileObject, buttonNode.button.triggered);
 				}
 			}
 		}

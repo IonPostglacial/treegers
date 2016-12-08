@@ -1,4 +1,4 @@
-package game.mapmanagement;
+package game.map;
 
 enum Terrain {
 	Water;

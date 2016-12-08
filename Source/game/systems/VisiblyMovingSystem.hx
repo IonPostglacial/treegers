@@ -7,6 +7,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Visible;
 import game.components.Movement;
 import game.components.Position;
+import geometry.ICoordinatesSystem;
 
 
 class VisiblyMovingNode extends Node<VisiblyMovingNode> {
@@ -16,18 +17,18 @@ class VisiblyMovingNode extends Node<VisiblyMovingNode> {
 }
 
 class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
-	var stage:Stage;
+	var coordinates:ICoordinatesSystem;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new(coordinates:ICoordinatesSystem) {
+		this.coordinates = coordinates;
 		super(VisiblyMovingNode, updateNode);
 	}
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
 		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
-			var pixPosition = stage.map.coordinates.toPixel(node.position);
+			var pixPosition = this.coordinates.toPixel(node.position);
 			if(node.movement.oldPosition != null) {
-				var oldPixPosition = stage.map.coordinates.toPixel(node.movement.oldPosition);
+				var oldPixPosition = this.coordinates.toPixel(node.movement.oldPosition);
 				var movementDelta = node.movement.timeSinceLastMove / node.movement.period;
 				pixPosition = pixPosition.interpolate(oldPixPosition, movementDelta);
 			}

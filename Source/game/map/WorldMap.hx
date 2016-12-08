@@ -1,16 +1,16 @@
-package game.mapmanagement;
+package game.map;
 
 import geometry.Coordinates;
 import geometry.HexagonalMap;
 import geometry.Map2D;
 import geometry.OrthogonalMap;
 
-class GroundManager {
-	public var map:tmx.TiledMap;
+class WorldMap {
+	var map:tmx.TiledMap;
 	var ground:Map2D<GroundType>;
 	static var arrowDeltas = [[0, -1], [1, 0], [-1, 0], [0, 1], [1, -1], [-1, 1]];
 
-	public var grids(default,null):Array<GroundGrid> = [];
+	public var grids(default,null):Array<WorldGrid> = [];
 	var tileObjectsListeners:Array<ITileObjectListener> = [];
 
 	public function new(map:tmx.TiledMap) {
@@ -34,7 +34,7 @@ class GroundManager {
 			}
 		}
 		for (vehicle in Type.allEnums(Vehicle)) {
-			this.grids.push(new GroundGrid(this, vehicle));
+			this.grids.push(new WorldGrid(this.ground, this.map.grid, vehicle));
 		}
 	}
 
@@ -73,7 +73,7 @@ class GroundManager {
 		return GroundType.Basic;
 	}
 
-	public inline function forVehicle(vehicle:Vehicle):GroundGrid {
+	public inline function forVehicle(vehicle:Vehicle):WorldGrid {
 		return this.grids[Type.enumIndex(vehicle)];
 	}
 

@@ -1,7 +1,7 @@
 package game.components;
 
 import geometry.Coordinates;
-import game.mapmanagement.Vehicle;
+import game.map.Vehicle;
 
 
 class Movement {

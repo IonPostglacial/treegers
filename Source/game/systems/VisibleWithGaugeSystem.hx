@@ -9,7 +9,7 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.mapmanagement.ITileObjectListener;
+import game.map.ITileObjectListener;
 import game.components.IGaugeableComponent;
 import game.components.Health;
 import game.components.Mana;
@@ -37,7 +37,7 @@ class VisiblyManaedNode extends Node<VisiblyManaedNode> {
 }
 
 class VisibleWithGaugeSystem extends System {
-	var stage:Stage;
+	var tileWidth:Int;
 	var healthies:NodeList<VisiblyHealthyNode>;
 	var mages:NodeList<VisiblyManaedNode>;
 
@@ -46,8 +46,8 @@ class VisibleWithGaugeSystem extends System {
 	static var GAUGE_LHEIGHT = 1;
 	static var GAUGE_HEIGHT = 5;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new(tileWidth:Int) {
+		this.tileWidth = tileWidth;
 		super();
 	}
 
@@ -80,10 +80,10 @@ class VisibleWithGaugeSystem extends System {
 		return function(node:T):Bool {
 			var gauge = new Sprite();
 			gauge.graphics.beginFill(0x000000);
-			gauge.graphics.drawRect(0, 0, stage.map.tileWidth, GAUGE_HEIGHT);
+			gauge.graphics.drawRect(0, 0, this.tileWidth, GAUGE_HEIGHT);
 			gauge.graphics.endFill();
 			gauge.graphics.beginFill(color);
-			gauge.graphics.drawRect(GAUGE_LHEIGHT, GAUGE_LHEIGHT, stage.map.tileWidth - 2 * GAUGE_LHEIGHT, GAUGE_HEIGHT - 2 * GAUGE_LHEIGHT);
+			gauge.graphics.drawRect(GAUGE_LHEIGHT, GAUGE_LHEIGHT, this.tileWidth - 2 * GAUGE_LHEIGHT, GAUGE_HEIGHT - 2 * GAUGE_LHEIGHT);
 			gauge.graphics.endFill();
 			gauge.name = gaugeName;
 			gauge.visible = visible;
@@ -97,11 +97,11 @@ class VisibleWithGaugeSystem extends System {
 	inline function updateGauge(sprite:Sprite, gaugeName:String, gaugeable:IGaugeableComponent, color:Int) {
 		if (gaugeable.changedThisRound) {
 			var gauge = cast(sprite.getChildByName(gaugeName), Sprite);
-			var newWidth = Math.floor(stage.map.tileWidth * (gaugeable.level / gaugeable.max));
+			var newWidth = Math.floor(this.tileWidth * (gaugeable.level / gaugeable.max));
 			gauge.graphics.beginFill(color);
-			gauge.graphics.drawRect(GAUGE_LHEIGHT, GAUGE_LHEIGHT, stage.map.tileWidth - 2 * GAUGE_LHEIGHT, GAUGE_HEIGHT - 2 * GAUGE_LHEIGHT);
+			gauge.graphics.drawRect(GAUGE_LHEIGHT, GAUGE_LHEIGHT, this.tileWidth - 2 * GAUGE_LHEIGHT, GAUGE_HEIGHT - 2 * GAUGE_LHEIGHT);
 			gauge.graphics.beginFill(0x000000);
-			gauge.graphics.drawRect(newWidth, 0, stage.map.tileWidth - newWidth, GAUGE_HEIGHT);
+			gauge.graphics.drawRect(newWidth, 0, this.tileWidth - newWidth, GAUGE_HEIGHT);
 			gauge.graphics.endFill();
 			gauge.visible = true;
 		}

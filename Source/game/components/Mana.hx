@@ -1,6 +1,6 @@
 package game.components;
 
-import game.mapmanagement.GroundType;
+import game.map.GroundType;
 
 
 class Mana implements IGaugeableComponent {

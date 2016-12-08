@@ -4,7 +4,6 @@ import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
 import game.components.Mana;
-import game.Stage;
 
 
 class ManaNode extends Node<ManaNode> {
@@ -12,10 +11,7 @@ class ManaNode extends Node<ManaNode> {
 }
 
 class ManaSystem extends ListIteratingSystem<ManaNode> {
-	var stage:Stage;
-
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new() {
 		super(ManaNode, updateNode);
 	}
 

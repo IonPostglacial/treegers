@@ -7,9 +7,10 @@ import ash.tools.ListIteratingSystem;
 import game.components.Health;
 import game.components.Movement;
 import game.components.Position;
-import game.mapmanagement.GroundType;
 
-using game.mapmanagement.GroundTypeProperties;
+import game.map.WorldMap;
+import game.map.GroundType;
+using game.map.GroundTypeProperties;
 
 
 class HealthyNode extends Node<HealthyNode> {
@@ -19,11 +20,11 @@ class HealthyNode extends Node<HealthyNode> {
 }
 
 class HealthSystem extends ListIteratingSystem<HealthyNode> {
-	var stage:Stage;
+	var worldMap:WorldMap;
 	var engine:Engine;
 
-	public function new(stage:Stage) {
-		this.stage = stage;
+	public function new(worldMap:WorldMap) {
+		this.worldMap = worldMap;
 		super(HealthyNode, updateNode);
 	}
 
@@ -34,7 +35,7 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 
 	function updateNode(node:HealthyNode, deltaTime:Float) {
 		node.health.changedThisRound = true;
-		switch (stage.ground.at(node.position)) {
+		switch (this.worldMap.at(node.position)) {
 		case GroundType.Hurting(level):
 			node.health.level -= level;
 		case type if (!type.crossableWith(node.movement.vehicle)):
