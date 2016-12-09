@@ -8,10 +8,9 @@ import geometry.OrthogonalMap;
 class WorldMap {
 	var map:tmx.TiledMap;
 	var ground:Map2D<GroundType>;
-	static var arrowDeltas = [[0, -1], [1, 0], [-1, 0], [0, 1], [1, -1], [-1, 1]];
 
 	public var grids(default,null):Array<WorldGrid> = [];
-	var tileObjectsListeners:Array<ITileObjectListener> = [];
+	var tileObjectsListeners:Array<ITargetObjectListener> = [];
 
 	public function new(map:tmx.TiledMap) {
 		this.map = map;
@@ -44,54 +43,28 @@ class WorldMap {
 
 	function tileTypeToGroundType(tileType:Int):GroundType {
 		var tileTerrains = this.map.tilesets[0].terrains.get(tileType);
-		if (tileTerrains != null) {
-			var i = 0;
-			var waterTerrainsNumber = 0;
-			for (terrain in tileTerrains) {
-				switch (Terrain.createByIndex(terrain)) {
-				case Terrain.Obstacle:
-					return GroundType.Uncrossable;
-				case Terrain.Water:
-					waterTerrainsNumber += 1;
-				case Terrain.Arrow:
-					var dxdy = arrowDeltas[i];
-					return GroundType.Arrow(dxdy[0], dxdy[1]);
-				case Terrain.Pikes:
-					return GroundType.Hurting(1);
-				default: // pass
-				}
-				i += 1;
-			}
-			if (waterTerrainsNumber == 0) {
-				return GroundType.Basic;
-			} else if (waterTerrainsNumber < 4) { // TODO: make it work for Hexagonal maps.
-				return GroundType.Uncrossable;
-			} else {
-				return GroundType.Water;
-			}
-		}
-		return GroundType.Basic;
+		return GroundTypeProperties.fromTerrains(tileTerrains);
 	}
 
 	public inline function forVehicle(vehicle:Vehicle):WorldGrid {
 		return this.grids[Type.enumIndex(vehicle)];
 	}
 
-	public function setObjectStatus(tileObject:tmx.TileObject, active:Bool) {
-		tileObject.active = active;
+	public function setTargetStatus(target:TargetObject, active:Bool) {
+		target.tileObject.active = active;
 		var tileType:Int;
 		if (active) {
-			tileType = tileObject.gid;
+			tileType = target.tileObject.gid;
 		} else {
-			tileType = map.bg.tiles.get(tileObject.coords);
+			tileType = map.bg.tiles.get(target.tileObject.coords);
 		}
-		this.ground.set(tileObject.coords, this.tileTypeToGroundType(tileType));
+		this.ground.set(target.tileObject.coords, this.tileTypeToGroundType(tileType));
 		for (listener in tileObjectsListeners) {
-			listener.tileObjectStatusChanged(tileObject, active);
+			listener.targetObjectStatusChanged(target, active);
 		}
 	}
 
-	public inline function addTileObjectsListeners(listener:ITileObjectListener) {
+	public inline function addTileObjectsListeners(listener:ITargetObjectListener) {
 		this.tileObjectsListeners.push(listener);
 	}
 }

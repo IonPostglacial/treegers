@@ -53,7 +53,7 @@ class Stage {
 		this.worldMap.addTileObjectsListeners(visibleSystem);
 
 		this.engine.addSystem(new ControledSystem(this.worldMap, this.map.coordinates, width, height, selectionWidth, selectionHeight), 1);
-		this.engine.addSystem(new ActionSystem(), 2);
+		this.engine.addSystem(new ActionSystem(this.worldMap), 2);
 		this.engine.addSystem(new HealthSystem(this.worldMap), 2);
 		this.engine.addSystem(new ManaSystem(), 2);
 		this.engine.addSystem(new LinearMovementSystem(this.worldMap), 2);

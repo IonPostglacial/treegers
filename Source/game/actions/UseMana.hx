@@ -1,9 +1,9 @@
 package game.actions;
 
-import game.nodes.ActionedNode;
-
 import geometry.Coordinates;
+import game.nodes.ActionedNode;
 import game.components.Mana;
+import game.map.WorldMap;
 
 
 class UseMana implements IAction {
@@ -21,7 +21,7 @@ class UseMana implements IAction {
 		return _done;
 	}
 
-	public function execute(node:ActionedNode, deltaTime:Float) {
+	public function execute(worldMap:WorldMap, node:ActionedNode, deltaTime:Float) {
 		// TODO: do something
 		var isManaLoaded = mana.elapsedLoadTime >= mana.loadTime;
 		if (isManaLoaded) {

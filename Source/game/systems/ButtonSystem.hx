@@ -48,7 +48,7 @@ class ButtonSystem extends System {
 			if (buttonAlreadyPressed != buttonCurrentlyPressed) {
 				flipButton(buttonNode.button);
 				for (tileObject in buttonNode.button.affectedTiles) {
-					this.worldMap.setObjectStatus(tileObject, buttonNode.button.triggered);
+					this.worldMap.setTargetStatus(tileObject, buttonNode.button.triggered);
 				}
 			}
 		}

@@ -15,6 +15,7 @@ import game.components.Collectible;
 import game.components.IOwningComponent;
 
 import game.map.GroundType;
+import game.map.TargetObject;
 import game.map.Vehicle;
 
 import geometry.Coordinates;
@@ -137,7 +138,7 @@ class EntityLoader {
 					continue; // TODO: maybe add a warning
 				}
 				for (object in ownedRelations.get(relation)) {
-					component.addRelatedObject(componentRelation[1], object);
+					component.addRelatedObject(componentRelation[1], new TargetObject(object));
 				}
 			}
 		}

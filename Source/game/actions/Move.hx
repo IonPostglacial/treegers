@@ -4,6 +4,7 @@ import ash.core.Entity;
 
 import game.components.Movement;
 import game.components.PathWalker;
+import game.map.WorldMap;
 import game.nodes.ActionedNode;
 import geometry.Coordinates;
 
@@ -24,7 +25,7 @@ class Move implements IAction {
 		return walker == null || walker.path.length == 0;
 	}
 
-	public function execute(node:ActionedNode, deltaTime:Float) {
+	public function execute(worldMap:WorldMap, node:ActionedNode, deltaTime:Float) {
 		var walker = entity.get(PathWalker);
 		if (walker != null && walker.path.length == 0) {
 			entity.remove(PathWalker);

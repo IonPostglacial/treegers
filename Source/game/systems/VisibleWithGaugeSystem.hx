@@ -9,7 +9,7 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.map.ITileObjectListener;
+import game.map.ITargetObjectListener;
 import game.components.IGaugeableComponent;
 import game.components.Health;
 import game.components.Mana;

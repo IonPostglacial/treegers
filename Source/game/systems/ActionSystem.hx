@@ -4,10 +4,14 @@ import ash.tools.ListIteratingSystem;
 
 import game.nodes.ActionedNode;
 import game.components.Position;
+import game.map.WorldMap;
 
 
 class ActionSystem extends ListIteratingSystem<ActionedNode> {
-	public function new() {
+	var worldMap:WorldMap;
+
+	public function new(worldMap:WorldMap) {
+		this.worldMap = worldMap;
 		super(ActionedNode, updateNode);
 	}
 
@@ -17,7 +21,7 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 			return;
 		}
 		var oldPosition = new Position(node.position.x, node.position.y);
-		currentAction.execute(node, deltaTime);
+		currentAction.execute(this.worldMap, node, deltaTime);
 		if (currentAction.done) {
 			node.controled.actions.pop();
 		}

@@ -9,7 +9,9 @@ import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.map.ITileObjectListener;
+import game.map.ITargetObjectListener;
+import game.map.TargetObject;
+
 import game.components.Visible;
 import game.components.Position;
 import geometry.ICoordinatesSystem;
@@ -20,7 +22,7 @@ class VisibleNode extends Node<VisibleNode> {
 	public var position:Position;
 }
 
-class VisibleSystem extends System implements ITileObjectListener {
+class VisibleSystem extends System implements ITargetObjectListener {
 	var coordinates:ICoordinatesSystem;
 	var visibles:NodeList<VisibleNode>;
 	var mapRenderer:rendering.MapRenderer;
@@ -31,8 +33,8 @@ class VisibleSystem extends System implements ITileObjectListener {
 		super();
 	}
 
-	public function tileObjectStatusChanged(tileObject:tmx.TileObject, active:Bool):Void {
-		this.mapRenderer.getTileForObjectId(tileObject.id).visible = active;
+	public function targetObjectStatusChanged(target:TargetObject, active:Bool):Void {
+		this.mapRenderer.getTileForObjectId(target.objectId).visible = active;
 	}
 
 	override public function addToEngine(engine:Engine) {
