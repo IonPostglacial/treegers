@@ -7,7 +7,6 @@ enum Terrain {
 	Pikes;
 	Obstacle;
 	Arrow;
-	Grunt;
-	Button;
-	RollingBall;
+	Hole;
+	DigPile;
 }

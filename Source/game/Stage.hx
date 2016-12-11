@@ -34,10 +34,10 @@ class Stage {
 		var mapXml = openfl.Assets.getText("assets/" + mapPath);
 		this.map = new tmx.TiledMap();
 		this.map.loadFromXml(Xml.parse(mapXml));
-		this.worldMap = new WorldMap(this.map);
 		entityLoader.loadFromMap(this.engine, this.map);
 		this.mapRenderer = new rendering.MapRenderer(this.map);
 		openfl.Lib.current.addChild(this.mapRenderer);
+		this.worldMap = new WorldMap(this.map);
 		loadSystems(width, height);
 	}
 

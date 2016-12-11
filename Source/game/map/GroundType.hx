@@ -6,6 +6,7 @@ enum GroundType {
 	Uncrossable;
 	Water;
 	Hole;
+	DigPile;
 	Fatal;
 	Hurting(intensity:Int);
 	Arrow(dx:Int, dy:Int);

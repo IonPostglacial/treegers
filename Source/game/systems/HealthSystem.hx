@@ -38,6 +38,8 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 		switch (this.worldMap.at(node.position)) {
 		case GroundType.Hurting(level):
 			node.health.level -= level;
+		case GroundType.Hole:
+			node.health.level = 0;
 		case type if (!type.crossableWith(node.movement.vehicle)):
 			node.health.level = 0;
 		default: // pass

@@ -5,15 +5,27 @@ import geometry.HexagonalMap;
 import geometry.Map2D;
 import geometry.OrthogonalMap;
 
+using Lambda;
+
+
 class WorldMap {
 	var map:tmx.TiledMap;
 	var ground:Map2D<GroundType>;
+	var targetObjects:Iterable<TargetObject>;
 
 	public var grids(default,null):Array<WorldGrid> = [];
 	var tileObjectsListeners:Array<ITargetObjectListener> = [];
 
 	public function new(map:tmx.TiledMap) {
 		this.map = map;
+		var targetObjects = [];
+		for (layer in this.map.objectLayers) {
+			for (object in layer.objects) {
+				var tileTerrains = this.map.tilesets[0].terrains.get(object.gid);
+				targetObjects.push(new TargetObject(object, GroundTypeProperties.fromTerrains(tileTerrains)));
+			}
+		}
+		this.targetObjects = targetObjects;
 		this.ground = if (map.orientation == tmx.Orientation.Hexagonal) {
 			new HexagonalMap(map.width, map.height);
 		} else {
@@ -37,7 +49,11 @@ class WorldMap {
 		}
 	}
 
-	public function at(p:Coordinates) {
+	public function allTargetsWithType(type:GroundType):Iterable<TargetObject> {
+		return targetObjects.filter(function(object) return object.groundType == type);
+	}
+
+	public function at(p:Coordinates):GroundType {
 		return this.ground.get(p);
 	}
 

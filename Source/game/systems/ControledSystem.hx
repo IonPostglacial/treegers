@@ -17,8 +17,9 @@ import game.components.Movement;
 import game.components.ObjectChanger;
 import game.components.Position;
 
-import game.map.WorldMap;
 import game.map.GroundType;
+import game.map.TargetObject;
+import game.map.WorldMap;
 
 import geometry.Coordinates;
 import geometry.ICoordinatesSystem;
@@ -116,7 +117,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				node.controled.selected = !node.controled.selected && node.position.equals(position);
 				node.controled.selectedThisRound = true;
 			case GroupSelected(area): // TODO: implement it :p
-			case PowerOrdered(goal): // TODO: implement it properly :p
+			case PowerOrdered(goal):
 				var groundGrid = this.worldMap.forVehicle(node.movement.vehicle);
 				var nearestNeighbor = null;
 				var smallestDistance = 0;
@@ -134,7 +135,12 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				if (path.length == 0 && smallestDistance > 0) {
 					break; // the loop
 				}
-				node.controled.actions = [new UseMana(node.mana, node.objectChanger, goal), new Move(node.entity, path)];
+				for (potentialTarget in worldMap.allTargetsWithType(node.objectChanger.affectedTypes[0])) {
+					if (potentialTarget.coords.equals(goal)) {
+						node.controled.actions = [new UseMana(node.mana, node.objectChanger, potentialTarget), new Move(node.entity, path)];
+						break;
+					}
+				}
 			}
 		}
 		switch (this.worldMap.at(node.position)) {

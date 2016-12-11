@@ -16,6 +16,7 @@ import game.components.Collectible;
 import game.components.IOwningComponent;
 
 import game.map.GroundType;
+import game.map.GroundTypeProperties;
 import game.map.TargetObject;
 import game.map.Vehicle;
 
@@ -34,7 +35,7 @@ class EntityLoader {
 		this.entityBuilders.set("Shovel", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
 			var collectible = new Collectible();
 			var shovel = new ObjectChanger();
-			shovel.affectedTypes = [GroundType.Hole];
+			shovel.affectedTypes = [GroundType.DigPile];
 			collectible.components = [shovel, new Mana()];
 			entity.add(collectible);
 		});
@@ -140,7 +141,8 @@ class EntityLoader {
 					continue; // TODO: maybe add a warning
 				}
 				for (object in ownedRelations.get(relation)) {
-					component.addRelatedObject(componentRelation[1], new TargetObject(object));
+					var tileTerrains = map.tilesets[0].terrains.get(object.gid);
+					component.addRelatedObject(componentRelation[1], new TargetObject(object, GroundTypeProperties.fromTerrains(tileTerrains)));
 				}
 			}
 		}

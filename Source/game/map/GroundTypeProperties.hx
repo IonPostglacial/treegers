@@ -13,6 +13,10 @@ class GroundTypeProperties {
             var waterTerrainsNumber = 0;
             for (terrain in tileTerrains) {
                 switch (Terrain.createByIndex(terrain)) {
+                case Terrain.Hole:
+                    return GroundType.Hole;
+                case Terrain.DigPile:
+                    return GroundType.DigPile;
                 case Terrain.Obstacle:
                     return GroundType.Uncrossable;
                 case Terrain.Water:
