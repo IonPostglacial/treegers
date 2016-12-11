@@ -10,6 +10,7 @@ import game.components.Health;
 import game.components.LinearWalker;
 import game.components.Mana;
 import game.components.Movement;
+import game.components.ObjectChanger;
 import game.components.Position;
 import game.components.Collectible;
 import game.components.IOwningComponent;
@@ -32,14 +33,15 @@ class EntityLoader {
 		});
 		this.entityBuilders.set("Shovel", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
 			var collectible = new Collectible();
-			var shovelMana = new Mana();
-			shovelMana.affectedTypes = [GroundType.Hole];
-			collectible.components = [shovelMana];
+			var shovel = new ObjectChanger();
+			shovel.affectedTypes = [GroundType.Hole];
+			collectible.components = [shovel, new Mana()];
 			entity.add(collectible);
 		});
 		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
 			entity.add(new Health())
 			.add(new Mana())
+			.add(new ObjectChanger())
 			.add(new Movement())
 			.add(new Controled());
 		});

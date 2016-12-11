@@ -5,6 +5,7 @@ import ash.tick.FrameTickProvider;
 import ash.core.Engine;
 
 import game.systems.ActionSystem;
+import game.systems.CameraSystem;
 import game.systems.ControledSystem;
 import game.systems.VisibleSystem;
 import game.systems.VisibleWithGaugeSystem;
@@ -47,12 +48,15 @@ class Stage {
 	}
 
 	function loadSystems(width:Int, height:Int) {
+		var camera = new openfl.geom.Rectangle(0, 0, width, height);
+		openfl.Lib.current.scrollRect = camera;
 		var selectionWidth = this.map.effectiveTileWidth;
 		var selectionHeight = this.map.effectiveTileHeight;
 		var visibleSystem = new VisibleSystem(this.map.coordinates, this.mapRenderer);
 		this.worldMap.addTileObjectsListeners(visibleSystem);
 
-		this.engine.addSystem(new ControledSystem(this.worldMap, this.map.coordinates, width, height, selectionWidth, selectionHeight), 1);
+		this.engine.addSystem(new CameraSystem(camera), 1);
+		this.engine.addSystem(new ControledSystem(this.worldMap, this.map.coordinates, camera, selectionWidth, selectionHeight), 1);
 		this.engine.addSystem(new ActionSystem(this.worldMap), 2);
 		this.engine.addSystem(new HealthSystem(this.worldMap), 2);
 		this.engine.addSystem(new ManaSystem(), 2);
