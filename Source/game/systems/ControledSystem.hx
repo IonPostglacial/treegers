@@ -5,6 +5,7 @@ import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
 import openfl.Lib;
 
+import ash.core.Entity;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
@@ -27,8 +28,9 @@ import geometry.Vector2D;
 
 
 enum Order {
+	Nothing;
 	MovementOrdered(goal:Coordinates);
-	PowerOrdered(goal:Coordinates);
+	PowerOrdered(target:TargetObject);
 	TargetSelected(position:Coordinates);
 	GroupSelected(area:Rectangle);
 }
@@ -48,8 +50,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var events:Array<Order>;
 	var coordinates:ICoordinatesSystem;
 	var pointedCoords:Coordinates;
-	var manaCoords:Coordinates;
 	var pathfinders:Array<graph.Pathfinder<Coordinates>> = [];
+	var potentialTargets:Iterable<TargetObject> = [];
 
 	public function new(worldMap:WorldMap, coordinates:ICoordinatesSystem, camera:openfl.geom.Rectangle, hoverWidth:Int, hoverHeight:Int) {
 		this.worldMap = worldMap;
@@ -64,10 +66,6 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			var mousePosition = this.coordinates.fromPixel(new Vector2D(e.stageX + camera.x, e.stageY + camera.y));
 			pointedCoords = mousePosition;
 		});
-		Lib.current.addEventListener(MouseEvent.RIGHT_CLICK, function(e) {
-			var mousePosition = this.coordinates.fromPixel(new Vector2D(e.stageX + camera.x, e.stageY + camera.y));
-			manaCoords = mousePosition;
-		});
 		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
 			var mousePosition = this.coordinates.fromPixel(new Vector2D(e.stageX + camera.x, e.stageY + camera.y));
 			var mousePoint = this.coordinates.toPixel(mousePosition);
@@ -80,34 +78,46 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		super(ControledNode, updateNode);
 	}
 
-	override function update(deltaTime:Float) {
-		if (pointedCoords != null) {
-			var targetSelected = false;
-			for (node in nodeList) {
-				if (node.position.equals(pointedCoords)) {
-					targetSelected = true;
-					break;
+	function getOrder():Order {
+		if (this.pointedCoords != null) {
+			for (potentialTarget in this.potentialTargets) {
+				if (potentialTarget.coords.equals(this.pointedCoords)) {
+					return PowerOrdered(potentialTarget);
 				}
 			}
-			if (targetSelected) {
-				events.push(TargetSelected(pointedCoords.copy()));
-			} else {
-				events.push(MovementOrdered(pointedCoords.copy()));
+			for (node in this.nodeList) {
+				if (node.position.equals(this.pointedCoords)) {
+					return TargetSelected(this.pointedCoords.copy());
+				}
 			}
-			pointedCoords = null;
+			return MovementOrdered(pointedCoords.copy());
 		}
-		if (manaCoords != null) {
-			events.push(PowerOrdered(manaCoords.copy()));
-			manaCoords = null;
-		}
+		return Nothing;
+	}
+
+	override function update(deltaTime:Float) {
+		events.push(getOrder());
 		super.update(deltaTime);
 		events = [];
+		this.pointedCoords = null;
+	}
+
+	function updatePotentialTargets(entity:Entity, componentClass:Class<Dynamic>) {
+		if (componentClass == ObjectChanger) {
+			var objectChanger = entity.get(ObjectChanger);
+			if (objectChanger != null) { // addition
+				this.potentialTargets = worldMap.allTargetsWithType(entity.get(componentClass).affectedTypes[0]);
+			} else { // removal
+				this.potentialTargets = [];
+			}
+		}
 	}
 
 	function updateNode(node:ControledNode, deltaTime:Float) {
 		node.controled.selectedThisRound = false;
 		for (event in events) {
 			switch (event) {
+			case Nothing: // Well... nothing to do !
 			case MovementOrdered(goal):
 				if (node.controled.selected) {
 					var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position, goal);
@@ -115,13 +125,22 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				}
 			case TargetSelected(position):
 				node.controled.selected = !node.controled.selected && node.position.equals(position);
+				if (node.controled.selected) {
+					this.potentialTargets = worldMap.allTargetsWithType(node.objectChanger.affectedTypes[0]);
+					node.entity.componentAdded.add(updatePotentialTargets);
+					node.entity.componentRemoved.add(updatePotentialTargets);
+				} else {
+					this.potentialTargets = [];
+					node.entity.componentAdded.remove(updatePotentialTargets);
+					node.entity.componentRemoved.remove(updatePotentialTargets);
+				}
 				node.controled.selectedThisRound = true;
 			case GroupSelected(area): // TODO: implement it :p
-			case PowerOrdered(goal):
+			case PowerOrdered(target):
 				var groundGrid = this.worldMap.forVehicle(node.movement.vehicle);
 				var nearestNeighbor = null;
 				var smallestDistance = 0;
-				for (neighbor in groundGrid.neighborsOf(goal)) {
+				for (neighbor in groundGrid.neighborsOf(target.coords)) {
 					var neighborDistance = groundGrid.distanceBetween(node.position, neighbor);
 					if (nearestNeighbor == null || neighborDistance < smallestDistance) {
 						nearestNeighbor = neighbor;
@@ -135,12 +154,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				if (path.length == 0 && smallestDistance > 0) {
 					break; // the loop
 				}
-				for (potentialTarget in worldMap.allTargetsWithType(node.objectChanger.affectedTypes[0])) {
-					if (potentialTarget.coords.equals(goal)) {
-						node.controled.actions = [new UseMana(node.mana, node.objectChanger, potentialTarget), new Move(node.entity, path)];
-						break;
-					}
-				}
+				node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
 			}
 		}
 		switch (this.worldMap.at(node.position)) {
