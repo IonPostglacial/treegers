@@ -40,7 +40,7 @@ class VisibleSystem extends System implements ITargetObjectListener {
 	override public function addToEngine(engine:Engine) {
 		openfl.Lib.current.addChildAt(this.mapRenderer, 0);
 		function prepareVisibles (node:VisibleNode) {
-			var pixPosition = this.coordinates.toPixel(node.position);
+			var pixPosition = this.coordinates.toPixel(node.position.x, node.position.y);
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;
 			openfl.Lib.current.addChild(node.visible.sprite);

@@ -2,6 +2,6 @@ package geometry;
 
 
 @:generic interface ICoordinatesSystem {
-	function fromPixel(point:Vector2D):Coordinates;
-	function toPixel(point:Coordinates):Vector2D;
+	function fromPixel(pixelX:Float, pixelY:Float):Coordinates;
+	function toPixel(coordX:Int, coordY:Int):Vector2D;
 }

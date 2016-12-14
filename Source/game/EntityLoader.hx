@@ -20,33 +20,32 @@ import game.map.GroundTypeProperties;
 import game.map.TargetObject;
 import game.map.Vehicle;
 
-import geometry.Coordinates;
 
 class EntityLoader {
 	static inline var RELATED_COMPONENT_SIGIL = "=";
 	static inline var ADD_COMPONENT_SIGIL = "+";
 	static inline var COMPONENT_RELATION_SEPARATOR = ":";
-	var entityBuilders = new Map<String, Entity->Int->Coordinates->Void>();
+	var entityBuilders = new Map<String, Entity->Int->Void>();
 
 	public function new() {
-		this.entityBuilders.set("Button", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+		this.entityBuilders.set("Button", function (entity:Entity, id:Int):Void {
 			entity.add(new Button());
 		});
-		this.entityBuilders.set("Shovel", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+		this.entityBuilders.set("Shovel", function (entity:Entity, id:Int):Void {
 			var collectible = new Collectible();
 			var shovel = new ObjectChanger();
 			shovel.affectedTypes = [GroundType.DigPile];
 			collectible.components = [shovel, new Mana()];
 			entity.add(collectible);
 		});
-		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int):Void {
 			entity.add(new Health())
 			.add(new Mana())
 			.add(new ObjectChanger())
 			.add(new Movement())
 			.add(new Controled());
 		});
-		this.entityBuilders.set("RollingBall", function (entity:Entity, id:Int, coordinates:Coordinates):Void {
+		this.entityBuilders.set("RollingBall", function (entity:Entity, id:Int):Void {
 			var health = new Health();
 			health.level = 0;
 			var collectible = new Collectible();
@@ -82,9 +81,9 @@ class EntityLoader {
 				var entity:Null<Entity> = null;
 				if (builderFunction != null) {
 					entity = new Entity()
-						.add(new Position(object.coords.x, object.coords.y))
+						.add(new Position(object.coordX, object.coordY))
 						.add(new Visible(object.id));
-					builderFunction(entity, object.id, object.coords);
+					builderFunction(entity, object.id);
 					engine.addEntity(entity);
 					objectsById.set(object.id, entity);
 				} else {

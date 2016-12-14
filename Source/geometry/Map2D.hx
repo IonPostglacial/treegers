@@ -31,11 +31,19 @@ class Map2D<T> implements haxe.Constraints.IMap<Coordinates, T> {
 	}
 
 	public function get(coordinates:Coordinates):T {
-		return data[indexOf(coordinates.x, coordinates.y)];
+		return getAt(coordinates.x, coordinates.y);
 	}
 
 	public function set(coordinates:Coordinates, value:T) {
-		data[indexOf(coordinates.x, coordinates.y)] = value;
+		setAt(coordinates.x, coordinates.y, value);
+	}
+
+	public function getAt(x:Int, y:Int):T {
+		return data[indexOf(x, y)];
+	}
+
+	public function setAt(x:Int, y:Int, value:T) {
+		data[indexOf(x, y)] = value;
 	}
 
 	public function remove(coordinates:Coordinates):Bool {

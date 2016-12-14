@@ -7,7 +7,8 @@ class TileObject {
 	public var gid:Int = 0;
 	public var x:Int = 0;
 	public var y:Int = 0;
-	public var coords:geometry.Coordinates;
+	public var coordX:Int = 0;
+	public var coordY:Int = 0;
 	public var width:Int = 0;
 	public var height:Int = 0;
 	public var properties:Map<String, String> = new Map();

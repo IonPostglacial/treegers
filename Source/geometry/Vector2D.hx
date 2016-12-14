@@ -9,7 +9,7 @@ class Vector2D {
 		this.y = y;
 	}
 
-	public function interpolate(other:Vector2D, delta:Float):Vector2D {
-		return new Vector2D(other.x + delta * (this.x - other.x), other.y + delta * (this.y - other.y));
+	public static inline function interpolate(x1:Float, y1:Float, x2:Float, y2:Float, delta:Float):Vector2D {
+		return new Vector2D(x2 + delta * (x1 - x2), y2 + delta * (y1 - y2));
 	}
 }

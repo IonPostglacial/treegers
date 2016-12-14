@@ -34,16 +34,16 @@ class HealthSystem extends ListIteratingSystem<HealthyNode> {
 	}
 
 	function updateNode(node:HealthyNode, deltaTime:Float) {
-		node.health.changedThisRound = true;
-		switch (this.worldMap.at(node.position)) {
+		node.health.changedThisRound = false;
+		switch (this.worldMap.at(node.position.x, node.position.y)) {
 		case GroundType.Hurting(level):
 			node.health.level -= level;
+			node.health.changedThisRound = true;
 		case GroundType.Hole:
 			node.health.level = 0;
 		case type if (!type.crossableWith(node.movement.vehicle)):
 			node.health.level = 0;
 		default: // pass
-			node.health.changedThisRound = false;
 		}
 		if (node.health.level <= 0) {
 			engine.removeEntity(node.entity);

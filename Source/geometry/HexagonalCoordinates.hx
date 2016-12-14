@@ -11,16 +11,16 @@ class HexagonalCoordinates implements ICoordinatesSystem {
 		this.effectiveHeightRatio = 1 / this.effectiveHeight;
 	}
 
-	public function fromPixel(point:Vector2D):Coordinates {
-		var y = Math.floor(point.y  * effectiveHeightRatio);
-		var x = Math.floor((point.x / hexWidth) - y / 2);
+	public function fromPixel(pointX:Float, pointY:Float):Coordinates {
+		var y = Math.floor(pointY  * effectiveHeightRatio);
+		var x = Math.floor((pointX / hexWidth) - y / 2);
 
 		return new Coordinates(x, y);
 	}
 
-	public function toPixel(coordinates:Coordinates):Vector2D {
-		var x = Math.floor(coordinates.x * hexWidth + coordinates.y * hexWidth / 2);
-		var y = Math.floor(effectiveHeight * coordinates.y);
+	public function toPixel(coordX:Int, coordY:Int):Vector2D {
+		var x = Math.floor(coordX * hexWidth + coordY * hexWidth / 2);
+		var y = Math.floor(effectiveHeight * coordY);
 
 		return new Vector2D(x, y);
 	}

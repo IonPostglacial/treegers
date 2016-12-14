@@ -14,10 +14,6 @@ class Coordinates {
 		return this.x == other.x && this.y == other.y;
 	}
 
-	public inline function copy():Coordinates {
-		return new Coordinates(x, y);
-	}
-
 	public inline function hashCode():Int {
 		return y | (x << 16); // x can be negative while y cannot.
 	}

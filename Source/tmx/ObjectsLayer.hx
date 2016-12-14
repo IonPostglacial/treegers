@@ -18,7 +18,9 @@ class ObjectsLayer extends Layer {
 		for (objectElement in objectElements) {
 			var object = new TileObject();
 			ObjectExt.fromMap(objectElement, TileObject, object);
-			object.coords = this.coordinates.fromPixel(new geometry.Vector2D(object.x + object.width / 2, object.y - object.height / 2));
+			var objectCoords = this.coordinates.fromPixel(object.x + object.width / 2, object.y - object.height / 2);
+			object.coordX = objectCoords.x;
+			object.coordY = objectCoords.y;
 			for (element in objectElement.elements()) {
 				if (element.nodeName == "properties") {
 					for (propertyElement in element.elements()) {

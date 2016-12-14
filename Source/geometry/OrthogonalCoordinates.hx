@@ -13,11 +13,11 @@ class OrthogonalCoordinates implements ICoordinatesSystem {
 		this.heightRatio = 1 / height;
 	}
 
-	public function fromPixel(point:Vector2D):Coordinates {
-		return new Coordinates(Std.int(point.x  * widthRatio), Std.int(point.y * heightRatio));
+	public function fromPixel(pointX:Float, pointY:Float):Coordinates {
+		return new Coordinates(Std.int(pointX  * widthRatio), Std.int(pointY * heightRatio));
 	}
 
-	public function toPixel(coordinates:Coordinates):Vector2D {
-		return new Vector2D(coordinates.x  * width, coordinates.y * height);
+	public function toPixel(coordX:Int, coordY:Int):Vector2D {
+		return new Vector2D(coordX  * width, coordY * height);
 	}
 }

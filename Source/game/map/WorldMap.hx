@@ -1,6 +1,5 @@
 package game.map;
 
-import geometry.Coordinates;
 import geometry.HexagonalMap;
 import geometry.Map2D;
 import geometry.OrthogonalMap;
@@ -40,7 +39,7 @@ class WorldMap {
 			for (tileObject in objectLayer.objects) {
 				var tileType:Int = tileObject.gid;
 				if (tileObject.active) {
-					this.ground.set(tileObject.coords, tileTypeToGroundType(tileType));
+					this.ground.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(tileType));
 				}
 			}
 		}
@@ -53,8 +52,8 @@ class WorldMap {
 		return targetObjects.filter(function(object) return object.groundType == type);
 	}
 
-	public function at(p:Coordinates):GroundType {
-		return this.ground.get(p);
+	public function at(x:Int, y:Int):GroundType {
+		return this.ground.getAt(x, y);
 	}
 
 	function tileTypeToGroundType(tileType:Int):GroundType {
@@ -72,9 +71,9 @@ class WorldMap {
 		if (active) {
 			tileType = target.tileObject.gid;
 		} else {
-			tileType = map.bg.tiles.get(target.tileObject.coords);
+			tileType = map.bg.tiles.getAt(target.tileObject.coordX, target.tileObject.coordY);
 		}
-		this.ground.set(target.tileObject.coords, this.tileTypeToGroundType(tileType));
+		this.ground.setAt(target.tileObject.coordX, target.tileObject.coordY, this.tileTypeToGroundType(tileType));
 		for (listener in tileObjectsListeners) {
 			listener.targetObjectStatusChanged(target, active);
 		}

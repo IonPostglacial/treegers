@@ -6,7 +6,6 @@ import openfl.display.Tilemap;
 import openfl.display.Tileset;
 import openfl.geom.Rectangle;
 
-import geometry.Coordinates;
 import geometry.Map2D;
 import geometry.HexagonalMap;
 import geometry.OrthogonalMap;
@@ -30,7 +29,7 @@ class MapRenderer extends Tilemap {
 	inline function loadTileLayer(map:TiledMap) {
 		var baseLayer = map.tileLayers[0];
 		for (position in baseLayer.tiles.keys()) {
-			var pixPosition = map.coordinates.toPixel(position);
+			var pixPosition = map.coordinates.toPixel(position.x, position.y);
 			var tileId = baseLayer.tiles.get(position) - map.tilesets[0].firstGid;
 			this.addTile(new Tile(tileId, pixPosition.x, pixPosition.y));
 		}
@@ -39,7 +38,7 @@ class MapRenderer extends Tilemap {
 	inline function loadObjectsLayer(map:TiledMap) {
 		for (objectLayer in map.objectLayers) {
 			for (tiledObject in objectLayer.objects) {
-				var normalizedPosition = map.coordinates.toPixel(tiledObject.coords);
+				var normalizedPosition = map.coordinates.toPixel(tiledObject.coordX, tiledObject.coordY);
 				var objectTile = this.createObjectTile(tiledObject.gid, normalizedPosition.x, normalizedPosition.y);
 				objectTile.visible = tiledObject.active;
 				tilesByObjectsId.set(tiledObject.id, objectTile);
@@ -68,14 +67,5 @@ class MapRenderer extends Tilemap {
 
 	public inline function getTileForObjectId(objectId:Int):Tile {
 		return tilesByObjectsId.get(objectId);
-	}
-
-	public inline function getTileFromCoords(layerId:Int, position:Coordinates):Tile {
-		var tileIndex = 0;
-		for (layerIndex in 0...layerId) {
-			tileIndex += this.map.tileLayers[layerId].tiles.size;
-		}
-		tileIndex += this.map.tileLayers[layerId].tiles.indexOf(position.x, position.y);
-		return this.getTileAt(tileIndex);
 	}
 }

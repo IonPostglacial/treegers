@@ -21,19 +21,26 @@ class CameraSystem extends System {
 		var relativeY = Lib.current.mouseY - camera.y;
 		var maxX = Lib.current.width - camera.width;
 		var maxY = Lib.current.height - camera.height;
+		var changed = false;
 
 		if (relativeX < SCROLL_MARGIN) {
 			camera.x = Math.max(camera.x - SCROLL_SPEED, 0);
+			changed = true;
 		}
 		if (relativeX > camera.width - SCROLL_MARGIN) {
 			camera.x = Math.min(camera.x + SCROLL_SPEED, maxX);
+			changed = true;
 		}
 		if (relativeY < SCROLL_MARGIN) {
 			camera.y = Math.max(camera.y - SCROLL_SPEED, 0);
+			changed = true;
 		}
 		if (relativeY > camera.height - SCROLL_MARGIN) {
 			camera.y = Math.min(camera.y + SCROLL_SPEED, maxY);
+			changed = true;
 		}
-		Lib.current.scrollRect = camera;
+		if (changed) {
+			Lib.current.scrollRect = camera;
+		}
 	}
 }

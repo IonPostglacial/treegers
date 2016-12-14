@@ -8,6 +8,7 @@ import game.components.Visible;
 import game.components.Movement;
 import game.components.Position;
 import geometry.ICoordinatesSystem;
+import geometry.Vector2D;
 
 
 class VisiblyMovingNode extends Node<VisiblyMovingNode> {
@@ -25,12 +26,12 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 	}
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
-		if (node.movement.oldPosition == null || !node.position.equals(node.movement.oldPosition)) {
-			var pixPosition = this.coordinates.toPixel(node.position);
-			if(node.movement.oldPosition != null) {
-				var oldPixPosition = this.coordinates.toPixel(node.movement.oldPosition);
+		if (node.movement.oldX < 0 || node.position.x != node.movement.oldX || node.position.y != node.movement.oldY) {
+			var pixPosition = this.coordinates.toPixel(node.position.x, node.position.y);
+			if(node.movement.oldX >= 0) {
+				var oldPixPosition = this.coordinates.toPixel(node.movement.oldX, node.movement.oldY);
 				var movementDelta = node.movement.timeSinceLastMove / node.movement.period;
-				pixPosition = pixPosition.interpolate(oldPixPosition, movementDelta);
+				pixPosition = Vector2D.interpolate(pixPosition.x, pixPosition.y, oldPixPosition.x, oldPixPosition.y, movementDelta);
 			}
 			node.visible.sprite.x = pixPosition.x;
 			node.visible.sprite.y = pixPosition.y;

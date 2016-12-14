@@ -1,12 +1,12 @@
 package game.map;
 
 import tmx.TileObject;
-import geometry.Coordinates;
 
 
 class TargetObject {
     public var objectId(get,never):Int;
-    public var coords(get,never):Coordinates;
+    public var x(get,never):Int;
+    public var y(get,never):Int;
     public var groundType(default,null):GroundType;
     @:allow(game.map.WorldMap.setTargetStatus)
     private var tileObject:TileObject;
@@ -24,7 +24,11 @@ class TargetObject {
         return this.tileObject.id;
     }
 
-    public function get_coords():Coordinates {
-        return this.tileObject.coords;
+    public function get_x():Int {
+        return this.tileObject.coordX;
+    }
+
+    public function get_y():Int {
+        return this.tileObject.coordY;
     }
 }
