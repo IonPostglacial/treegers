@@ -5,12 +5,9 @@
  */
 package graph;
 
-import haxe.ds.HashMap;
-
 
 typedef Node<T> = {
 	function equals(other:T):Bool;
-	function hashCode():Int;
 }
 
 /*
@@ -48,24 +45,24 @@ class Pathfinder<Node_t:Node<Node_t>> {
 		this.graph = graph;
 	}
 
-	inline function reconstructPath(nodes:HashMap<Node_t, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
+	inline function reconstructPath(nodes:Map<Int, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
 		var path = [];
 		var currentNode = goal;
 
 		while (!currentNode.equals(start)) {
 			path.push(currentNode);
-			currentNode = nodes.get(currentNode).previousNode;
+			currentNode = nodes.get(graph.nodeIndex(currentNode)).previousNode;
 		}
 		path.push(start);
 		return path;
 	}
 
 	public function find(start:Node_t, goal:Node_t):Array<Node_t> {
-		var scores = new HashMap<Node_t, Score<Node_t>>();
+		var scores = new Map<Int, Score<Node_t>>();
 		var frontier = [];
 		var firstScore = new Score(start, null, 0, graph.distanceBetween(start, goal));
 
-		scores.set(start, firstScore);
+		scores.set(graph.nodeIndex(start), firstScore);
 		frontier.push(firstScore);
 
 		while (frontier.length > 0) {
@@ -78,12 +75,12 @@ class Pathfinder<Node_t:Node<Node_t>> {
 			for (neighbor in graph.neighborsOf(currentNode)) {
 				var costToNeighbor = currentScore.costSoFar + graph.distanceBetween(currentNode, neighbor);
 				var heuristic = graph.distanceBetween(neighbor, goal);
-				var previousEvaluation = scores.get(neighbor);
+				var neighborIndex = graph.nodeIndex(neighbor);
+				var previousEvaluation = scores.get(neighborIndex);
 
 				if (previousEvaluation == null || costToNeighbor < previousEvaluation.costSoFar) {
 					var neighborScore = new Score(neighbor, currentNode, costToNeighbor, heuristic);
-
-					scores.set(neighbor, neighborScore);
+					scores.set(neighborIndex, neighborScore);
 					frontier.push(neighborScore);
 					frontier.sort(compareScore);
 				}

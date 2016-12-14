@@ -37,7 +37,9 @@ class OrthogonalGrid implements I2DGrid {
 	}
 
 	public inline function distanceBetween(p1:Coordinates, p2:Coordinates):Int {
-		return abs(p1.x - p2.x) + abs(p1.y - p2.y);
+		var dx = p1.x - p2.x;
+		var dy = p1.y - p2.y;
+		return dx * dx + dy * dy;
 	}
 
 	public inline function neighborsOf(p:Coordinates):Array<Coordinates> {
@@ -50,5 +52,9 @@ class OrthogonalGrid implements I2DGrid {
 			}
 		}
 		return neighbors;
+	}
+
+	public function nodeIndex(node:Coordinates):Int {
+		return node.x + node.y * width;
 	}
 }

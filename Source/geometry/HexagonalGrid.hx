@@ -47,4 +47,8 @@ class HexagonalGrid implements I2DGrid {
 		}
 		return neighbors;
 	}
+
+	public function nodeIndex(node:Coordinates):Int {
+		return node.x + node.y * width;
+	}
 }

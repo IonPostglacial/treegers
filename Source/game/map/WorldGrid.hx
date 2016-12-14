@@ -30,4 +30,8 @@ class WorldGrid implements IPathfindable<Coordinates> {
 			return groundType.crossableWith(vehicle);
 		});
 	}
+
+	public function nodeIndex(node:Coordinates):Int {
+		return grid.nodeIndex(node);
+	}
 }
