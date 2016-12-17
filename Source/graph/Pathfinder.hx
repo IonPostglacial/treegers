@@ -5,30 +5,6 @@
  */
 package graph;
 
-
-typedef Node<T> = {
-	function equals(other:T):Bool;
-}
-
-/*
- * The goal of the Score class is to store the costs associated with a Node:
- * - costSoFar is the cost to go to currentNode following the currently examined path
- * - estimatedCost is the estimated cost to go to the goal node following the currently examined path, considering no obstacles will be encountered.
- */
-private class Score<Node_t:Node<Node_t>> {
-	public var currentNode:Node_t;
-	public var previousNode:Node_t;
-	public var costSoFar:Int;
-	public var estimatedCost:Int;
-
-	public function new(currentNode, previousNode, costSoFar, heuristic) {
-		this.currentNode = currentNode;
-		this.previousNode = previousNode;
-		this.costSoFar = costSoFar;
-		this.estimatedCost = costSoFar + heuristic;
-	}
-}
-
 /*
  * A Pathfinding object can be used to find the shortest path in a graph.
  * A graph is a class implementing interface IPathfindable.
@@ -37,7 +13,7 @@ private class Score<Node_t:Node<Node_t>> {
  * It returns an Array containing every nodes composing the calculated path, starting node and ending node included.
  */
 @:generic
-class Pathfinder<Node_t:Node<Node_t>> {
+class Pathfinder<Node_t:INode<Node_t>> {
 	var graph:IPathfindable<Node_t>;
 	function compareScore(s1, s2) return s2.estimatedCost - s1.estimatedCost;
 
@@ -45,7 +21,7 @@ class Pathfinder<Node_t:Node<Node_t>> {
 		this.graph = graph;
 	}
 
-	inline function reconstructPath(nodes:Map<Int, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
+	function reconstructPath(nodes:Map<Int, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
 		var path = [];
 		var currentNode = goal;
 

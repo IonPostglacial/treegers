@@ -10,11 +10,11 @@ class Coordinates {
 		this.y = y;
 	}
 
-	public inline function equals(other):Bool {
+	public inline function equals(other:Coordinates):Bool {
 		return this.x == other.x && this.y == other.y;
 	}
 
-	public inline function hashCode():Int {
-		return y | (x << 16); // x can be negative while y cannot.
+	public function direction(other:Coordinates):Direction {
+		return Direction.fromVect(other.x - this.x, other.y - this.y);
 	}
 }

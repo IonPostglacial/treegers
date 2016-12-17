@@ -107,11 +107,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		switch (this.currentOrder) {
 		case MovementOrdered(x, y):
 			if (node.controled.selected) {
-				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position, new Coordinates(x, y));
+				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(new Coordinates(node.movement.nextX, node.movement.nextY), new Coordinates(x, y));
 				node.controled.actions = [new Move(node.entity, path)];
 			}
 		case TargetSelected(x, y):
-			node.controled.selected = !node.controled.selected && node.position.x == x && node.position.y == y;
+			node.controled.selected = node.position.x == x && node.position.y == y && !node.controled.selected;
 			node.controled.selectedThisRound = true;
 			if (node.controled.selected) {
 				this.potentialTargets = worldMap.allTargetsWithType(node.objectChanger.affectedTypes[0]);

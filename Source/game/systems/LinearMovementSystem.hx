@@ -34,7 +34,7 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 	}
 
 	function updateNode(node:LinearWalkingNode, deltaTime:Float) {
-		if (node.movement.timeSinceLastMove >= node.movement.period) {
+		if (node.position.x == node.movement.nextX && node.position.y == node.movement.nextY) {
 			switch (this.worldMap.at(node.position.x, node.position.y)) {
 			case GroundType.Arrow(dx, dy):
 				node.linearWalker.dx = dx;
@@ -44,11 +44,8 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 				return;
 			default: // pass
 			}
-			node.movement.oldX = node.position.x;
-			node.movement.oldY = node.position.y;
-			node.movement.timeSinceLastMove -= node.movement.period;
-			node.position.x += node.linearWalker.dx;
-			node.position.y += node.linearWalker.dy;
+			node.movement.nextX += node.linearWalker.dx;
+			node.movement.nextY += node.linearWalker.dy;
 		}
 	}
 }

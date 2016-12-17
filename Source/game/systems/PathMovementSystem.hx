@@ -27,16 +27,13 @@ class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 	}
 
 	function updateNode(node:PathWalkingNode, deltaTime:Float) {
-		if (node.pathWalker.path.length > 0 && node.movement.timeSinceLastMove >= node.movement.period) {
+		if (node.pathWalker.path.length > 0 && node.position.x == node.movement.nextX && node.position.y == node.movement.nextY) {
 			var nextPosition = node.pathWalker.path.pop();
 			if (!this.worldMap.at(nextPosition.x, nextPosition.y).crossableWith(node.movement.vehicle)) {
 				node.pathWalker.path = [];
 			} else {
-				node.movement.oldX = node.position.x;
-				node.movement.oldY = node.position.y;
-				node.movement.timeSinceLastMove -= node.movement.period;
-				node.position.x = nextPosition.x;
-				node.position.y = nextPosition.y;
+				node.movement.nextX = nextPosition.x;
+				node.movement.nextY = nextPosition.y;
 			}
 		}
 	}

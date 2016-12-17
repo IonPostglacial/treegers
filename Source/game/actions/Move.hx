@@ -17,7 +17,6 @@ class Move implements IAction {
 	public function new(entity, path) {
 		this.entity = entity;
 		this.path = path;
-		this.path.pop();
 	}
 
 	public function get_done():Bool {
