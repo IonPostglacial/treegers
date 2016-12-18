@@ -34,10 +34,13 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var worldMap:WorldMap;
 	var camera(default,null):openfl.geom.Rectangle;
 	var hover:Sprite;
+	var targetSprites:Sprite;
 	var currentOrder:Order = Nothing;
 	var coordinates:ICoordinatesSystem;
 	var pointedX:Int = -1;
 	var pointedY:Int = -1;
+	var hoverWidth:Int;
+	var hoverHeight:Int;
 	var pathfinders:Array<graph.CompressingPathfinder<Coordinates>> = [];
 	var potentialTargets:Iterable<TargetObject> = [];
 
@@ -45,10 +48,14 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.worldMap = worldMap;
 		this.coordinates = coordinates;
 		this.camera = camera;
+		this.hoverWidth = hoverWidth;
+		this.hoverHeight = hoverHeight;
 		this.hover = new Sprite();
-		this.hover.graphics.lineStyle(2, 0xFF0000);
+		this.hover.graphics.lineStyle(2, 0xFFFFFF);
 		this.hover.graphics.drawRect(0, 0, hoverWidth, hoverHeight);
 		openfl.Lib.current.addChild(this.hover);
+		this.targetSprites = new Sprite();
+		openfl.Lib.current.addChild(this.targetSprites);
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
 			var mousePosition = this.coordinates.fromPixel(e.stageX + camera.x, e.stageY + camera.y);
 			pointedX = mousePosition.x;
@@ -91,13 +98,27 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.pointedY = -1;
 	}
 
+	function createTargetSprites() {
+		for (target in this.potentialTargets) {
+			var targetPixPosition = this.coordinates.toPixel(target.x, target.y);
+			var targetSprite = new Sprite();
+			targetSprite.graphics.lineStyle(2, 0x6666ff);
+			targetSprite.graphics.drawRoundRect(0, 0, hoverWidth, hoverHeight, 8);
+			targetSprite.x = targetPixPosition.x;
+			targetSprite.y = targetPixPosition.y;
+			this.targetSprites.addChild(targetSprite);
+		}
+	}
+
 	function updatePotentialTargets(entity:Entity, componentClass:Class<Dynamic>) {
 		if (componentClass == ObjectChanger) {
 			var objectChanger = entity.get(ObjectChanger);
 			if (objectChanger != null) { // addition
 				this.potentialTargets = worldMap.allTargetsWithType(entity.get(componentClass).affectedTypes[0]);
+				createTargetSprites();
 			} else { // removal
 				this.potentialTargets = [];
+				this.targetSprites.removeChildren();
 			}
 		}
 	}
@@ -116,10 +137,12 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			node.controled.selectedThisRound = true;
 			if (node.controled.selected) {
 				this.potentialTargets = worldMap.allTargetsWithType(node.objectChanger.affectedTypes[0]);
+				createTargetSprites();
 				node.entity.componentAdded.add(updatePotentialTargets);
 				node.entity.componentRemoved.add(updatePotentialTargets);
 			} else {
 				this.potentialTargets = [];
+				this.targetSprites.removeChildren();
 				node.entity.componentAdded.remove(updatePotentialTargets);
 				node.entity.componentRemoved.remove(updatePotentialTargets);
 			}

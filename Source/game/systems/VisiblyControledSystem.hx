@@ -31,8 +31,8 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		var selection = new Sprite();
 		selection.name = "selection";
 		selection.visible = false;
-		selection.graphics.lineStyle(2, 0xFFFF00);
-		selection.graphics.drawRect(0, 0, this.selectionWidth, this.selectionWidth);
+		selection.graphics.lineStyle(2, 0xff6666);
+		selection.graphics.drawRoundRect(0, 0, this.selectionWidth, this.selectionWidth, 8);
 		return selection;
 	}
 
