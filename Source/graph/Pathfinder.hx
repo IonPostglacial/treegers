@@ -29,7 +29,6 @@ class Pathfinder<Node_t:INode<Node_t>> {
 			path.push(currentNode);
 			currentNode = nodes.get(graph.nodeIndex(currentNode)).previousNode;
 		}
-		path.push(start);
 		return path;
 	}
 

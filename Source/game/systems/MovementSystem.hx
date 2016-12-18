@@ -20,15 +20,14 @@ class MovementSystem extends ListIteratingSystem<MovingNode> {
 	}
 
 	function updateNode(node:MovingNode, deltaTime:Float) {
-		if (node.position.x != node.movement.nextX || node.position.y != node.movement.nextY) {
+		if (!node.movement.alreadyMoved) {
 			node.movement.timeSinceLastMove += deltaTime;
 			if (node.movement.timeSinceLastMove >= node.movement.period) {
 				node.position.x = node.movement.nextX;
 				node.position.y = node.movement.nextY;
+				node.movement.alreadyMoved = true;
 				node.movement.timeSinceLastMove -= node.movement.period;
 			}
-		} else {
-			node.movement.timeSinceLastMove = 0;
 		}
 	}
 }

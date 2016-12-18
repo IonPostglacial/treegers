@@ -26,7 +26,7 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 	}
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
-		if (node.movement.timeSinceLastMove > 0) {
+		if (!node.movement.alreadyMoved) {
 			var pixPosition = this.coordinates.toPixel(node.position.x, node.position.y);
 			var nextPixPosition = this.coordinates.toPixel(node.movement.nextX, node.movement.nextY);
 			var movementDelta = node.movement.timeSinceLastMove / node.movement.period;

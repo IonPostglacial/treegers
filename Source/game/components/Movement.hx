@@ -10,6 +10,7 @@ class Movement {
 	public var period:Float = 0.5;
 	public var nextX = 0;
 	public var nextY = 0;
+	public var alreadyMoved = false;
 	public var timeSinceLastMove:Float = 0;
 
 	public function new() {}

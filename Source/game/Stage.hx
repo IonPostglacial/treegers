@@ -57,6 +57,7 @@ class Stage {
 
 		this.engine.addSystem(new CameraSystem(camera), 1);
 		this.engine.addSystem(new ControledSystem(this.worldMap, this.map.coordinates, camera, selectionWidth, selectionHeight), 1);
+		this.engine.addSystem(new MovementSystem(), 1);
 		this.engine.addSystem(new ActionSystem(this.worldMap), 2);
 		this.engine.addSystem(new HealthSystem(this.worldMap), 2);
 		this.engine.addSystem(new ManaSystem(), 2);
@@ -64,10 +65,9 @@ class Stage {
 		this.engine.addSystem(new PathMovementSystem(this.worldMap), 2);
 		this.engine.addSystem(new ButtonSystem(this.worldMap), 2);
 		this.engine.addSystem(new CollectSystem(), 2);
-		this.engine.addSystem(new MovementSystem(), 3);
-		this.engine.addSystem(visibleSystem, 4);
-		this.engine.addSystem(new VisibleWithGaugeSystem(this.map.tileWidth), 5);
-		this.engine.addSystem(new VisiblyMovingSystem(this.map.coordinates), 5);
-		this.engine.addSystem(new VisiblyControledSystem(selectionWidth, selectionHeight), 5);
+		this.engine.addSystem(visibleSystem, 3);
+		this.engine.addSystem(new VisibleWithGaugeSystem(this.map.tileWidth), 4);
+		this.engine.addSystem(new VisiblyMovingSystem(this.map.coordinates), 4);
+		this.engine.addSystem(new VisiblyControledSystem(selectionWidth, selectionHeight), 4);
 	}
 }
