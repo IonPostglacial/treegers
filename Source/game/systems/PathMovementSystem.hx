@@ -33,7 +33,7 @@ class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 		}
 		var nextPosition = node.pathWalker.path.pop();
 		if (!this.worldMap.at(nextPosition.x, nextPosition.y).crossableWith(node.movement.vehicle)) {
-			node.pathWalker.path = [];
+			node.pathWalker.path.splice(0, node.pathWalker.path.length);
 			return Direction.None;
 		} else {
 			node.movement.alreadyMoved = false;

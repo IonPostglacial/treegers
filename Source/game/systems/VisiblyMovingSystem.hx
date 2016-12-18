@@ -30,14 +30,16 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 	}
 
 	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
+		var pixPosition = this.coordinates.toPixel(node.position.x, node.position.y);
 		if (!node.movement.alreadyMoved) {
-			var pixPosition = this.coordinates.toPixel(node.position.x, node.position.y);
-			var movementDelta = node.movement.timeSinceLastMove / node.movement.period;
-
-			node.visible.tile.x = pixPosition.x + node.movement.direction.dx() * tileWidth * movementDelta;
-			node.visible.tile.y = pixPosition.y + node.movement.direction.dy() * tileHeight * movementDelta;
-			node.visible.sprite.x = node.visible.tile.x;
-			node.visible.sprite.y = node.visible.tile.y;
+			var movementDelta = deltaTime / node.movement.period;
+			node.visible.tile.x += node.movement.direction.dx() * tileWidth * movementDelta;
+			node.visible.tile.y += node.movement.direction.dy() * tileHeight * movementDelta;
+		} else {
+			node.visible.tile.x = pixPosition.x;
+			node.visible.tile.y = pixPosition.y;
 		}
+		node.visible.sprite.x = node.visible.tile.x;
+		node.visible.sprite.y = node.visible.tile.y;
 	}
 }

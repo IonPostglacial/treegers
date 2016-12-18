@@ -11,6 +11,7 @@ package graph;
  */
 interface IPathfindable<T> {
 	public function nodeIndex(node:T):Int;
+	public function areNeighbors(p1:T, p2:T):Bool;
 	public function neighborsOf(position:T):Iterable<T>;
 	public function distanceBetween(start:T, goal:T):Int;
 }

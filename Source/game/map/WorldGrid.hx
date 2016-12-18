@@ -34,4 +34,8 @@ class WorldGrid implements IPathfindable<Coordinates> {
 	public function nodeIndex(node:Coordinates):Int {
 		return grid.nodeIndex(node);
 	}
+
+	public function areNeighbors(p1:Coordinates, p2:Coordinates):Bool {
+		return grid.areNeighbors(p1, p2);
+	}
 }

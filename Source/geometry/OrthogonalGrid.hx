@@ -42,6 +42,10 @@ class OrthogonalGrid implements I2DGrid {
 		return dx * dx + dy * dy;
 	}
 
+	public function areNeighbors(p1:Coordinates, p2:Coordinates):Bool {
+		return abs(p1.x - p2.x) <= 1 && abs(p1.y - p2.y) <= 1;
+	}
+
 	public inline function neighborsOf(p:Coordinates):Array<Coordinates> {
 		var neighbors:Array<Coordinates> = [];
 		for (i in 0...8) {

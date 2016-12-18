@@ -1,5 +1,6 @@
 package game.map;
 
+import geometry.Coordinates;
 import geometry.HexagonalMap;
 import geometry.Map2D;
 import geometry.OrthogonalMap;
@@ -46,6 +47,10 @@ class WorldMap {
 		for (vehicle in Type.allEnums(Vehicle)) {
 			this.grids.push(new WorldGrid(this.ground, this.map.grid, vehicle));
 		}
+	}
+
+	public function areNeighbors(c1:Coordinates, c2:Coordinates):Bool {
+		return this.map.grid.areNeighbors(c1, c2);
 	}
 
 	public function allTargetsWithType(type:GroundType):Iterable<TargetObject> {

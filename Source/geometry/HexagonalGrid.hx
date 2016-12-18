@@ -36,6 +36,10 @@ class HexagonalGrid implements I2DGrid {
 		return Std.int((abs(p1.x - p2.x) + abs(p1.x + p1.y - p2.x - p2.y) + abs(p1.y - p2.y)) / 2);
 	}
 
+	public function areNeighbors(p1:Coordinates, p2:Coordinates):Bool {
+		return distanceBetween(p1, p2) <= 1;
+	}
+
 	public inline function neighborsOf(p:Coordinates):Array<Coordinates> {
 		var neighbors:Array<Coordinates> = [];
 		for (i in 0...6) {
