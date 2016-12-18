@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="20" tilewidth="32" tileheight="32" nextobjectid="27">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="50" tilewidth="32" tileheight="32" nextobjectid="34">
  <tileset firstgid="1" name="BFS Tileset" tilewidth="32" tileheight="32" tilecount="300">
   <image source="bfs-tileset.png" width="480" height="640"/>
   <terraintypes>
@@ -108,9 +108,9 @@
   <tile id="96" terrain="1,1,1,1"/>
   <tile id="97" terrain="1,1,1,1"/>
  </tileset>
- <layer name="Ground" width="25" height="20">
+ <layer name="Ground" width="25" height="50">
   <data encoding="base64" compression="zlib">
-   eJztk1sLgkAQhdeSqCBIKro8VJBQEaRdqKAowQqCLv//33SElYbNXXcN6qWHD1eZmeOZmbUYY9YXyIG8BFsSayvyxZyIHihIGEhia6AOqsDh3/qSnKwasY6jkWOqMQVeQpyf4iPKOxDK5BxI4j2hfnyegXlCThZk3pM8JO3FmWXbE1+hEcVfJf9147MVdfYGvaX9vYMGKBLa7LVDKl8m/XVBEwz5syVolhT90NUIwZLX74AKoQtGgic6vzR/dIYu9zEGE7AFF7DjGrp3SaWx4F42pPYKHMHpQ40HiQ95zZg1e99T+q5z98S7bkpgMPs/v+UJIG4Zow==
+   eJztlUtPAjEQxwuCiqupILh6kkTMogfBt14E8RHN+kKPJr6+/4dwmsyGoTttd5fEUw+/TIGZ+Xdm2lISQpT+gTIwZ6Bi8K1Y4vUYxRYwb2Db4LsGNIFVoI7ftQ0xRTUSnXqGGJNGG9H994Ee49931KHiBoQlsh4a/Hta/mR9ABwyMUUw9ZergTsXd6LYOelbNJT/o2FfTzhbXecyR29pf5+BFrCoUUMdW115+tsBQiBCq+gCI+ANGFv6kVXjGjjG3AGiND7x94ZWE52fqz46Q1XLMrCCqD5+Yw0Nw9xsZ8qkcQ5cMPMdCP4OujSSN+cFZ7yOvdq17Gek5XfdPRXTIrlDolE1+I9R5xX4yNinjpafalCdMtb8DvwCX2jzaEhEre+BB40NMbkz6iz/iPRZazo0ToAYbYA2+T5CK1Grps1kAdhkaroiGip+J6ONSU0Jap5dRmOPaEht3y4bk9lJrJPToHUE6B+LyVsixfS7IokNRPqccBpVrY6Q6CT75HJRAhLr0uDyRwSaV4p0n+IcGqGY7rUpL7fOo8HVpOtH2udT4MyicQTczMit4N8tpaG/q7MwFOk7bqJqoch/oMfj8Xg8Ho+LP6KQP6A=
   </data>
  </layer>
  <objectgroup name="Ground Entities">
@@ -134,6 +134,13 @@
    </properties>
   </object>
   <object id="26" type="Shovel" gid="151" x="224" y="96" width="32" height="32"/>
+  <object id="27" gid="33" x="192" y="160" width="32" height="32"/>
+  <object id="28" gid="33" x="224" y="160" width="32" height="32"/>
+  <object id="29" gid="38" x="128" y="640" width="32" height="32"/>
+  <object id="30" gid="38" x="192" y="640" width="32" height="32"/>
+  <object id="31" gid="38" x="256" y="640" width="32" height="32"/>
+  <object id="32" gid="38" x="320" y="640" width="32" height="32"/>
+  <object id="33" gid="38" x="384" y="640" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="Entities">
   <object id="5" type="Grunt" gid="107" x="65" y="95" width="32" height="32"/>
