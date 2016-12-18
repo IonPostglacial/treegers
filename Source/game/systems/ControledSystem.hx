@@ -127,7 +127,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			var nearestNeighbor = null;
 			var smallestDistance = 0;
 			for (neighbor in groundGrid.neighborsOf(new Coordinates(target.x, target.y))) {
-				var neighborDistance = groundGrid.distanceBetween(node.position, neighbor);
+				var neighborDistance = groundGrid.distanceBetween(node.position.coords(), neighbor);
 				if (nearestNeighbor == null || neighborDistance < smallestDistance) {
 					nearestNeighbor = neighbor;
 					smallestDistance = neighborDistance;
@@ -135,7 +135,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			}
 			var path:Array<Coordinates>;
 			if (nearestNeighbor != null) {
-				path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position, nearestNeighbor);
+				path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
 				if (path.length != 0 || smallestDistance == 0) {
 					node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
 				}
@@ -144,7 +144,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		}
 		switch (this.worldMap.at(node.position.x, node.position.y)) {
 		case GroundType.Arrow(dx, dy):
-			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy), node.position];
+			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy), node.position.coords()];
 			node.controled.actions = [new Move(node.entity, newPath)];
 		default: // pass
 		}
