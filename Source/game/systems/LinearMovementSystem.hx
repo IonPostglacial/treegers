@@ -45,8 +45,7 @@ class LinearMovementSystem extends ListIteratingSystem<LinearWalkingNode> {
 			default: // pass
 			}
 			node.movement.alreadyMoved = false;
-			node.movement.nextX += node.linearWalker.dx;
-			node.movement.nextY += node.linearWalker.dy;
+			node.movement.direction = Direction.fromVect(node.linearWalker.dx, node.linearWalker.dy);
 		}
 	}
 }

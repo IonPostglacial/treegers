@@ -107,7 +107,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		switch (this.currentOrder) {
 		case MovementOrdered(x, y):
 			if (node.controled.selected) {
-				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(new Coordinates(node.movement.nextX, node.movement.nextY), new Coordinates(x, y));
+				var nextCoords = new Coordinates(node.position.x + node.movement.direction.dx(), node.position.y + node.movement.direction.dy());
+				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(nextCoords, new Coordinates(x, y));
 				node.controled.actions = [new Move(node.entity, path)];
 			}
 		case TargetSelected(x, y):

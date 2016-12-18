@@ -67,7 +67,7 @@ class Stage {
 		this.engine.addSystem(new CollectSystem(), 2);
 		this.engine.addSystem(visibleSystem, 3);
 		this.engine.addSystem(new VisibleWithGaugeSystem(this.map.tileWidth), 4);
-		this.engine.addSystem(new VisiblyMovingSystem(this.map.coordinates), 4);
+		this.engine.addSystem(new VisiblyMovingSystem(this.map.coordinates, this.map.tileWidth, this.map.tileHeight), 4);
 		this.engine.addSystem(new VisiblyControledSystem(selectionWidth, selectionHeight), 4);
 	}
 }

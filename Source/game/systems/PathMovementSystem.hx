@@ -6,6 +6,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Movement;
 import game.components.PathWalker;
 import game.components.Position;
+import geometry.Direction;
 
 import game.map.WorldMap;
 import game.map.GroundType;
@@ -26,16 +27,23 @@ class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 		super(PathWalkingNode, updateNode);
 	}
 
+	public function nextDirection(node:PathWalkingNode, deltaTime:Float):Direction {
+		if (node.pathWalker.path.length == 0) {
+			return Direction.None;
+		}
+		var nextPosition = node.pathWalker.path.pop();
+		if (!this.worldMap.at(nextPosition.x, nextPosition.y).crossableWith(node.movement.vehicle)) {
+			node.pathWalker.path = [];
+			return Direction.None;
+		} else {
+			node.movement.alreadyMoved = false;
+			return Direction.fromVect(nextPosition.x - node.position.x, nextPosition.y - node.position.y);
+		}
+	}
+
 	function updateNode(node:PathWalkingNode, deltaTime:Float) {
-		if (node.pathWalker.path.length > 0 && node.movement.alreadyMoved) {
-			var nextPosition = node.pathWalker.path.pop();
-			if (!this.worldMap.at(nextPosition.x, nextPosition.y).crossableWith(node.movement.vehicle)) {
-				node.pathWalker.path = [];
-			} else {
-				node.movement.alreadyMoved = false;
-				node.movement.nextX = nextPosition.x;
-				node.movement.nextY = nextPosition.y;
-			}
+		if (node.movement.alreadyMoved) {
+			node.movement.direction = this.nextDirection(node, deltaTime);
 		}
 	}
 }
