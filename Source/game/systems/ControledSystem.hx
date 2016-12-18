@@ -38,7 +38,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var coordinates:ICoordinatesSystem;
 	var pointedX:Int = -1;
 	var pointedY:Int = -1;
-	var pathfinders:Array<graph.Pathfinder<Coordinates>> = [];
+	var pathfinders:Array<graph.CompressingPathfinder<Coordinates>> = [];
 	var potentialTargets:Iterable<TargetObject> = [];
 
 	public function new(worldMap:WorldMap, coordinates:ICoordinatesSystem, camera:openfl.geom.Rectangle, hoverWidth:Int, hoverHeight:Int) {
@@ -61,7 +61,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			this.hover.y = mousePoint.y;
 		});
 		for (groundGrid in this.worldMap.grids) {
-			this.pathfinders.push(new graph.Pathfinder(groundGrid));
+			this.pathfinders.push(new graph.CompressingPathfinder(groundGrid));
 		}
 		super(ControledNode, updateNode);
 	}
