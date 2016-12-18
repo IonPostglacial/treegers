@@ -46,12 +46,14 @@ class EntityLoader {
 			.add(new Controled());
 		});
 		this.entityBuilders.set("RollingBall", function (entity:Entity, id:Int):Void {
+			var movement = new Movement();
+			movement.period *= 2;
 			var health = new Health();
 			health.level = 0;
 			var collectible = new Collectible();
 			collectible.components = [health];
 			entity.add(collectible)
-			.add(new Movement())
+			.add(movement)
 			.add(new LinearWalker());
 		});
 	}
