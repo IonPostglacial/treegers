@@ -30,6 +30,8 @@ enum Order {
 }
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {
+	var targetBlinkElapsedTime:Float = 0;
+	var targetBlinkPeriod:Float = 1;
 	var worldMap:WorldMap;
 	var camera(default,null):openfl.geom.Rectangle;
 	var hover:Sprite;
@@ -90,6 +92,13 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	}
 
 	override function update(deltaTime:Float) {
+		if (this.targetSprites.numChildren > 0) {
+			this.targetBlinkElapsedTime += deltaTime;
+			if (this.targetBlinkElapsedTime >= this.targetBlinkPeriod) {
+				this.targetBlinkElapsedTime -= this.targetBlinkPeriod;
+			}
+			this.targetSprites.alpha = this.targetBlinkElapsedTime / this.targetBlinkPeriod;
+		}
 		this.currentOrder = getOrder();
 		super.update(deltaTime);
 		this.currentOrder = Nothing;
@@ -101,8 +110,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		for (target in this.potentialTargets) {
 			var targetPixPosition = this.coordinates.toPixel(target.x, target.y);
 			var targetSprite = new Sprite();
-			targetSprite.graphics.lineStyle(2, 0x6666ff);
-			targetSprite.graphics.drawRoundRect(0, 0, hoverWidth, hoverHeight, 8);
+			targetSprite.graphics.lineStyle(2, 0x0077ff);
+			targetSprite.graphics.drawRoundRect(0, 0, hoverWidth, hoverHeight, hoverWidth);
 			targetSprite.x = targetPixPosition.x;
 			targetSprite.y = targetPixPosition.y;
 			this.targetSprites.addChild(targetSprite);
@@ -156,9 +165,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 					smallestDistance = neighborDistance;
 				}
 			}
-			var path:Array<Coordinates>;
 			if (nearestNeighbor != null) {
-				path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
+				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
 				if (path.length != 0 || smallestDistance == 0) {
 					node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
 				}
