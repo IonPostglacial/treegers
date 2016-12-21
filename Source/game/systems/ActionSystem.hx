@@ -1,10 +1,13 @@
 package game.systems;
 
 import ash.tools.ListIteratingSystem;
-
+import game.actions.Move;
 import game.nodes.ActionedNode;
-import game.components.Position;
+import game.map.GroundType;
 import game.map.WorldMap;
+import geometry.Coordinates;
+import geometry.Direction;
+import game.components.PathWalker;
 
 
 class ActionSystem extends ListIteratingSystem<ActionedNode> {
@@ -20,10 +23,17 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 		if (currentAction == null) {
 			return;
 		}
-		var oldPosition = new Position(node.position.x, node.position.y);
 		currentAction.execute(this.worldMap, node, deltaTime);
 		if (currentAction.done) {
 			node.controled.actions.pop();
+		}
+		switch (this.worldMap.at(node.position.x, node.position.y)) {
+		case GroundType.Arrow(dx, dy):
+			node.movement.direction = Direction.fromVect(dx, dy);
+			node.movement.alreadyMoved = false;
+			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy)];
+			node.controled.actions = [new Move(node.entity, newPath)];
+		default: // pass
 		}
 	}
 }

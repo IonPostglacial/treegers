@@ -11,7 +11,6 @@ import ash.tools.ListIteratingSystem;
 import game.actions.Move;
 import game.actions.UseMana;
 
-import game.map.GroundType;
 import game.map.TargetObject;
 import game.map.WorldMap;
 
@@ -165,12 +164,6 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				}
 			}
 		case Nothing: // Nothing to do.
-		}
-		switch (this.worldMap.at(node.position.x, node.position.y)) {
-		case GroundType.Arrow(dx, dy):
-			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy), node.position.coords()];
-			node.controled.actions = [new Move(node.entity, newPath)];
-		default: // pass
 		}
 	}
 }
