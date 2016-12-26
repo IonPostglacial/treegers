@@ -30,7 +30,14 @@ class Tileset {
 		for (tileElement in tileElements) {
 			var rawTerrain = tileElement.get("terrain");
 			if (rawTerrain != null) {
-				var tileTerrain = rawTerrain.split(",").map(Std.parseInt);
+				var tileTerrain = rawTerrain.split(",").map(function (s) {
+					var n = Std.parseInt(s);
+					if (n == null) {
+						return 0;
+					} else {
+						return n + 1;
+					}
+				});
 				var tileId = Std.parseInt(tileElement.get("id"));
 				this.terrains.set(firstGid + tileId, tileTerrain);
 			}
