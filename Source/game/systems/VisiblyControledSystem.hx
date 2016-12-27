@@ -9,6 +9,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Controled;
 import game.components.Visible;
 import game.components.Position;
+import geometry.ICoordinatesSystem;
 
 
 class VisiblyControledNode extends Node<VisiblyControledNode> {
@@ -18,12 +19,21 @@ class VisiblyControledNode extends Node<VisiblyControledNode> {
 }
 
 class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
+	var orderBoard:Order.Board;
+	var coordinates:ICoordinatesSystem;
 	var selectionWidth:Int;
 	var selectionHeight:Int;
+	var hover:Sprite;
 
-	public function new(selectionWidth:Int, selectionHeight:Int) {
+	public function new(orderBoard:Order.Board, coords:ICoordinatesSystem, selectionWidth:Int, selectionHeight:Int) {
+		this.orderBoard = orderBoard;
+		this.coordinates = coords;
 		this.selectionWidth = selectionWidth;
 		this.selectionHeight = selectionHeight;
+		this.hover = new Sprite();
+		this.hover.graphics.lineStyle(2, 0xFFFFFF);
+		this.hover.graphics.drawRect(0, 0, selectionWidth, selectionHeight);
+		openfl.Lib.current.addChild(this.hover);
 		super(VisiblyControledNode, updateNode);
 	}
 
@@ -41,6 +51,15 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 			node.visible.sprite.addChildAt(createSelectionSprite(), 0);
 		};
 		super.addToEngine(engine);
+	}
+
+	override function update(deltaTime:Float):Void {
+		if (this.orderBoard.mouseMoved) {
+			var mousePoint = this.coordinates.toPixel(this.orderBoard.mousePositionX, this.orderBoard.mousePositionY);
+			this.hover.x = mousePoint.x;
+			this.hover.y = mousePoint.y;
+		}
+		super.update(deltaTime);
 	}
 
 	function updateNode(node:VisiblyControledNode, deltaTime:Float) {

@@ -74,6 +74,6 @@ class Stage extends Engine {
 		this.addSystem(visibleSystem, 4);
 		this.addSystem(new VisibleWithGaugeSystem(this.map.tileWidth), 5);
 		this.addSystem(new VisiblyMovingSystem(this.map.coordinates, this.map.tileWidth, this.map.tileHeight), 5);
-		this.addSystem(new VisiblyControledSystem(selectionWidth, selectionHeight), 5);
+		this.addSystem(new VisiblyControledSystem(this.orderBoard, this.map.coordinates, selectionWidth, selectionHeight), 5);
 	}
 }

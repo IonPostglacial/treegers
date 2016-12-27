@@ -1,9 +1,7 @@
 package game.systems;
 
 import openfl.display.Sprite;
-import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
-import openfl.Lib;
 
 import ash.core.Entity;
 import ash.tools.ListIteratingSystem;
@@ -27,7 +25,6 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var worldMap:WorldMap;
 	var camera:openfl.geom.Rectangle;
 	var orderBoard:Order.Board;
-	var hover:Sprite;
 	var targetSprites:Sprite;
 	var coordinates:ICoordinatesSystem;
 	var hoverWidth:Int;
@@ -42,10 +39,6 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		this.orderBoard = orderBoard;
 		this.hoverWidth = hoverWidth;
 		this.hoverHeight = hoverHeight;
-		this.hover = new Sprite();
-		this.hover.graphics.lineStyle(2, 0xFFFFFF);
-		this.hover.graphics.drawRect(0, 0, hoverWidth, hoverHeight);
-		openfl.Lib.current.addChild(this.hover);
 		this.targetSprites = new Sprite();
 		openfl.Lib.current.addChild(this.targetSprites);
 		for (groundGrid in this.worldMap.grids) {
@@ -72,11 +65,6 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	}
 
 	override function update(deltaTime:Float) {
-		if (this.orderBoard.mouseMoved) {
-			var mousePoint = this.coordinates.toPixel(this.orderBoard.mousePositionX, this.orderBoard.mousePositionY);
-			this.hover.x = mousePoint.x;
-			this.hover.y = mousePoint.y;
-		}
 		if (this.targetSprites.numChildren > 0) {
 			this.targetBlinkElapsedTime += deltaTime;
 			if (this.targetBlinkElapsedTime >= this.targetBlinkPeriod) {
