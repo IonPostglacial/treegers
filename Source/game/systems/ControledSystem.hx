@@ -19,36 +19,27 @@ import game.components.ObjectChanger;
 
 import geometry.Coordinates;
 import geometry.ICoordinatesSystem;
-import geometry.Vector2D;
 
-
-enum Order {
-	Nothing;
-	MovementOrdered(x:Int, y:Int);
-	PowerOrdered(target:TargetObject);
-	TargetSelected(x:Int, y:Int);
-}
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {
 	var targetBlinkElapsedTime:Float = 0;
 	var targetBlinkPeriod:Float = 1;
 	var worldMap:WorldMap;
-	var camera(default,null):openfl.geom.Rectangle;
+	var camera:openfl.geom.Rectangle;
+	var orderBoard:Order.Board;
 	var hover:Sprite;
 	var targetSprites:Sprite;
-	var currentOrder:Order = Nothing;
 	var coordinates:ICoordinatesSystem;
-	var pointedX:Int = -1;
-	var pointedY:Int = -1;
 	var hoverWidth:Int;
 	var hoverHeight:Int;
 	var pathfinders:Array<graph.CompressingPathfinder<Coordinates>> = [];
 	var potentialTargets:Iterable<TargetObject> = [];
 
-	public function new(worldMap:WorldMap, coordinates:ICoordinatesSystem, camera:openfl.geom.Rectangle, hoverWidth:Int, hoverHeight:Int) {
+	public function new(worldMap:WorldMap, orderBoard:Order.Board, coordinates:ICoordinatesSystem, camera:openfl.geom.Rectangle, hoverWidth:Int, hoverHeight:Int) {
 		this.worldMap = worldMap;
 		this.coordinates = coordinates;
 		this.camera = camera;
+		this.orderBoard = orderBoard;
 		this.hoverWidth = hoverWidth;
 		this.hoverHeight = hoverHeight;
 		this.hover = new Sprite();
@@ -57,17 +48,6 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		openfl.Lib.current.addChild(this.hover);
 		this.targetSprites = new Sprite();
 		openfl.Lib.current.addChild(this.targetSprites);
-		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
-			var mousePosition = this.coordinates.fromPixel(e.stageX + camera.x, e.stageY + camera.y);
-			pointedX = mousePosition.x;
-			pointedY = mousePosition.y;
-		});
-		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
-			var mousePosition = this.coordinates.fromPixel(e.stageX + camera.x, e.stageY + camera.y);
-			var mousePoint = this.coordinates.toPixel(mousePosition.x, mousePosition.y);
-			this.hover.x = mousePoint.x;
-			this.hover.y = mousePoint.y;
-		});
 		for (groundGrid in this.worldMap.grids) {
 			this.pathfinders.push(new graph.CompressingPathfinder(groundGrid));
 		}
@@ -75,23 +55,28 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	}
 
 	function getOrder():Order {
-		if (this.pointedX >= 0 && this.pointedY >= 0) {
+		if (this.orderBoard.mouseClicked) {
 			for (potentialTarget in this.potentialTargets) {
-				if (potentialTarget.x == this.pointedX && potentialTarget.y == this.pointedY) {
+				if (potentialTarget.x == this.orderBoard.mousePositionX && potentialTarget.y == this.orderBoard.mousePositionY) {
 					return PowerOrdered(potentialTarget);
 				}
 			}
 			for (node in this.nodeList) {
-				if (node.position.x == this.pointedX && node.position.y == this.pointedY) {
-					return TargetSelected(this.pointedX, this.pointedY);
+				if (node.position.x == this.orderBoard.mousePositionX && node.position.y == this.orderBoard.mousePositionY) {
+					return TargetSelected(this.orderBoard.mousePositionX, this.orderBoard.mousePositionY);
 				}
 			}
-			return MovementOrdered(this.pointedX, this.pointedY);
+			return MovementOrdered(this.orderBoard.mousePositionX, this.orderBoard.mousePositionY);
 		}
 		return Nothing;
 	}
 
 	override function update(deltaTime:Float) {
+		if (this.orderBoard.mouseMoved) {
+			var mousePoint = this.coordinates.toPixel(this.orderBoard.mousePositionX, this.orderBoard.mousePositionY);
+			this.hover.x = mousePoint.x;
+			this.hover.y = mousePoint.y;
+		}
 		if (this.targetSprites.numChildren > 0) {
 			this.targetBlinkElapsedTime += deltaTime;
 			if (this.targetBlinkElapsedTime >= this.targetBlinkPeriod) {
@@ -99,11 +84,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			}
 			this.targetSprites.alpha = this.targetBlinkElapsedTime / this.targetBlinkPeriod;
 		}
-		this.currentOrder = getOrder();
+		this.orderBoard.currentOrder = getOrder();
 		super.update(deltaTime);
-		this.currentOrder = Nothing;
-		this.pointedX = -1;
-		this.pointedY = -1;
 	}
 
 	function createTargetSprites() {
@@ -133,7 +115,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 
 	function updateNode(node:ControledNode, deltaTime:Float) {
 		node.controled.selectedThisRound = false;
-		switch (this.currentOrder) {
+		switch (this.orderBoard.currentOrder) {
 		case MovementOrdered(x, y):
 			if (node.controled.selected) {
 				var nextCoords = new Coordinates(node.position.x + node.movement.direction.dx(), node.position.y + node.movement.direction.dy());
