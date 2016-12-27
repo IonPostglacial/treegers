@@ -1,8 +1,5 @@
 package game.systems;
 
-import openfl.display.Sprite;
-import openfl.geom.Rectangle;
-
 import ash.core.Entity;
 import ash.tools.ListIteratingSystem;
 
@@ -16,38 +13,32 @@ import game.nodes.ControledNode;
 import game.components.ObjectChanger;
 
 import geometry.Coordinates;
-import geometry.ICoordinatesSystem;
 
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {
-	var targetBlinkElapsedTime:Float = 0;
-	var targetBlinkPeriod:Float = 1;
+	public var targetListListeners(default,null):Array<ITargetListListener> = [];
 	var worldMap:WorldMap;
-	var camera:openfl.geom.Rectangle;
 	var orderBoard:Order.Board;
-	var targetSprites:Sprite;
-	var coordinates:ICoordinatesSystem;
-	var hoverWidth:Int;
-	var hoverHeight:Int;
 	var pathfinders:Array<graph.CompressingPathfinder<Coordinates>> = [];
 	var potentialTargets:Iterable<TargetObject> = [];
 
-	public function new(worldMap:WorldMap, orderBoard:Order.Board, coordinates:ICoordinatesSystem, camera:openfl.geom.Rectangle, hoverWidth:Int, hoverHeight:Int) {
+	public function new(worldMap:WorldMap, orderBoard:Order.Board) {
 		this.worldMap = worldMap;
-		this.coordinates = coordinates;
-		this.camera = camera;
 		this.orderBoard = orderBoard;
-		this.hoverWidth = hoverWidth;
-		this.hoverHeight = hoverHeight;
-		this.targetSprites = new Sprite();
-		openfl.Lib.current.addChild(this.targetSprites);
 		for (groundGrid in this.worldMap.grids) {
 			this.pathfinders.push(new graph.CompressingPathfinder(groundGrid));
 		}
 		super(ControledNode, updateNode);
 	}
 
-	function getOrder():Order {
+	function setPotentialTargets(targets:Iterable<TargetObject>) {
+		this.potentialTargets = targets;
+		for (listener in this.targetListListeners) {
+			listener.targetListChanged(targets);
+		}
+	}
+
+	function currentOrder():Order {
 		if (this.orderBoard.mouseClicked) {
 			for (potentialTarget in this.potentialTargets) {
 				if (potentialTarget.x == this.orderBoard.mousePositionX && potentialTarget.y == this.orderBoard.mousePositionY) {
@@ -65,38 +56,17 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	}
 
 	override function update(deltaTime:Float) {
-		if (this.targetSprites.numChildren > 0) {
-			this.targetBlinkElapsedTime += deltaTime;
-			if (this.targetBlinkElapsedTime >= this.targetBlinkPeriod) {
-				this.targetBlinkElapsedTime -= this.targetBlinkPeriod;
-			}
-			this.targetSprites.alpha = this.targetBlinkElapsedTime / this.targetBlinkPeriod;
-		}
-		this.orderBoard.currentOrder = getOrder();
+		this.orderBoard.currentOrder = currentOrder();
 		super.update(deltaTime);
-	}
-
-	function createTargetSprites() {
-		for (target in this.potentialTargets) {
-			var targetPixPosition = this.coordinates.toPixel(target.x, target.y);
-			var targetSprite = new Sprite();
-			targetSprite.graphics.lineStyle(2, 0x0077ff);
-			targetSprite.graphics.drawRoundRect(0, 0, hoverWidth, hoverHeight, hoverWidth);
-			targetSprite.x = targetPixPosition.x;
-			targetSprite.y = targetPixPosition.y;
-			this.targetSprites.addChild(targetSprite);
-		}
 	}
 
 	function updatePotentialTargets(entity:Entity, componentClass:Class<Dynamic>) {
 		if (componentClass == ObjectChanger) {
 			var objectChanger = entity.get(ObjectChanger);
 			if (objectChanger != null) { // addition
-				this.potentialTargets = worldMap.allTargetsWithType(entity.get(componentClass).affectedTypes[0]);
-				createTargetSprites();
+				this.setPotentialTargets(worldMap.allTargetsWithType(entity.get(componentClass).affectedTypes[0]));
 			} else { // removal
-				this.potentialTargets = [];
-				this.targetSprites.removeChildren();
+				this.setPotentialTargets([]);
 			}
 		}
 	}
@@ -114,13 +84,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			node.controled.selected = node.position.x == x && node.position.y == y && !node.controled.selected;
 			node.controled.selectedThisRound = true;
 			if (node.controled.selected) {
-				this.potentialTargets = worldMap.allTargetsWithType(node.objectChanger.affectedTypes[0]);
-				createTargetSprites();
+				this.setPotentialTargets(worldMap.allTargetsWithType(node.objectChanger.affectedTypes[0]));
 				node.entity.componentAdded.add(updatePotentialTargets);
 				node.entity.componentRemoved.add(updatePotentialTargets);
 			} else {
-				this.potentialTargets = [];
-				this.targetSprites.removeChildren();
+				this.setPotentialTargets([]);
 				node.entity.componentAdded.remove(updatePotentialTargets);
 				node.entity.componentRemoved.remove(updatePotentialTargets);
 			}

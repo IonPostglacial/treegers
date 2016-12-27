@@ -12,8 +12,8 @@ class CameraSystem extends System {
 	var camera(default,null):openfl.geom.Rectangle;
 
 	public function new(camera:openfl.geom.Rectangle) {
-		this.camera = camera;
 		super();
+		this.camera = camera;
 	}
 
 	override function update(deltaTime:Float) {

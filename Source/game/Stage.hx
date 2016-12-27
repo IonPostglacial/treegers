@@ -7,6 +7,7 @@ import ash.core.Engine;
 import game.systems.ActionSystem;
 import game.systems.CameraSystem;
 import game.systems.ControledSystem;
+import game.systems.TargetsRenderingSystem;
 import game.systems.VisibleSystem;
 import game.systems.VisibleWithGaugeSystem;
 import game.systems.VisiblyControledSystem;
@@ -60,9 +61,13 @@ class Stage extends Engine {
 		var selectionHeight = this.map.effectiveTileHeight;
 		var visibleSystem = new VisibleSystem(this.map.coordinates, this.mapRenderer);
 		this.worldMap.addTileObjectsListeners(visibleSystem);
+		var controledSystem = new ControledSystem(this.worldMap, this.orderBoard);
+		var potentialTargetsSystem = new TargetsRenderingSystem(this.map.coordinates, selectionWidth, selectionHeight);
+		controledSystem.targetListListeners.push(potentialTargetsSystem);
 
 		this.addSystem(new CameraSystem(camera), 1);
-		this.addSystem(new ControledSystem(this.worldMap, this.orderBoard, this.map.coordinates, camera, selectionWidth, selectionHeight), 1);
+		this.addSystem(potentialTargetsSystem, 1);
+		this.addSystem(controledSystem, 1);
 		this.addSystem(new MovementSystem(), 2);
 		this.addSystem(new ActionSystem(this.worldMap), 2);
 		this.addSystem(new HealthSystem(this.worldMap), 2);
