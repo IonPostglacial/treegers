@@ -107,6 +107,15 @@
   <tile id="95" terrain="1,1,1,1"/>
   <tile id="96" terrain="1,1,1,1"/>
   <tile id="97" terrain="1,1,1,1"/>
+  <tile id="105">
+   <animation>
+    <frame tileid="120" duration="100"/>
+    <frame tileid="121" duration="100"/>
+    <frame tileid="122" duration="100"/>
+    <frame tileid="123" duration="100"/>
+    <frame tileid="124" duration="100"/>
+   </animation>
+  </tile>
  </tileset>
  <layer name="Ground" width="25" height="50">
   <data encoding="base64" compression="zlib">
