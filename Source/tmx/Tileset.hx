@@ -12,7 +12,9 @@ class Tileset {
 	public var columns:Int = 0;
 	public var properties(default,null):Map<String, Dynamic> = new Map();
 	public var image:openfl.display.BitmapData;
-	public var terrains:Map<Int, Array<Null<Int>>> = new Map();
+	public var terrains:Map<Int, Array<Int>> = new Map();
+	public var animationFramesIds:Map<Int, Array<Int>> = new Map();
+	public var animationFramesDurations:Map<Int, Array<Int>> = new Map();
 	var terrainsNumberByTile = 0;
 
 	public function new(orientation:Orientation) {
@@ -28,6 +30,7 @@ class Tileset {
 		}
 		var tileElements = xml.elementsNamed('tile');
 		for (tileElement in tileElements) {
+			var tileId = Std.parseInt(tileElement.get("id"));
 			var rawTerrain = tileElement.get("terrain");
 			if (rawTerrain != null) {
 				var tileTerrain = rawTerrain.split(",").map(function (s) {
@@ -38,8 +41,21 @@ class Tileset {
 						return n + 1;
 					}
 				});
-				var tileId = Std.parseInt(tileElement.get("id"));
 				this.terrains.set(firstGid + tileId, tileTerrain);
+			}
+			var animations = tileElement.elementsNamed('animation');
+			var frameIds = [];
+			var frameDurations = [];
+			for (animation in animations) {
+				var frames = animation.elementsNamed('frame');
+				for (frame in frames) {
+					frameIds.push(firstGid + Std.parseInt(frame.get("tileid")));
+					frameDurations.push(Std.parseInt(frame.get("duration")));
+				}
+			}
+			if (frameIds.length > 0) {
+				this.animationFramesIds.set(firstGid + tileId, frameIds);
+				this.animationFramesDurations.set(firstGid + tileId, frameDurations);
 			}
 		}
 	}
