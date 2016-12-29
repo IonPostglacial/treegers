@@ -47,6 +47,8 @@ class MapRenderer extends Tilemap {
 		}
 	}
 
+	public function update(deltaTime:Float) {}
+
 	inline function loadTilesets(map:TiledMap) {
 		for (mapTileset in map.tilesets) {
 			var rectWidth = mapTileset.tileWidth;
