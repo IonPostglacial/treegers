@@ -49,13 +49,13 @@ class Tileset {
 			for (animation in animations) {
 				var frames = animation.elementsNamed('frame');
 				for (frame in frames) {
-					frameIds.push(firstGid + Std.parseInt(frame.get("tileid")));
+					frameIds.push(Std.parseInt(frame.get("tileid")));
 					frameDurations.push(Std.parseInt(frame.get("duration")));
 				}
 			}
 			if (frameIds.length > 0) {
-				this.animationFramesIds.set(firstGid + tileId, frameIds);
-				this.animationFramesDurations.set(firstGid + tileId, frameDurations);
+				this.animationFramesIds.set(tileId, frameIds);
+				this.animationFramesDurations.set(tileId, frameDurations);
 			}
 		}
 	}
