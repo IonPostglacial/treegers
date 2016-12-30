@@ -107,7 +107,7 @@
   <tile id="95" terrain="1,1,1,1"/>
   <tile id="96" terrain="1,1,1,1"/>
   <tile id="97" terrain="1,1,1,1"/>
-  <tile id="105">
+  <tile id="120">
    <animation>
     <frame tileid="120" duration="100"/>
     <frame tileid="121" duration="100"/>
