@@ -21,7 +21,7 @@ class WorldMap {
 		var targetObjects = [];
 		for (layer in this.map.objectLayers) {
 			for (object in layer.objects) {
-				var tileTerrains = this.map.tilesets[0].terrains.get(object.gid);
+				var tileTerrains = this.map.tilesets[0].terrains.get(object.gid - this.map.tilesets[0].firstGid);
 				targetObjects.push(new TargetObject(object, GroundTypeProperties.fromTerrains(tileTerrains)));
 			}
 		}
@@ -62,7 +62,7 @@ class WorldMap {
 	}
 
 	function tileTypeToGroundType(tileType:Int):GroundType {
-		var tileTerrains = this.map.tilesets[0].terrains.get(tileType);
+		var tileTerrains = this.map.tilesets[0].terrains.get(tileType - this.map.tilesets[0].firstGid);
 		return GroundTypeProperties.fromTerrains(tileTerrains);
 	}
 

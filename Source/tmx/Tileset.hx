@@ -41,7 +41,7 @@ class Tileset {
 						return n + 1;
 					}
 				});
-				this.terrains.set(firstGid + tileId, tileTerrain);
+				this.terrains.set(tileId, tileTerrain);
 			}
 			var animations = tileElement.elementsNamed('animation');
 			var frameIds = [];
