@@ -21,7 +21,7 @@ class WorldMap {
 		var targetObjects = [];
 		for (layer in this.map.objectLayers) {
 			for (object in layer.objects) {
-				var tileTerrains = this.map.tilesets[0].terrains.get(object.gid - this.map.tilesets[0].firstGid);
+				var tileTerrains = this.map.tilesets[0].terrains.get(object.gid);
 				targetObjects.push(new TargetObject(object, GroundTypeProperties.fromTerrains(tileTerrains)));
 			}
 		}
