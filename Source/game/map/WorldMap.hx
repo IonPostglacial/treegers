@@ -62,7 +62,7 @@ class WorldMap {
 	}
 
 	function tileTypeToGroundType(tileType:Int):GroundType {
-		var tileTerrains = this.map.tilesets[0].terrains.get(tileType);
+		var tileTerrains = this.map.tilesets[0].terrains.get(tileType - this.map.tilesets[0].firstGid);
 		return GroundTypeProperties.fromTerrains(tileTerrains);
 	}
 

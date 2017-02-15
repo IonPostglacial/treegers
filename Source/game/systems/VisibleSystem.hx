@@ -37,6 +37,11 @@ class VisibleSystem extends System implements ITargetObjectListener {
 		this.mapRenderer.getTileForObjectId(target.objectId).visible = active;
 	}
 
+	override function update(deltaTime:Float):Void {
+		this.mapRenderer.update(deltaTime);
+		super.update(deltaTime);
+	}
+
 	override public function addToEngine(engine:Engine) {
 		openfl.Lib.current.addChildAt(this.mapRenderer, 0);
 		function prepareVisibles (node:VisibleNode) {

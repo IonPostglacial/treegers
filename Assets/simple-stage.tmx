@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="hexagonal" renderorder="right-down" width="14" height="11" tilewidth="55" tileheight="64" hexsidelength="32" staggeraxis="y" staggerindex="odd" nextobjectid="15">
+<map version="1.0" orientation="hexagonal" renderorder="right-down" width="14" height="11" tilewidth="55" tileheight="64" hexsidelength="32" staggeraxis="y" staggerindex="odd" nextobjectid="16">
  <tileset firstgid="1" name="basemap" tilewidth="55" tileheight="64" tilecount="14">
   <image source="tileset.png" width="770" height="64"/>
   <terraintypes>
    <terrain name="Water" tile="1"/>
+   <terrain name="Grass" tile="2"/>
+   <terrain name="Earth" tile="2"/>
+   <terrain name="Pikes" tile="4"/>
+   <terrain name="Obstacle" tile="5"/>
+   <terrain name="Arrow" tile="6"/>
   </terraintypes>
   <tile id="1" terrain="0,0,0,0"/>
+  <tile id="2" terrain="1,1,1,1"/>
+  <tile id="4" terrain="3,3,3,3"/>
+  <tile id="5" terrain="4,4,4,4"/>
+  <tile id="6" terrain=",5,,"/>
+  <tile id="7" terrain=",,5,"/>
+  <tile id="8" terrain="5,,,"/>
+  <tile id="9" terrain=",,,5"/>
+  <tile id="10" terrain=",5,,"/>
+  <tile id="11" terrain=",,5,"/>
  </tileset>
  <layer name="Background" width="14" height="11">
   <data encoding="base64" compression="zlib">
@@ -13,29 +27,25 @@
   </data>
  </layer>
  <objectgroup name="Ground Entities">
-  <object id="11" gid="4" x="270" y="544" width="55" height="64">
-   <properties>
-    <property name="switch" value="1"/>
-   </properties>
-  </object>
+  <object id="11" type="Button" gid="4" x="270" y="544" width="55" height="64"/>
   <object id="12" gid="3" x="107" y="256" width="55" height="64">
    <properties>
-    <property name="switched" value="1"/>
+    <property name="=Button:linked-tile" value="11"/>
    </properties>
   </object>
   <object id="13" gid="3" x="134" y="304" width="55" height="64">
    <properties>
-    <property name="switched" value="1"/>
+    <property name="=Button:linked-tile" value="11"/>
    </properties>
   </object>
   <object id="14" gid="3" x="162" y="350" width="55" height="64">
    <properties>
-    <property name="switched" value="1"/>
+    <property name="=Button:linked-tile" value="11"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup name="Entities">
-  <object id="9" gid="1" x="80" y="109" width="55" height="64"/>
-  <object id="10" gid="13" x="297" y="395" width="55" height="64"/>
+  <object id="9" type="Grunt" gid="1" x="80" y="109" width="55" height="64"/>
+  <object id="10" type="RollingBall" gid="13" x="297" y="395" width="55" height="64"/>
  </objectgroup>
 </map>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="50" tilewidth="32" tileheight="32" nextobjectid="34">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="25" height="50" tilewidth="32" tileheight="32" nextobjectid="35">
  <tileset firstgid="1" name="BFS Tileset" tilewidth="32" tileheight="32" tilecount="300">
   <image source="bfs-tileset.png" width="480" height="640"/>
   <terraintypes>
@@ -107,6 +107,24 @@
   <tile id="95" terrain="1,1,1,1"/>
   <tile id="96" terrain="1,1,1,1"/>
   <tile id="97" terrain="1,1,1,1"/>
+  <tile id="105">
+   <animation>
+    <frame tileid="105" duration="100"/>
+    <frame tileid="106" duration="100"/>
+    <frame tileid="107" duration="100"/>
+    <frame tileid="108" duration="100"/>
+    <frame tileid="109" duration="100"/>
+   </animation>
+  </tile>
+  <tile id="120">
+   <animation>
+    <frame tileid="120" duration="100"/>
+    <frame tileid="121" duration="100"/>
+    <frame tileid="122" duration="100"/>
+    <frame tileid="123" duration="100"/>
+    <frame tileid="124" duration="100"/>
+   </animation>
+  </tile>
  </tileset>
  <layer name="Ground" width="25" height="50">
   <data encoding="base64" compression="zlib">
@@ -143,12 +161,12 @@
   <object id="33" gid="38" x="384" y="640" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="Entities">
-  <object id="5" type="Grunt" gid="107" x="65" y="95" width="32" height="32"/>
   <object id="3" type="RollingBall" gid="121" x="94" y="284" width="32" height="32"/>
   <object id="4" type="RollingBall" gid="121" x="96" y="347" width="32" height="32">
    <properties>
     <property name="+LinearWalker" value="dx:0,dy:1"/>
    </properties>
   </object>
+  <object id="34" type="Grunt" gid="106" x="64" y="96" width="32" height="32"/>
  </objectgroup>
 </map>

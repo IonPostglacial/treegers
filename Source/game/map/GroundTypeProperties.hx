@@ -32,7 +32,7 @@ class GroundTypeProperties {
             }
             if (waterTerrainsNumber == 0) {
                 return GroundType.Basic;
-            } else if (waterTerrainsNumber < 4) { // TODO: make it work for Hexagonal maps.
+            } else if (waterTerrainsNumber < tileTerrains.length) {
                 return GroundType.Uncrossable;
             } else {
                 return GroundType.Water;

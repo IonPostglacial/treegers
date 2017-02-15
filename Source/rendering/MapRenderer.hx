@@ -16,6 +16,7 @@ import tmx.TiledMap;
 class MapRenderer extends Tilemap {
 	var map:TiledMap;
 	var tilesByObjectsId:Map<Int, Tile> = new Map();
+	var animatedTiles:Array<AnimatedTile> = [];
 
 	public function new(map:TiledMap) {
 		this.map = map;
@@ -31,7 +32,7 @@ class MapRenderer extends Tilemap {
 		for (position in baseLayer.tiles.keys()) {
 			var pixPosition = map.coordinates.toPixel(position.x, position.y);
 			var tileId = baseLayer.tiles.get(position) - map.tilesets[0].firstGid;
-			this.addTile(new Tile(tileId, pixPosition.x, pixPosition.y));
+			this.addTile(createObjectTile(tileId, pixPosition.x, pixPosition.y));
 		}
 	}
 
@@ -39,11 +40,17 @@ class MapRenderer extends Tilemap {
 		for (objectLayer in map.objectLayers) {
 			for (tiledObject in objectLayer.objects) {
 				var normalizedPosition = map.coordinates.toPixel(tiledObject.coordX, tiledObject.coordY);
-				var objectTile = this.createObjectTile(tiledObject.gid, normalizedPosition.x, normalizedPosition.y);
+				var objectTile = this.createObjectTile(tiledObject.gid - map.tilesets[0].firstGid, normalizedPosition.x, normalizedPosition.y);
 				objectTile.visible = tiledObject.active;
 				tilesByObjectsId.set(tiledObject.id, objectTile);
 				this.addTile(objectTile);
 			}
+		}
+	}
+
+	public function update(deltaTime:Float) {
+		for (animatedTile in this.animatedTiles) {
+			animatedTile.update(deltaTime);
 		}
 	}
 
@@ -61,8 +68,16 @@ class MapRenderer extends Tilemap {
 		}
 	}
 
-	inline function createObjectTile(type:Int, x:Float, y:Float):Tile {
-		return new Tile(type - map.tilesets[0].firstGid, x, y);
+	inline function createObjectTile(tileId:Int, x:Float, y:Float):Tile {
+		var tile:Tile;
+		if (map.tilesets[0].animationFramesIds.exists(tileId)) {
+			var animatedTile = new AnimatedTile(map.tilesets[0].animationFramesIds.get(tileId), 0.1, x, y);
+			this.animatedTiles.push(animatedTile);
+			tile = animatedTile;
+		} else {
+			tile = new Tile(tileId, x, y);
+		}
+		return tile;
 	}
 
 	public inline function getTileForObjectId(objectId:Int):Tile {
