@@ -11,6 +11,7 @@ import geometry.Coordinates;
 
 class Move implements IAction {
 	public var done(get, never):Bool;
+	var launched = false;
 	var path:Array<Coordinates>;
 	var entity:Entity;
 
@@ -29,8 +30,11 @@ class Move implements IAction {
 		if (walker != null && walker.path.length == 0) {
 			entity.remove(PathWalker);
 		}
-		var newWalker = new PathWalker();
-		newWalker.path = path;
-		entity.add(newWalker);
+		if (!launched) {
+			var newWalker = new PathWalker();
+			newWalker.path = path;
+			entity.add(newWalker);
+			launched = true;
+		}
 	}
 }
