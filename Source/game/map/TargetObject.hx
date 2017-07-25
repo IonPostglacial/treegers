@@ -3,32 +3,34 @@ package game.map;
 import tmx.TileObject;
 
 
+@:publicFields
 class TargetObject {
-    public var objectId(get,never):Int;
-    public var x(get,never):Int;
-    public var y(get,never):Int;
-    public var groundType(default,null):GroundType;
+    var objectId(get,never):Int;
+    var x(get,never):Int;
+    var y(get,never):Int;
+    var isActive(get,never):Bool;
+    var groundType(default,null):GroundType;
     @:allow(game.map.WorldMap.setTargetStatus)
     private var tileObject:TileObject;
 
-    public function new(tileObject:TileObject, type:GroundType) {
+    function new(tileObject:TileObject, type:GroundType) {
         this.tileObject = tileObject;
         this.groundType = type;
     }
 
-    public function isActive():Bool {
+    function get_isActive():Bool {
         return this.tileObject.active;
     }
 
-    public function get_objectId():Int {
+    function get_objectId():Int {
         return this.tileObject.id;
     }
 
-    public function get_x():Int {
+    function get_x():Int {
         return this.tileObject.coordX;
     }
 
-    public function get_y():Int {
+    function get_y():Int {
         return this.tileObject.coordY;
     }
 }

@@ -12,13 +12,14 @@ import game.components.Position;
 import geometry.ICoordinatesSystem;
 
 
-class VisiblyControledNode extends Node<VisiblyControledNode> {
-	public var controled:Controled;
-	public var visible:Visible;
-	public var position:Position;
+@:publicFields
+class VisibleControledNode extends Node<VisibleControledNode> {
+	var controled:Controled;
+	var visible:Visible;
+	var position:Position;
 }
 
-class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
+class VisibleControledSystem extends ListIteratingSystem<VisibleControledNode> {
 	var orderBoard:Order.Board;
 	var coordinates:ICoordinatesSystem;
 	var selectionWidth:Int;
@@ -34,7 +35,7 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		this.hover.graphics.lineStyle(2, 0xFFFFFF);
 		this.hover.graphics.drawRect(0, 0, selectionWidth, selectionHeight);
 		openfl.Lib.current.addChild(this.hover);
-		super(VisiblyControledNode, updateNode);
+		super(VisibleControledNode, updateNode);
 	}
 
 	inline function createSelectionSprite():Sprite {
@@ -62,7 +63,7 @@ class VisiblyControledSystem extends ListIteratingSystem<VisiblyControledNode> {
 		super.update(deltaTime);
 	}
 
-	function updateNode(node:VisiblyControledNode, deltaTime:Float) {
+	function updateNode(node:VisibleControledNode, deltaTime:Float) {
 		if (node.controled.selectedThisRound) {
 			var selection = node.visible.sprite.getChildByName("selection");
 			selection.visible = node.controled.selected;

@@ -29,7 +29,7 @@ class UseMana implements IAction {
 	public function execute(worldMap:WorldMap, node:ActionedNode, deltaTime:Float) {
 		var isManaLoaded = objectChanger.elapsedLoadTime >= objectChanger.loadTime;
 		if (isManaLoaded) {
-			worldMap.setTargetStatus(target, !target.isActive());
+			worldMap.setTargetStatus(target, !target.isActive);
 			mana.level = 0;
 			objectChanger.elapsedLoadTime = 0;
 			_done = true;

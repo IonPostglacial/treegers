@@ -11,13 +11,14 @@ import geometry.ICoordinatesSystem;
 import geometry.Vector2D;
 
 
-class VisiblyMovingNode extends Node<VisiblyMovingNode> {
-	public var movement:Movement;
-	public var visible:Visible;
-	public var position:Position;
+@:publicFields
+class VisibleMovingNode extends Node<VisibleMovingNode> {
+	var movement:Movement;
+	var visible:Visible;
+	var position:Position;
 }
 
-class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
+class VisibleMovingSystem extends ListIteratingSystem<VisibleMovingNode> {
 	var coordinates:ICoordinatesSystem;
 	var tileWidth:Int;
 	var tileHeight:Int;
@@ -26,10 +27,10 @@ class VisiblyMovingSystem extends ListIteratingSystem<VisiblyMovingNode> {
 		this.coordinates = coordinates;
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;
-		super(VisiblyMovingNode, updateNode);
+		super(VisibleMovingNode, updateNode);
 	}
 
-	function updateNode(node:VisiblyMovingNode, deltaTime:Float) {
+	function updateNode(node:VisibleMovingNode, deltaTime:Float) {
 		var pixPosition = this.coordinates.toPixel(node.position.x, node.position.y);
 		if (!node.movement.alreadyMoved) {
 			var movementDelta = deltaTime / node.movement.period;
