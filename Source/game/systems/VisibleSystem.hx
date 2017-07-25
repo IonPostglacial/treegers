@@ -14,7 +14,7 @@ import game.map.TargetObject;
 
 import game.components.Visible;
 import game.components.Position;
-import geometry.ICoordinatesSystem;
+import grid.ICoordinatesSystem;
 
 
 class VisibleNode extends Node<VisibleNode> {

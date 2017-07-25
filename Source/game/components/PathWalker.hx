@@ -1,6 +1,6 @@
 package game.components;
 
-import geometry.Coordinates;
+import grid.Coordinates;
 
 
 @:publicFields

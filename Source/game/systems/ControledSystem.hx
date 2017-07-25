@@ -12,7 +12,7 @@ import game.map.WorldMap;
 import game.nodes.ControledNode;
 import game.components.ObjectChanger;
 
-import geometry.Coordinates;
+import grid.Coordinates;
 
 
 class ControledSystem extends ListIteratingSystem<ControledNode> {

@@ -1,4 +1,4 @@
-package geometry;
+package grid;
 
 
 class Map2D<T> implements haxe.Constraints.IMap<Coordinates, T> {

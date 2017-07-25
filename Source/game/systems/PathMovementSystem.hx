@@ -6,7 +6,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Movement;
 import game.components.PathWalker;
 import game.components.Position;
-import geometry.Direction;
+import grid.Direction;
 
 import game.map.WorldMap;
 import game.map.GroundType;

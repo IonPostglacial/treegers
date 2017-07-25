@@ -1,4 +1,5 @@
-package geometry;
+package grid;
+
 
 class HexagonalCoordinates implements ICoordinatesSystem {
 	var hexWidth:Float;

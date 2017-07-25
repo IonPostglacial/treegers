@@ -9,7 +9,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Controled;
 import game.components.Visible;
 import game.components.Position;
-import geometry.ICoordinatesSystem;
+import grid.ICoordinatesSystem;
 
 
 @:publicFields

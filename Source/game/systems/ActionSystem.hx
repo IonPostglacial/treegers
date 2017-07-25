@@ -5,8 +5,8 @@ import game.actions.Move;
 import game.nodes.ActionedNode;
 import game.map.GroundType;
 import game.map.WorldMap;
-import geometry.Coordinates;
-import geometry.Direction;
+import grid.Coordinates;
+import grid.Direction;
 import game.components.PathWalker;
 
 

@@ -1,9 +1,9 @@
 package game.map;
 
 import graph.IPathfindable;
-import geometry.Coordinates;
-import geometry.I2DGrid;
-import geometry.Map2D;
+import grid.Coordinates;
+import grid.I2DGrid;
+import grid.Map2D;
 
 using Lambda;
 using game.map.GroundTypeProperties;

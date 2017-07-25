@@ -2,13 +2,13 @@ package tmx;
 
 import Type;
 
-import geometry.ICoordinatesSystem;
-import geometry.HexagonalCoordinates;
-import geometry.OrthogonalCoordinates;
-import geometry.I2DGrid;
-import geometry.HexagonalGrid;
-import geometry.OrthogonalGrid;
-import geometry.Map2D;
+import grid.ICoordinatesSystem;
+import grid.HexagonalCoordinates;
+import grid.OrthogonalCoordinates;
+import grid.I2DGrid;
+import grid.HexagonalGrid;
+import grid.OrthogonalGrid;
+import grid.Map2D;
 
 using StringTools;
 

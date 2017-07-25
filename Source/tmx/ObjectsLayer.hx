@@ -1,6 +1,6 @@
 package tmx;
 
-import geometry.ICoordinatesSystem;
+import grid.ICoordinatesSystem;
 
 
 class ObjectsLayer extends Layer {

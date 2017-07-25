@@ -3,7 +3,7 @@ package game.systems;
 import ash.core.System;
 import openfl.display.Sprite;
 import game.map.TargetObject;
-import geometry.ICoordinatesSystem;
+import grid.ICoordinatesSystem;
 
 
 class TargetsRenderingSystem extends System implements ITargetListListener {

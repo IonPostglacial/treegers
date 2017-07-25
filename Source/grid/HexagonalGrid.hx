@@ -1,4 +1,5 @@
-package geometry;
+package grid;
+
 
 class HexagonalGrid implements I2DGrid {
 	static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];

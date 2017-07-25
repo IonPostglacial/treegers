@@ -1,7 +1,5 @@
 package graph;
 
-import geometry.Direction;
-
 
 typedef CompressibleNode<T> = {
 	function equals(other:T):Bool;
@@ -18,7 +16,7 @@ class CompressingPathfinder<T:CompressibleNode<T>> extends Pathfinder<T> {
 	override function reconstructPath(nodes:Map<Int, Score<T>>, start:T, goal:T):Array<T> {
 		var path = [];
 		var currentNode = goal;
-		var currentDirection = Direction.None;
+		var currentDirection = 0;
 
 		while (!currentNode.equals(start)) {
 			var nextNode = nodes.get(graph.nodeIndex(currentNode)).previousNode;

@@ -1,9 +1,9 @@
 package game.map;
 
-import geometry.Coordinates;
-import geometry.HexagonalMap;
-import geometry.Map2D;
-import geometry.OrthogonalMap;
+import grid.Coordinates;
+import grid.HexagonalMap;
+import grid.Map2D;
+import grid.OrthogonalMap;
 
 using Lambda;
 

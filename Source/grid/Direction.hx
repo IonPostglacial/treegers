@@ -1,4 +1,5 @@
-package geometry;
+package grid;
+
 
 @:enum
 abstract Direction(Int) from Int to Int {

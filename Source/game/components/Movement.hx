@@ -1,7 +1,7 @@
 package game.components;
 
-import geometry.Coordinates;
-import geometry.Direction;
+import grid.Coordinates;
+import grid.Direction;
 import game.map.Vehicle;
 
 

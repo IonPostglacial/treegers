@@ -15,7 +15,7 @@ import game.components.Health;
 import game.components.Mana;
 import game.components.Visible;
 import game.components.Position;
-import geometry.Coordinates;
+import grid.Coordinates;
 
 using Lambda;
 

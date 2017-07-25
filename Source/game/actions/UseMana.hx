@@ -1,6 +1,6 @@
 package game.actions;
 
-import geometry.Coordinates;
+import grid.Coordinates;
 import game.nodes.ActionedNode;
 import game.components.Mana;
 import game.components.ObjectChanger;

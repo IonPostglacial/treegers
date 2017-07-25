@@ -1,4 +1,4 @@
-package geometry;
+package grid;
 
 import graph.IPathfindable;
 

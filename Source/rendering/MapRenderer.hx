@@ -6,9 +6,9 @@ import openfl.display.Tilemap;
 import openfl.display.Tileset;
 import openfl.geom.Rectangle;
 
-import geometry.Map2D;
-import geometry.HexagonalMap;
-import geometry.OrthogonalMap;
+import grid.Map2D;
+import grid.HexagonalMap;
+import grid.OrthogonalMap;
 
 import tmx.TiledMap;
 

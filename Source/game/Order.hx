@@ -5,7 +5,7 @@ import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
 
 import game.map.TargetObject;
-import geometry.ICoordinatesSystem;
+import grid.ICoordinatesSystem;
 
 
 enum Order {

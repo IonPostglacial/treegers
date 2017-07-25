@@ -1,4 +1,5 @@
-package geometry;
+package grid;
+
 
 class Vector2D {
 	public var x(default,null):Float;

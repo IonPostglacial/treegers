@@ -1,4 +1,5 @@
-package geometry;
+package grid;
+
 
 class OrthogonalCoordinates implements ICoordinatesSystem {
 	var width:Float = 1;

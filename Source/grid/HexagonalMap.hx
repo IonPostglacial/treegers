@@ -1,4 +1,4 @@
-package geometry;
+package grid;
 
 import haxe.ds.Vector;
 
@@ -16,7 +16,7 @@ class HexagonalMapIterator<T> {
 	public inline function next() return this.hexMap.data[i];
 }
 
-class HexagonalMap<T> extends  Map2D<T> {
+class HexagonalMap<T> extends Map2D<T> {
 
 	public function new(width, height, ?value:T) {
 		super(width, height, value);

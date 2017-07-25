@@ -3,10 +3,10 @@ package tmx;
 import haxe.io.Bytes;
 import haxe.io.Int32Array;
 
-import geometry.Coordinates;
-import geometry.Map2D;
-import geometry.HexagonalMap;
-import geometry.OrthogonalMap;
+import grid.Coordinates;
+import grid.Map2D;
+import grid.HexagonalMap;
+import grid.OrthogonalMap;
 
 
 class TileLayer extends Layer {
