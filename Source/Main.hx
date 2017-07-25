@@ -10,10 +10,8 @@ import game.Stage;
 
 
 class Main {
-	var game:Stage;
-
-	public function new() {
-		game = new Stage("demo.tmx", 800, 600);
+	public static function main() {
+		var game = new Stage("demo.tmx", 800, 600);
 		game.start();
 	}
 }
