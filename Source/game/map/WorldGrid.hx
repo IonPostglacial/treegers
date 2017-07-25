@@ -10,9 +10,9 @@ using game.map.GroundTypeProperties;
 
 
 class WorldGrid implements IPathfindable<Coordinates> {
-	var ground:Map2D<GroundType>;
-	var grid:I2DGrid;
-	var vehicle:Vehicle;
+	public var ground:Map2D<GroundType>;
+	public var grid:I2DGrid;
+	public var vehicle:Vehicle;
 
 	public inline function new(ground:Map2D<GroundType>, grid:I2DGrid, vehicle:Vehicle) {
 		this.ground = ground;
@@ -24,11 +24,8 @@ class WorldGrid implements IPathfindable<Coordinates> {
 		return grid.distanceBetween(p1, p2);
 	}
 
-	public function neighborsOf(p:Coordinates):Iterable<Coordinates> {
-		return grid.neighborsOf(p).filter(function (position) {
-			var groundType = ground.get(position);
-			return groundType.crossableWith(vehicle);
-		});
+	public function neighborsOf(p:Coordinates):WorldGridNeighborsIterator {
+		return new WorldGridNeighborsIterator(this, p);
 	}
 
 	public function nodeIndex(node:Coordinates):Int {
@@ -37,5 +34,39 @@ class WorldGrid implements IPathfindable<Coordinates> {
 
 	public function areNeighbors(p1:Coordinates, p2:Coordinates):Bool {
 		return grid.areNeighbors(p1, p2);
+	}
+}
+
+
+class WorldGridNeighborsIterator {
+	var worldGrid:WorldGrid;
+	var potentialNeighbors:Iterator<Coordinates>;
+	var nextElement:Coordinates;
+
+	public function new(worldGrid:WorldGrid, p:Coordinates) {
+		this.worldGrid = worldGrid;
+		this.potentialNeighbors = worldGrid.grid.neighborsOf(p);
+	}
+
+	public function iterator() {
+		return this;
+	}
+
+	public function hasNext():Bool {
+		var hasNext:Bool;
+		var groundType:GroundType = null;
+		do {
+			hasNext = potentialNeighbors.hasNext();
+			if (hasNext) {
+				nextElement = potentialNeighbors.next();
+				groundType = worldGrid.ground.get(nextElement);
+			}
+		} while (hasNext && !groundType.crossableWith(worldGrid.vehicle));
+
+		return hasNext;
+	}
+
+	public function next():Coordinates {
+		return nextElement;
 	}
 }
