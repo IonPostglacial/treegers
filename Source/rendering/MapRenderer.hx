@@ -6,10 +6,6 @@ import openfl.display.Tilemap;
 import openfl.display.Tileset;
 import openfl.geom.Rectangle;
 
-import grid.Map2D;
-import grid.HexagonalMap;
-import grid.OrthogonalMap;
-
 import tmx.TiledMap;
 
 
@@ -30,7 +26,7 @@ class MapRenderer extends Tilemap {
 	inline function loadTileLayer(map:TiledMap) {
 		var baseLayer = map.tileLayers[0];
 		for (position in baseLayer.tiles.keys()) {
-			var pixPosition = map.coordinates.toPixel(position.x, position.y);
+			var pixPosition = map.coordinateSystem.toPixel(position.x, position.y);
 			var tileId = baseLayer.tiles.get(position) - map.tilesets[0].firstGid;
 			this.addTile(createObjectTile(tileId, pixPosition.x, pixPosition.y));
 		}
@@ -39,7 +35,7 @@ class MapRenderer extends Tilemap {
 	inline function loadObjectsLayer(map:TiledMap) {
 		for (objectLayer in map.objectLayers) {
 			for (tiledObject in objectLayer.objects) {
-				var normalizedPosition = map.coordinates.toPixel(tiledObject.coordX, tiledObject.coordY);
+				var normalizedPosition = map.coordinateSystem.toPixel(tiledObject.coordX, tiledObject.coordY);
 				var objectTile = this.createObjectTile(tiledObject.gid - map.tilesets[0].firstGid, normalizedPosition.x, normalizedPosition.y);
 				objectTile.visible = tiledObject.active;
 				tilesByObjectsId.set(tiledObject.id, objectTile);

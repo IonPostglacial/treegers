@@ -1,15 +1,15 @@
 package tmx;
 
-import grid.ICoordinatesSystem;
+import grid.ICoordinateSystem;
 
 
 class ObjectsLayer extends Layer {
 	public var objects(default,null):Array<TileObject> = [];
-	var coordinates:ICoordinatesSystem;
+	var coordinates:ICoordinateSystem;
 
 	public function new(map) {
 		super(map);
-		this.coordinates = map.coordinates;
+		this.coordinates = map.coordinateSystem;
 	}
 
 	override function loadFromXml(xml:Xml) {

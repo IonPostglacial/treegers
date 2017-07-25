@@ -1,11 +1,11 @@
-package grid;
+package grid.hex;
 
 import haxe.ds.Vector;
 
 
-class HexagonalMapIterator<T> {
+class CompactMapIterator<T> {
 	var i:Int;
-	var hexMap:HexagonalMap<T>;
+	var hexMap:CompactMap<T>;
 
 	public inline function new(hexMap) {
 		this.i = 0;
@@ -16,14 +16,14 @@ class HexagonalMapIterator<T> {
 	public inline function next() return this.hexMap.data[i];
 }
 
-class HexagonalMap<T> extends Map2D<T> {
+class CompactMap<T> extends Map2D<T> {
 
 	public function new(width, height, ?value:T) {
 		super(width, height, value);
 	}
 
-	public static function fromArray<T>(data:Array<T>, width, height):HexagonalMap<T> {
-		var map = new HexagonalMap<T>(width, height);
+	public static function fromArray<T>(data:Array<T>, width, height):CompactMap<T> {
+		var map = new CompactMap<T>(width, height);
 		map.data = data;
 		return map;
 	}
@@ -37,10 +37,10 @@ class HexagonalMap<T> extends Map2D<T> {
 	}
 
 	override function keys() {
-		return new HexagonalGridIterator(width, height);
+		return new GridIterator(width, height);
 	}
 
 	override function iterator() {
-		return new HexagonalMapIterator<T>(this);
+		return new CompactMapIterator<T>(this);
 	}
 }

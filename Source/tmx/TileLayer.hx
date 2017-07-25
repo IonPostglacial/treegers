@@ -5,8 +5,8 @@ import haxe.io.Int32Array;
 
 import grid.Coordinates;
 import grid.Map2D;
-import grid.HexagonalMap;
-import grid.OrthogonalMap;
+import grid.hex.CompactMap as HexMap;
+import grid.ortho.CompactMap as OrthoMap;
 
 
 class TileLayer extends Layer {
@@ -50,9 +50,9 @@ class TileLayer extends Layer {
 		}
 		switch(orientation) {
 		case Orientation.Hexagonal:
-			tiles = HexagonalMap.fromArray(data, width, height);
+			tiles = HexMap.fromArray(data, width, height);
 		default:
-			tiles = OrthogonalMap.fromArray(data, width, height);
+			tiles = OrthoMap.fromArray(data, width, height);
 		}
 	}
 }

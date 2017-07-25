@@ -1,7 +1,7 @@
-package grid;
+package grid.ortho;
 
 
-class OrthogonalCoordinates implements ICoordinatesSystem {
+class CoordinateSystem implements ICoordinateSystem {
 	var width:Float = 1;
 	var height:Float = 1;
 	var widthRatio:Float = 1;

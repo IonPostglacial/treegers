@@ -1,13 +1,13 @@
-package grid;
+package grid.ortho;
 
 
-class OrthogonalCoordinatesNeighbors {
+class CoordinatesNeighbors {
     static var deltas = [-1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1];
-    var grid:OrthogonalGrid;
+    var grid:Grid;
 	var coord:Coordinates;
 	var i = -1;
 
-	public function new(grid:OrthogonalGrid, coord:Coordinates) {
+	public function new(grid:Grid, coord:Coordinates) {
 		this.grid = grid;
         this.coord = coord;
 	}

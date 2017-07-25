@@ -1,7 +1,7 @@
-package grid;
+package grid.hex;
 
 
-class HexagonalCoordinates implements ICoordinatesSystem {
+class CoordinateSystem implements ICoordinateSystem {
 	var hexWidth:Float;
 	var effectiveHeight:Float;
 	var effectiveHeightRatio:Float;

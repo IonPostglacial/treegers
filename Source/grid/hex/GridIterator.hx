@@ -1,7 +1,7 @@
-package grid;
+package grid.hex;
 
 
-class HexagonalGridIterator {
+class GridIterator {
 	var width:Int;
 	var height:Int;
 	var i:Int;

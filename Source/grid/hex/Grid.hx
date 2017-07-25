@@ -1,11 +1,11 @@
-package grid;
+package grid.hex;
 
 import grid.IntMath.abs;
 
 
 @:publicFields
-class OrthogonalGrid implements I2DGrid {
-	private static var deltas = [-1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1];
+class Grid implements I2DGrid {
+	private static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
 
 	var width:Int;
 	var height:Int;
@@ -17,15 +17,15 @@ class OrthogonalGrid implements I2DGrid {
 	}
 
 	inline function indexOf(x:Int, y:Int):Int {
-		return x + width * y;
+		return x + Std.int(y/2) + width * y;
 	}
 
 	inline function contains(x:Int, y:Int):Bool {
-		return x >= 0 && x < width && y >= 0 && y < height;
+		return x + Std.int(y / 2) >= 0 && x + Std.int(y / 2) < width && y >= 0 && y < height;
 	}
 
 	function cells():Iterator<Coordinates> {
-		return new OrthogonalGridIterator(width, height);
+		return new GridIterator(width, height);
 	}
 
 	function get_size():Int {
@@ -33,17 +33,15 @@ class OrthogonalGrid implements I2DGrid {
 	}
 
 	inline function distanceBetween(p1:Coordinates, p2:Coordinates):Int {
-		var dx = p1.x - p2.x;
-		var dy = p1.y - p2.y;
-		return dx * dx + dy * dy;
+		return Std.int((abs(p1.x - p2.x) + abs(p1.x + p1.y - p2.x - p2.y) + abs(p1.y - p2.y)) / 2);
 	}
 
 	function areNeighbors(p1:Coordinates, p2:Coordinates):Bool {
-		return abs(p1.x - p2.x) <= 1 && abs(p1.y - p2.y) <= 1;
+		return distanceBetween(p1, p2) <= 1;
 	}
 
-	inline function neighborsOf(p:Coordinates):OrthogonalCoordinatesNeighbors {
-		return new OrthogonalCoordinatesNeighbors(this, p);
+	inline function neighborsOf(p:Coordinates):CoordinatesNeighbors {
+		return new CoordinatesNeighbors(this, p);
 	}
 
 	function nodeIndex(node:Coordinates):Int {

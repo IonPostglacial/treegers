@@ -2,12 +2,12 @@ package tmx;
 
 import Type;
 
-import grid.ICoordinatesSystem;
-import grid.HexagonalCoordinates;
-import grid.OrthogonalCoordinates;
+import grid.ICoordinateSystem;
+import grid.hex.CoordinateSystem as HexCoordinateSystem;
+import grid.ortho.CoordinateSystem as OrthoCoordinateSystem;
 import grid.I2DGrid;
-import grid.HexagonalGrid;
-import grid.OrthogonalGrid;
+import grid.hex.Grid as HexGrid;
+import grid.ortho.Grid as OrthoGrid;
 import grid.Map2D;
 
 using StringTools;
@@ -39,7 +39,7 @@ class TiledMap {
 	public var imageLayers(default,null):Array<ImageLayer> = [];
 	public var properties(default,null):Map<String, Dynamic> = new Map();
 
-	public var coordinates:ICoordinatesSystem;
+	public var coordinateSystem:ICoordinateSystem;
 	public var grid:I2DGrid;
 	public var bg(get,never):TileLayer;
 
@@ -57,12 +57,12 @@ class TiledMap {
 
 		switch (orientation) {
 			case Orientation.Hexagonal:
-				coordinates = new HexagonalCoordinates(tileWidth, tileHeight, hexSideLength);
-				grid = new HexagonalGrid(width, height);
+				coordinateSystem = new HexCoordinateSystem(tileWidth, tileHeight, hexSideLength);
+				grid = new HexGrid(width, height);
 				effectiveTileHeight = Std.int(0.75 * effectiveTileHeight);
 			default:
-				coordinates = new OrthogonalCoordinates(tileWidth, tileHeight);
-				grid = new OrthogonalGrid(width, height);
+				coordinateSystem = new OrthoCoordinateSystem(tileWidth, tileHeight);
+				grid = new OrthoGrid(width, height);
 		}
 
 		for (element in root.elements()) {

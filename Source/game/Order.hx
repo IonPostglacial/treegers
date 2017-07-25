@@ -5,7 +5,7 @@ import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
 
 import game.map.TargetObject;
-import grid.ICoordinatesSystem;
+import grid.ICoordinateSystem;
 
 
 enum Order {
@@ -22,7 +22,7 @@ class Board {
 	public var mousePositionX(default,null):Int = 0;
 	public var mousePositionY(default,null):Int = 0;
 
-	public function new(camera:Rectangle, coordinates:ICoordinatesSystem) {
+	public function new(camera:Rectangle, coordinates:ICoordinateSystem) {
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {
 			this.mouseClicked = true;
 		});

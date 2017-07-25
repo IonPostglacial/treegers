@@ -1,7 +1,7 @@
-package grid;
+package grid.ortho;
 
 
-class OrthogonalGridIterator {
+class GridIterator {
 	var width:Int;
 	var height:Int;
 	var x:Int;

@@ -3,18 +3,18 @@ package game.systems;
 import ash.core.System;
 import openfl.display.Sprite;
 import game.map.TargetObject;
-import grid.ICoordinatesSystem;
+import grid.ICoordinateSystem;
 
 
 class TargetsRenderingSystem extends System implements ITargetListListener {
 	var targetSprites:Sprite = new Sprite();
 	var targetBlinkElapsedTime:Float = 0;
 	var targetBlinkPeriod:Float = 1;
-	var coordinates:ICoordinatesSystem;
+	var coordinates:ICoordinateSystem;
 	var hoverWidth:Int;
 	var hoverHeight:Int;
 
-	public function new(coordinates:ICoordinatesSystem, hoverWidth:Int, hoverHeight:Int) {
+	public function new(coordinates:ICoordinateSystem, hoverWidth:Int, hoverHeight:Int) {
 		super();
 		openfl.Lib.current.addChild(this.targetSprites);
 		this.coordinates = coordinates;

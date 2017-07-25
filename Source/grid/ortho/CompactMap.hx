@@ -1,11 +1,11 @@
-package grid;
+package grid.ortho;
 
 import haxe.ds.Vector;
 
 
-class OrthogonalMapIterator<T> {
+class CompactMapIterator<T> {
 	var i:Int;
-	var hexMap:OrthogonalMap<T>;
+	var hexMap:CompactMap<T>;
 
 	public inline function new(hexMap) {
 		this.i = 0;
@@ -16,14 +16,14 @@ class OrthogonalMapIterator<T> {
 	public inline function next() return this.hexMap.data[i];
 }
 
-class OrthogonalMap<T> extends Map2D<T> {
+class CompactMap<T> extends Map2D<T> {
 
 	public function new(width, height, ?value:T) {
 		super(width, height, value);
 	}
 
-	public static function fromArray<T>(data:Array<T>, width, height):OrthogonalMap<T> {
-		var map = new OrthogonalMap<T>(width, height);
+	public static function fromArray<T>(data:Array<T>, width, height):CompactMap<T> {
+		var map = new CompactMap<T>(width, height);
 		map.data = data;
 		return map;
 	}
@@ -37,10 +37,10 @@ class OrthogonalMap<T> extends Map2D<T> {
 	}
 
 	override function keys() {
-		return new OrthogonalGridIterator(width, height);
+		return new GridIterator(width, height);
 	}
 
 	override function iterator() {
-		return new OrthogonalMapIterator<T>(this);
+		return new CompactMapIterator<T>(this);
 	}
 }

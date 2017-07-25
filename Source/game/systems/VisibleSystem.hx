@@ -14,7 +14,7 @@ import game.map.TargetObject;
 
 import game.components.Visible;
 import game.components.Position;
-import grid.ICoordinatesSystem;
+import grid.ICoordinateSystem;
 
 
 class VisibleNode extends Node<VisibleNode> {
@@ -23,11 +23,11 @@ class VisibleNode extends Node<VisibleNode> {
 }
 
 class VisibleSystem extends System implements ITargetObjectListener {
-	var coordinates:ICoordinatesSystem;
+	var coordinates:ICoordinateSystem;
 	var visibles:NodeList<VisibleNode>;
 	var mapRenderer:rendering.MapRenderer;
 
-	public function new(coordinates:ICoordinatesSystem, mapRenderer:rendering.MapRenderer) {
+	public function new(coordinates:ICoordinateSystem, mapRenderer:rendering.MapRenderer) {
 		this.coordinates = coordinates;
 		this.mapRenderer = mapRenderer;
 		super();

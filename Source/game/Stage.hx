@@ -23,23 +23,21 @@ import game.map.WorldMap;
 
 
 class Stage extends Engine {
-	var map(default,null):tmx.TiledMap;
-	var mapRenderer(default,null):rendering.MapRenderer;
 	var worldMap(default,null):WorldMap;
 	var entityLoader = new EntityLoader();
 	var orderBoard:Order.Board;
 	var tickProvider:ITickProvider;
 
-	public function new(mapPath:String, width:Int, height:Int) {
+	public function new(mapPath:String, pixelWidth:Int, pixelHeight:Int) {
 		super();
 		var mapXml = openfl.Assets.getText("assets/" + mapPath);
-		this.map = new tmx.TiledMap();
-		this.map.loadFromXml(Xml.parse(mapXml));
-		entityLoader.loadFromMap(this, this.map);
-		this.mapRenderer = new rendering.MapRenderer(this.map);
-		openfl.Lib.current.addChild(this.mapRenderer);
-		this.worldMap = new WorldMap(this.map);
-		loadSystems(width, height);
+		var map = new tmx.TiledMap();
+		map.loadFromXml(Xml.parse(mapXml));
+		entityLoader.loadFromMap(this, map);
+		var mapRenderer = new rendering.MapRenderer(map);
+		openfl.Lib.current.addChild(mapRenderer);
+		this.worldMap = new WorldMap(map);
+		loadSystems(map, mapRenderer, pixelWidth, pixelHeight);
 	}
 
 	public function start() {
@@ -48,21 +46,21 @@ class Stage extends Engine {
 		tickProvider.start();
 	}
 
-	override function update(deltaTime:Float):Void {
+	override function update(deltaTime:Float) {
 		super.update(deltaTime);
 		this.orderBoard.refresh();
 	}
 
-	function loadSystems(width:Int, height:Int) {
-		var camera = new openfl.geom.Rectangle(0, 0, width, height);
-		this.orderBoard = new Order.Board(camera, this.map.coordinates);
+	function loadSystems(map:tmx.TiledMap, mapRenderer:rendering.MapRenderer, pixelWidth:Int, pixelHeight:Int) {
+		var camera = new openfl.geom.Rectangle(0, 0, pixelWidth, pixelHeight);
+		this.orderBoard = new Order.Board(camera, map.coordinateSystem);
 		openfl.Lib.current.scrollRect = camera;
-		var selectionWidth = this.map.effectiveTileWidth;
-		var selectionHeight = this.map.effectiveTileHeight;
-		var visibleSystem = new VisibleSystem(this.map.coordinates, this.mapRenderer);
+		var selectionWidth = map.effectiveTileWidth;
+		var selectionHeight = map.effectiveTileHeight;
+		var visibleSystem = new VisibleSystem(map.coordinateSystem, mapRenderer);
 		this.worldMap.addTileObjectsListeners(visibleSystem);
 		var controledSystem = new ControledSystem(this.worldMap, this.orderBoard);
-		var potentialTargetsSystem = new TargetsRenderingSystem(this.map.coordinates, selectionWidth, selectionHeight);
+		var potentialTargetsSystem = new TargetsRenderingSystem(map.coordinateSystem, selectionWidth, selectionHeight);
 		controledSystem.targetListListeners.push(potentialTargetsSystem);
 
 		this.addSystem(new CameraSystem(camera), 1);
@@ -77,8 +75,8 @@ class Stage extends Engine {
 		this.addSystem(new LinearMovementSystem(this.worldMap), 3);
 		this.addSystem(new PathMovementSystem(this.worldMap), 3);
 		this.addSystem(visibleSystem, 4);
-		this.addSystem(new VisibleWithGaugeSystem(this.map.tileWidth), 5);
-		this.addSystem(new VisibleMovingSystem(this.map.coordinates, this.map.tileWidth, this.map.tileHeight), 5);
-		this.addSystem(new VisibleControledSystem(this.orderBoard, this.map.coordinates, selectionWidth, selectionHeight), 5);
+		this.addSystem(new VisibleWithGaugeSystem(map.tileWidth), 5);
+		this.addSystem(new VisibleMovingSystem(map.coordinateSystem, map.tileWidth, map.tileHeight), 5);
+		this.addSystem(new VisibleControledSystem(this.orderBoard, map.coordinateSystem, selectionWidth, selectionHeight), 5);
 	}
 }

@@ -1,9 +1,9 @@
 package game.map;
 
 import grid.Coordinates;
-import grid.HexagonalMap;
+import grid.hex.CompactMap as HexMap;
 import grid.Map2D;
-import grid.OrthogonalMap;
+import grid.ortho.CompactMap as OrthoMap;
 
 using Lambda;
 
@@ -27,9 +27,9 @@ class WorldMap {
 		}
 		this.targetObjects = targetObjects;
 		this.ground = if (map.orientation == tmx.Orientation.Hexagonal) {
-			new HexagonalMap(map.width, map.height);
+			new HexMap(map.width, map.height);
 		} else {
-			new OrthogonalMap(map.width, map.height);
+			new OrthoMap(map.width, map.height);
 		}
 		for (coords in map.bg.tiles.keys()) {
 			var tileType = map.bg.tiles.get(coords);

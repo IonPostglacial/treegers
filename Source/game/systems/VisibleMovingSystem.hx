@@ -7,7 +7,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Visible;
 import game.components.Movement;
 import game.components.Position;
-import grid.ICoordinatesSystem;
+import grid.ICoordinateSystem;
 import grid.Vector2D;
 
 
@@ -19,11 +19,11 @@ class VisibleMovingNode extends Node<VisibleMovingNode> {
 }
 
 class VisibleMovingSystem extends ListIteratingSystem<VisibleMovingNode> {
-	var coordinates:ICoordinatesSystem;
+	var coordinates:ICoordinateSystem;
 	var tileWidth:Int;
 	var tileHeight:Int;
 
-	public function new(coordinates:ICoordinatesSystem, tileWidth:Int, tileHeight:Int) {
+	public function new(coordinates:ICoordinateSystem, tileWidth:Int, tileHeight:Int) {
 		this.coordinates = coordinates;
 		this.tileWidth = tileWidth;
 		this.tileHeight = tileHeight;

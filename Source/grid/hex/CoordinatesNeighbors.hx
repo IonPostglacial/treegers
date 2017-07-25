@@ -1,13 +1,13 @@
-package grid;
+package grid.hex;
 
 
-class HexagonalCoordinatesNeighbors {
+class CoordinatesNeighbors {
     static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
-    var grid:HexagonalGrid;
+    var grid:Grid;
 	var coord:Coordinates;
 	var i = -1;
 
-	public function new(grid:HexagonalGrid, coord:Coordinates) {
+	public function new(grid:Grid, coord:Coordinates) {
 		this.grid = grid;
         this.coord = coord;
 	}

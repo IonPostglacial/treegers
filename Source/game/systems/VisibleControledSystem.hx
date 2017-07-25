@@ -9,7 +9,7 @@ import ash.tools.ListIteratingSystem;
 import game.components.Controled;
 import game.components.Visible;
 import game.components.Position;
-import grid.ICoordinatesSystem;
+import grid.ICoordinateSystem;
 
 
 @:publicFields
@@ -21,12 +21,12 @@ class VisibleControledNode extends Node<VisibleControledNode> {
 
 class VisibleControledSystem extends ListIteratingSystem<VisibleControledNode> {
 	var orderBoard:Order.Board;
-	var coordinates:ICoordinatesSystem;
+	var coordinates:ICoordinateSystem;
 	var selectionWidth:Int;
 	var selectionHeight:Int;
 	var hover:Sprite;
 
-	public function new(orderBoard:Order.Board, coords:ICoordinatesSystem, selectionWidth:Int, selectionHeight:Int) {
+	public function new(orderBoard:Order.Board, coords:ICoordinateSystem, selectionWidth:Int, selectionHeight:Int) {
 		this.orderBoard = orderBoard;
 		this.coordinates = coords;
 		this.selectionWidth = selectionWidth;
