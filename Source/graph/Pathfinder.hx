@@ -15,21 +15,12 @@ package graph;
 @:generic
 class Pathfinder<Node_t:INode<Node_t>> {
 	var graph:IPathfindable<Node_t>;
+	var reconstructPath:PathBuildingStrategy.Type<Node_t>;
 	function compareScore(s1, s2) return s2.estimatedCost - s1.estimatedCost;
 
-	public function new(graph) {
+	public function new(graph, pathBuildingStrategy) {
 		this.graph = graph;
-	}
-
-	function reconstructPath(nodes:Map<Int, Score<Node_t>>, start:Node_t, goal:Node_t):Array<Node_t> {
-		var path = [];
-		var currentNode = goal;
-
-		while (!currentNode.equals(start)) {
-			path.push(currentNode);
-			currentNode = nodes.get(graph.nodeIndex(currentNode)).previousNode;
-		}
-		return path;
+		this.reconstructPath = pathBuildingStrategy;
 	}
 
 	public function find(start:Node_t, goal:Node_t):Array<Node_t> {
@@ -45,7 +36,7 @@ class Pathfinder<Node_t:INode<Node_t>> {
 			var currentNode = currentScore.currentNode;
 
 			if (currentNode.equals(goal)) {
-				return reconstructPath(scores, start, goal);
+				return reconstructPath(graph, scores, start, goal);
 			}
 			for (neighbor in graph.neighborsOf(currentNode)) {
 				var costToNeighbor = currentScore.costSoFar + graph.distanceBetween(currentNode, neighbor);

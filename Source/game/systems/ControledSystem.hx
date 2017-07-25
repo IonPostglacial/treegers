@@ -19,14 +19,14 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	public var targetListListeners(default,null):Array<ITargetListListener> = [];
 	var worldMap:WorldMap;
 	var orderBoard:Order.Board;
-	var pathfinders:Array<graph.CompressingPathfinder<Coordinates>> = [];
+	var pathfinders:Array<graph.Pathfinder<Coordinates>> = [];
 	var potentialTargets:Iterable<TargetObject> = [];
 
 	public function new(worldMap:WorldMap, orderBoard:Order.Board) {
 		this.worldMap = worldMap;
 		this.orderBoard = orderBoard;
 		for (groundGrid in this.worldMap.grids) {
-			this.pathfinders.push(new graph.CompressingPathfinder(groundGrid));
+			this.pathfinders.push(new graph.Pathfinder(groundGrid, graph.PathBuildingStrategy.compressed));
 		}
 		super(ControledNode, updateNode);
 	}

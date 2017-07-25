@@ -15,9 +15,9 @@ class MapRenderer extends Tilemap {
 	var animatedTiles:Array<AnimatedTile> = [];
 
 	public function new(map:TiledMap) {
+		super(map.effectiveTileWidth * map.width, map.effectiveTileHeight * map.height, tileset);
 		this.map = map;
 		tileset = new Tileset(map.tilesets[0].image);
-		super(map.effectiveTileWidth * map.width, map.effectiveTileHeight * map.height, tileset);
 		loadTilesets(map);
 		loadTileLayer(map);
 		loadObjectsLayer(map);

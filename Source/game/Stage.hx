@@ -22,22 +22,22 @@ import game.systems.ManaSystem;
 import game.map.WorldMap;
 
 
-class Stage extends Engine {
-	var worldMap(default,null):WorldMap;
-	var entityLoader = new EntityLoader();
+class Stage {
+	var engine:Engine;
 	var orderBoard:Order.Board;
 	var tickProvider:ITickProvider;
 
 	public function new(mapPath:String, pixelWidth:Int, pixelHeight:Int) {
-		super();
+		this.engine = new Engine();
+
 		var mapXml = openfl.Assets.getText("assets/" + mapPath);
 		var map = new tmx.TiledMap();
+		var entityLoader = new EntityLoader();
+
 		map.loadFromXml(Xml.parse(mapXml));
-		entityLoader.loadFromMap(this, map);
-		var mapRenderer = new rendering.MapRenderer(map);
-		openfl.Lib.current.addChild(mapRenderer);
-		this.worldMap = new WorldMap(map);
-		loadSystems(map, mapRenderer, pixelWidth, pixelHeight);
+		entityLoader.loadFromMap(this.engine, map);
+
+		loadSystems(map, pixelWidth, pixelHeight);
 	}
 
 	public function start() {
@@ -46,37 +46,45 @@ class Stage extends Engine {
 		tickProvider.start();
 	}
 
-	override function update(deltaTime:Float) {
-		super.update(deltaTime);
+	function update(deltaTime:Float) {
+		this.engine.update(deltaTime);
 		this.orderBoard.refresh();
 	}
 
-	function loadSystems(map:tmx.TiledMap, mapRenderer:rendering.MapRenderer, pixelWidth:Int, pixelHeight:Int) {
+	function loadSystems(map:tmx.TiledMap, pixelWidth:Int, pixelHeight:Int) {
+		var mapRenderer = new rendering.MapRenderer(map);
+		var worldMap = new WorldMap(map);
 		var camera = new openfl.geom.Rectangle(0, 0, pixelWidth, pixelHeight);
-		this.orderBoard = new Order.Board(camera, map.coordinateSystem);
-		openfl.Lib.current.scrollRect = camera;
 		var selectionWidth = map.effectiveTileWidth;
 		var selectionHeight = map.effectiveTileHeight;
+
+		this.orderBoard = new Order.Board(camera, map.coordinateSystem);
+
+		openfl.Lib.current.addChild(mapRenderer);
+		openfl.Lib.current.scrollRect = camera;
+
 		var visibleSystem = new VisibleSystem(map.coordinateSystem, mapRenderer);
-		this.worldMap.addTileObjectsListeners(visibleSystem);
-		var controledSystem = new ControledSystem(this.worldMap, this.orderBoard);
+		worldMap.addTileObjectsListeners(visibleSystem);
+
+		var controledSystem = new ControledSystem(worldMap, this.orderBoard);
+
 		var potentialTargetsSystem = new TargetsRenderingSystem(map.coordinateSystem, selectionWidth, selectionHeight);
 		controledSystem.targetListListeners.push(potentialTargetsSystem);
 
-		this.addSystem(new CameraSystem(camera), 1);
-		this.addSystem(potentialTargetsSystem, 1);
-		this.addSystem(controledSystem, 1);
-		this.addSystem(new MovementSystem(), 2);
-		this.addSystem(new ActionSystem(this.worldMap), 2);
-		this.addSystem(new HealthSystem(this.worldMap), 2);
-		this.addSystem(new ManaSystem(), 2);
-		this.addSystem(new ButtonSystem(this.worldMap), 2);
-		this.addSystem(new CollectSystem(), 2);
-		this.addSystem(new LinearMovementSystem(this.worldMap), 3);
-		this.addSystem(new PathMovementSystem(this.worldMap), 3);
-		this.addSystem(visibleSystem, 4);
-		this.addSystem(new VisibleWithGaugeSystem(map.tileWidth), 5);
-		this.addSystem(new VisibleMovingSystem(map.coordinateSystem, map.tileWidth, map.tileHeight), 5);
-		this.addSystem(new VisibleControledSystem(this.orderBoard, map.coordinateSystem, selectionWidth, selectionHeight), 5);
+		this.engine.addSystem(new CameraSystem(camera), 1);
+		this.engine.addSystem(potentialTargetsSystem, 1);
+		this.engine.addSystem(controledSystem, 1);
+		this.engine.addSystem(new MovementSystem(), 2);
+		this.engine.addSystem(new ActionSystem(worldMap), 2);
+		this.engine.addSystem(new HealthSystem(worldMap), 2);
+		this.engine.addSystem(new ManaSystem(), 2);
+		this.engine.addSystem(new ButtonSystem(worldMap), 2);
+		this.engine.addSystem(new CollectSystem(), 2);
+		this.engine.addSystem(new LinearMovementSystem(worldMap), 3);
+		this.engine.addSystem(new PathMovementSystem(worldMap), 3);
+		this.engine.addSystem(visibleSystem, 4);
+		this.engine.addSystem(new VisibleWithGaugeSystem(map.tileWidth), 5);
+		this.engine.addSystem(new VisibleMovingSystem(map.coordinateSystem, map.tileWidth, map.tileHeight), 5);
+		this.engine.addSystem(new VisibleControledSystem(this.orderBoard, map.coordinateSystem, selectionWidth, selectionHeight), 5);
 	}
 }
