@@ -1,11 +1,12 @@
 package game.components;
 
 
+@:publicFields
 class Collectible {
-	public var components:Iterable<Dynamic> = [];
-	public var effectDuration:Null<Float> = null;
-	public var collected:Bool = false;
-	public var expires:Bool = false;
+	var components:Iterable<Dynamic> = [];
+	var effectDuration:Null<Float> = null;
+	var collected:Bool = false;
+	var expires:Bool = false;
 
-	public function new() {}
+	function new() {}
 }

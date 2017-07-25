@@ -8,20 +8,21 @@ package game.components;
 import geometry.Coordinates;
 
 
+@:publicFields
 class Position {
-	public var x:Int;
-	public var y:Int;
+	var x:Int;
+	var y:Int;
 
-	public inline function new(x, y) {
+	inline function new(x, y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public inline function equals(other:Position):Bool {
+	inline function equals(other:Position):Bool {
 		return this.x == other.x && this.y == other.y;
 	}
 
-	public inline function coords():Coordinates {
+	inline function coords():Coordinates {
 		return new Coordinates(x, y);
 	}
 }

@@ -6,12 +6,13 @@ import openfl.display.Sprite;
 import openfl.display.Tile;
 
 
+@:publicFields
 class Visible {
-	public var objectId:Int;
-	public var sprite(default, null) = new Sprite();
-	public var tile:Null<Tile> = null;
+	var objectId:Int;
+	var sprite(default, null) = new Sprite();
+	var tile:Null<Tile> = null;
 
-	public function new(objectId:Int) {
+	function new(objectId:Int) {
 		this.objectId = objectId;
 	}
 }

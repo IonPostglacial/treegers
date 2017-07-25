@@ -1,10 +1,12 @@
 package game.components;
 
-class Mana implements IGaugeableComponent {
-	public var level:Float = 100;
-	public var max:Float = 100;
-	public var recovery:Float = 100.0;
-	public var changedThisRound:Bool = false;
 
-	public function new() {}
+@:publicFields
+class Mana implements IGaugeableComponent {
+	var level:Float = 100;
+	var max:Float = 100;
+	var recovery:Float = 100.0;
+	var changedThisRound:Bool = false;
+
+	function new() {}
 }

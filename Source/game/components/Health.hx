@@ -1,10 +1,12 @@
 package game.components;
 
-class Health implements IGaugeableComponent {
-	public var level:Float = 100;
-	public var max:Float = 100;
-	public var armor:Float = 2;
-	public var changedThisRound:Bool = false;
 
-	public function new() {}
+@:publicFields
+class Health implements IGaugeableComponent {
+	var level:Float = 100;
+	var max:Float = 100;
+	var armor:Float = 2;
+	var changedThisRound:Bool = false;
+
+	function new() {}
 }

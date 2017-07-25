@@ -1,10 +1,12 @@
 package game.components;
 
-class Collector {
-	public var backup:Array<Dynamic>;
-	public var expirationTime:Float;
 
-	public function new(backup, expirationTime) {
+@:publicFields
+class Collector {
+	var backup:Array<Dynamic>;
+	var expirationTime:Float;
+
+	function new(backup, expirationTime) {
 		this.backup = backup;
 		this.expirationTime = expirationTime;
 	}

@@ -1,8 +1,10 @@
 package game.components;
 
-class LinearWalker {
-	public var dx:Int = 1;
-	public var dy:Int = 0;
 
-	public function new() {}
+@:publicFields
+class LinearWalker {
+	var dx:Int = 1;
+	var dy:Int = 0;
+
+	function new() {}
 }

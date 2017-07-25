@@ -3,15 +3,16 @@ package game.components;
 import game.map.TargetObject;
 
 
+@:publicFields
 class Button implements IOwningComponent {
-	public var isPressed:Bool = false;
-	public var triggered:Bool = false;
-	public var isToggle:Bool = false;
-	public var affectedTiles:Array<TargetObject> = [];
+	var isPressed:Bool = false;
+	var triggered:Bool = false;
+	var isToggle:Bool = false;
+	var affectedTiles:Array<TargetObject> = [];
 
-	public function new() {}
+	function new() {}
 
-	public function addRelatedObject(relation:String, object:TargetObject) {
+	function addRelatedObject(relation:String, object:TargetObject) {
 		if (relation == "linked-tile") {
 			this.affectedTiles.push(object);
 		}

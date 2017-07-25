@@ -3,8 +3,9 @@ package game.components;
 import geometry.Coordinates;
 
 
+@:publicFields
 class PathWalker {
-	public var path:Array<Coordinates> = [];
+	var path:Array<Coordinates> = [];
 
-	public function new() {}
+	function new() {}
 }
