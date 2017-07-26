@@ -1,6 +1,7 @@
 package rendering;
 
 import openfl.Assets;
+import openfl.display.Stage;
 import openfl.display.Tile;
 import openfl.display.Tilemap;
 import openfl.display.Tileset;
@@ -10,29 +11,42 @@ import tmx.TiledMap;
 
 
 class MapRenderer extends Tilemap {
-	var map:TiledMap;
+	var map:TiledMap; // We need access to the map for animation frames
 	var tilesByObjectsId:Map<Int, Tile> = new Map();
 	var animatedTiles:Array<AnimatedTile> = [];
 
 	public function new(map:TiledMap) {
-		super(map.effectiveTileWidth * map.width, map.effectiveTileHeight * map.height, tileset);
+		super(map.effectiveTileWidth * map.width, map.effectiveTileHeight * map.height, new Tileset(map.tilesets[0].image));
 		this.map = map;
-		tileset = new Tileset(map.tilesets[0].image);
-		loadTilesets(map);
-		loadTileLayer(map);
-		loadObjectsLayer(map);
+		this.addEventListener('addedToStage', onAdditionToStage);
 	}
 
-	inline function loadTileLayer(map:TiledMap) {
+	function onAdditionToStage(stage:Stage) {
+		// Load Tilesets
+
+		for (mapTileset in map.tilesets) {
+			var rectWidth = mapTileset.tileWidth;
+			var rectHeight = mapTileset.tileHeight;
+			var widthInTiles = Std.int(mapTileset.image.width / rectWidth);
+			var heightInTiles = Std.int(mapTileset.image.height / rectHeight);
+			for (y in 0... heightInTiles) {
+				for (x in 0...widthInTiles) {
+					tileset.addRect(new Rectangle(rectWidth * x, rectHeight * y, rectWidth, rectHeight));
+				}
+			}
+		}
+
+		// Load Tile layer
+
 		var baseLayer = map.tileLayers[0];
 		for (position in baseLayer.tiles.keys()) {
 			var pixPosition = map.coordinateSystem.toPixel(position.x, position.y);
 			var tileId = baseLayer.tiles.get(position) - map.tilesets[0].firstGid;
 			this.addTile(createObjectTile(tileId, pixPosition.x, pixPosition.y));
 		}
-	}
 
-	inline function loadObjectsLayer(map:TiledMap) {
+		// Load Objects Layers
+
 		for (objectLayer in map.objectLayers) {
 			for (tiledObject in objectLayer.objects) {
 				var normalizedPosition = map.coordinateSystem.toPixel(tiledObject.coordX, tiledObject.coordY);
@@ -47,20 +61,6 @@ class MapRenderer extends Tilemap {
 	public function update(deltaTime:Float) {
 		for (animatedTile in this.animatedTiles) {
 			animatedTile.update(deltaTime);
-		}
-	}
-
-	inline function loadTilesets(map:TiledMap) {
-		for (mapTileset in map.tilesets) {
-			var rectWidth = mapTileset.tileWidth;
-			var rectHeight = mapTileset.tileHeight;
-			var widthInTiles = Std.int(mapTileset.image.width / rectWidth);
-			var heightInTiles = Std.int(mapTileset.image.height / rectHeight);
-			for (y in 0... heightInTiles) {
-				for (x in 0...widthInTiles) {
-					tileset.addRect(new Rectangle(rectWidth * x, rectHeight * y, rectWidth, rectHeight));
-				}
-			}
 		}
 	}
 

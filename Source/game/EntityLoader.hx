@@ -39,11 +39,12 @@ class EntityLoader {
 			entity.add(collectible);
 		});
 		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int):Void {
-			entity.add(new Health())
-			.add(new Mana())
-			.add(new ObjectChanger())
-			.add(new Movement())
-			.add(new Controled());
+			entity
+				.add(new Health())
+				.add(new Mana())
+				.add(new ObjectChanger())
+				.add(new Movement())
+				.add(new Controled());
 		});
 		this.entityBuilders.set("RollingBall", function (entity:Entity, id:Int):Void {
 			var movement = new Movement();
@@ -52,16 +53,17 @@ class EntityLoader {
 			health.level = 0;
 			var collectible = new Collectible();
 			collectible.components = [health];
-			entity.add(collectible)
-			.add(movement)
-			.add(new LinearWalker());
+			entity
+				.add(collectible)
+				.add(movement)
+				.add(new LinearWalker());
 		});
 	}
 
 	function addObjectRelation(relationsByObjectsId:Map<Int, Map<String, Array<tmx.TileObject>>>, propertyName:String, owned:tmx.TileObject) {
 		var ownerId = Std.parseInt(owned.properties.get(propertyName));
 		if (ownerId == null) {
-			return; // TODO: maybe add a warning
+			return; // TODO: Log an error
 		}
 		var ownerRelations = relationsByObjectsId.get(ownerId);
 		if (ownerRelations == null) ownerRelations = new Map();
@@ -98,7 +100,7 @@ class EntityLoader {
 					case ADD_COMPONENT_SIGIL:
 						// override components preset
 						if (entity == null) {
-							continue; // TODO: add a warning
+							continue; // TODO: Log an error
 						}
 						var componentName = property.substr(1);
 						var componentClass = Type.resolveClass("game.components." + componentName);
@@ -113,7 +115,7 @@ class EntityLoader {
 						for (propVal in propsArray) {
 							var propValArray = propVal.split(":");
 							if (propValArray.length != 2) {
-								continue; // TODO: add a warning
+								continue; // TODO: Log an error
 							}
 							componentProperties.set(propValArray[0], propValArray[1]);
 						}
@@ -128,18 +130,18 @@ class EntityLoader {
 			var owner = objectsById.get(ownerId);
 			var ownedRelations = relationsByObjectsId.get(ownerId);
 			if (owner == null || ownedRelations == null) {
-				continue; // TODO: maybe add a warning if relations have no owner
+				continue; // TODO: Log an error -> relations have no owner
 			}
 			for (relation in ownedRelations.keys()) {
 				var componentRelation = relation.split(COMPONENT_RELATION_SEPARATOR);
 				if (componentRelation.length != 2 || componentRelation[0].length == 0) {
-					continue; // TODO: maybe add a warning
+					continue; // TODO: Log an error -> component relation format should be CMP:REL
 				}
 				var componentName = componentRelation[0].substr(1);
 				var componentClass = Type.resolveClass("game.components." + componentName);
 				var component = owner.get(componentClass);
 				if (!Std.is(component, IOwningComponent)) {
-					continue; // TODO: maybe add a warning
+					continue; // TODO: Log an error -> this type of component cannot have relations
 				}
 				for (object in ownedRelations.get(relation)) {
 					var tileTerrains = map.tilesets[0].terrains.get(object.gid);
