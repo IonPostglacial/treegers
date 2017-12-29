@@ -9,7 +9,6 @@ import game.components.Position;
 import grid.Direction;
 
 import game.map.WorldMap;
-import game.map.GroundType;
 using game.map.GroundTypeProperties;
 
 

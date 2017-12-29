@@ -2,7 +2,6 @@ package game.actions;
 
 import ash.core.Entity;
 
-import game.components.Movement;
 import game.components.PathWalker;
 import game.map.WorldMap;
 import game.nodes.ActionedNode;

@@ -1,6 +1,5 @@
 package game.systems;
 
-import ash.core.Engine;
 import ash.core.Node;
 import ash.tools.ListIteratingSystem;
 
@@ -8,7 +7,6 @@ import game.components.Visible;
 import game.components.Movement;
 import game.components.Position;
 import grid.ICoordinateSystem;
-import grid.Vector2D;
 
 
 @:publicFields

@@ -1,21 +1,17 @@
 package game.systems;
 
-
 import openfl.display.Sprite;
-import openfl.display.Tile;
 
 import ash.core.Engine;
 import ash.core.Node;
 import ash.core.NodeList;
 import ash.core.System;
 
-import game.map.ITargetObjectListener;
 import game.components.IGaugeableComponent;
 import game.components.Health;
 import game.components.Mana;
 import game.components.Visible;
 import game.components.Position;
-import grid.Coordinates;
 
 using Lambda;
 

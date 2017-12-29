@@ -1,7 +1,5 @@
 package game.components;
 
-import haxe.ds.Vector;
-
 import openfl.display.Sprite;
 import openfl.display.Tile;
 

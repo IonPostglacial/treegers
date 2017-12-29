@@ -1,7 +1,5 @@
 package grid.hex;
 
-import haxe.ds.Vector;
-
 
 class CompactMapIterator<T> {
 	var i:Int;

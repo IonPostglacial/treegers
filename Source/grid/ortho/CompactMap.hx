@@ -1,7 +1,5 @@
 package grid.ortho;
 
-import haxe.ds.Vector;
-
 
 class CompactMapIterator<T> {
 	var i:Int;

@@ -6,8 +6,6 @@ import game.nodes.ActionedNode;
 import game.map.GroundType;
 import game.map.WorldMap;
 import grid.Coordinates;
-import grid.Direction;
-import game.components.PathWalker;
 
 
 class ActionSystem extends ListIteratingSystem<ActionedNode> {

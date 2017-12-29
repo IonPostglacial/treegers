@@ -18,7 +18,6 @@ import game.components.IOwningComponent;
 import game.map.GroundType;
 import game.map.GroundTypeProperties;
 import game.map.TargetObject;
-import game.map.Vehicle;
 
 
 class EntityLoader {

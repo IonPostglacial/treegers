@@ -1,9 +1,8 @@
 package tmx;
 
-import haxe.io.Bytes;
+
 import haxe.io.Int32Array;
 
-import grid.Coordinates;
 import grid.Map2D;
 import grid.hex.CompactMap as HexMap;
 import grid.ortho.CompactMap as OrthoMap;

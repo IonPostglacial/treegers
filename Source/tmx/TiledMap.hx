@@ -1,16 +1,11 @@
 package tmx;
 
-import Type;
-
 import grid.ICoordinateSystem;
 import grid.hex.CoordinateSystem as HexCoordinateSystem;
 import grid.ortho.CoordinateSystem as OrthoCoordinateSystem;
 import grid.I2DGrid;
 import grid.hex.Grid as HexGrid;
 import grid.ortho.Grid as OrthoGrid;
-import grid.Map2D;
-
-using StringTools;
 
 
 typedef XmlLoadable = {

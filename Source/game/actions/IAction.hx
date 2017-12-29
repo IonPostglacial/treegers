@@ -1,7 +1,5 @@
 package game.actions;
 
-import ash.core.Entity;
-
 import game.nodes.ActionedNode;
 import game.map.WorldMap;
 

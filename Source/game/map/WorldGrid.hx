@@ -5,7 +5,6 @@ import grid.Coordinates;
 import grid.I2DGrid;
 import grid.Map2D;
 
-using Lambda;
 using game.map.GroundTypeProperties;
 
 

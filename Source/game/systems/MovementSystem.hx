@@ -1,6 +1,5 @@
 package game.systems;
 
-import ash.core.Engine;
 import ash.tools.ListIteratingSystem;
 
 import game.nodes.MovingNode;

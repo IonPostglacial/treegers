@@ -1,6 +1,5 @@
 package rendering;
 
-import openfl.Assets;
 import openfl.display.Stage;
 import openfl.display.Tile;
 import openfl.display.Tilemap;
