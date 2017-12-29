@@ -12,39 +12,41 @@ typedef XmlLoadable = {
 	function loadFromXml(xml:Xml):Void;
 }
 
+
+@:publicFields
 class TiledMap {
-	public var version(default,null):String = "0.0";
-	public var orientation(default,null):Orientation = Orientation.Orthogonal;
-	public var renderOrder(default,null):RenderOrder = RenderOrder.RightDown;
-	public var width(default,null):Int = 0;
-	public var height(default,null):Int = 0;
-	public var tileWidth(default,null):Int = 0;
-	public var tileHeight(default,null):Int = 0;
-	public var effectiveTileWidth(default,null):Int = 0;
-	public var effectiveTileHeight(default,null):Int = 0;
-	public var hexSideLength(default,null):Int = 0;
-	public var staggerAxis(default,null):StaggerAxis = StaggerAxis.X;
-	public var staggerIndex(default,null):StaggerIndex = StaggerIndex.Event;
-	public var backgroundColor(default,null):Int = 0;
-	public var nextObjectId(default,null):Int = 0;
+	var version(default,null):String = "0.0";
+	var orientation(default,null):Orientation = Orientation.Orthogonal;
+	var renderOrder(default,null):RenderOrder = RenderOrder.RightDown;
+	var width(default,null):Int = 0;
+	var height(default,null):Int = 0;
+	var tileWidth(default,null):Int = 0;
+	var tileHeight(default,null):Int = 0;
+	var effectiveTileWidth(default,null):Int = 0;
+	var effectiveTileHeight(default,null):Int = 0;
+	var hexSideLength(default,null):Int = 0;
+	var staggerAxis(default,null):StaggerAxis = StaggerAxis.X;
+	var staggerIndex(default,null):StaggerIndex = StaggerIndex.Event;
+	var backgroundColor(default,null):Int = 0;
+	var nextObjectId(default,null):Int = 0;
 
-	public var tilesets(default,null):Array<Tileset> = [];
-	public var tileLayers(default,null):Array<TileLayer> = [];
-	public var objectLayers(default,null):Array<ObjectsLayer> = [];
-	public var imageLayers(default,null):Array<ImageLayer> = [];
-	public var properties(default,null):Map<String, Dynamic> = new Map();
+	var tilesets(default,null):Array<Tileset> = [];
+	var tileLayers(default,null):Array<TileLayer> = [];
+	var objectLayers(default,null):Array<ObjectsLayer> = [];
+	var imageLayers(default,null):Array<ImageLayer> = [];
+	var properties(default,null):Map<String, Dynamic> = new Map();
 
-	public var coordinateSystem:ICoordinateSystem;
-	public var grid:I2DGrid;
-	public var bg(get,never):TileLayer;
+	var coordinateSystem:ICoordinateSystem;
+	var grid:I2DGrid;
+	var bg(get,never):TileLayer;
 
-	public function new() {}
+	function new() {}
 
-	public function get_bg() {
+	function get_bg() {
 		return this.tileLayers[0];
 	}
 
-	public function loadFromXml(xml:Xml) {
+	function loadFromXml(xml:Xml) {
 		var root = xml.firstElement();
 		ObjectExt.fromMap(root, TiledMap, this);
 		effectiveTileWidth = tileWidth;

@@ -1,6 +1,5 @@
 package tmx;
 
-
 import haxe.io.Int32Array;
 
 import grid.Map2D;

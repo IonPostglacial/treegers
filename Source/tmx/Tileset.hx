@@ -1,27 +1,29 @@
 package tmx;
 
+
+@:publicFields
 class Tileset {
-	public var firstGid:Int = 0;
-	public var source:String = "";
-	public var name:String = "<unnamed>";
-	public var tileWidth:Int = 0;
-	public var tileHeight:Int = 0;
-	public var spacing:Int = 0;
-	public var margin:Int = 0;
-	public var tileCount:Int = 0;
-	public var columns:Int = 0;
-	public var properties(default,null):Map<String, Dynamic> = new Map();
-	public var image:openfl.display.BitmapData;
-	public var terrains:Map<Int, Array<Int>> = new Map();
-	public var animationFramesIds:Map<Int, Array<Int>> = new Map();
-	public var animationFramesDurations:Map<Int, Array<Int>> = new Map();
+	var firstGid:Int = 0;
+	var source:String = "";
+	var name:String = "<unnamed>";
+	var tileWidth:Int = 0;
+	var tileHeight:Int = 0;
+	var spacing:Int = 0;
+	var margin:Int = 0;
+	var tileCount:Int = 0;
+	var columns:Int = 0;
+	var properties(default,null):Map<String, Dynamic> = new Map();
+	var image:openfl.display.BitmapData;
+	var terrains:Map<Int, Array<Int>> = new Map();
+	var animationFramesIds:Map<Int, Array<Int>> = new Map();
+	var animationFramesDurations:Map<Int, Array<Int>> = new Map();
 	var terrainsNumberByTile = 0;
 
-	public function new(orientation:Orientation) {
+	function new(orientation:Orientation) {
 		terrainsNumberByTile = orientation.adjacentTilesNumber();
 	}
 
-	public function loadFromXml(xml:Xml) {
+	function loadFromXml(xml:Xml) {
 		ObjectExt.fromMap(xml, Tileset, this);
 		var imageElements = xml.elementsNamed('image');
 		for (imageElement in imageElements) {

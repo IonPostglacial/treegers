@@ -1,23 +1,25 @@
 package tmx;
 
+
+@:publicFields
 class Layer {
-	public var name:String = "<unnamed>";
-	public var opacity:Float = 1.0;
-	public var visible:Bool = true;
-	public var offsetX:Int = 0;
-	public var offsetY:Int = 0;
+	var name:String = "<unnamed>";
+	var opacity:Float = 1.0;
+	var visible:Bool = true;
+	var offsetX:Int = 0;
+	var offsetY:Int = 0;
 
-	public var orientation:Orientation;
-	public var width:Int;
-	public var height:Int;
+	var orientation:Orientation;
+	var width:Int;
+	var height:Int;
 
-	public function new(map:TiledMap) {
+	function new(map:TiledMap) {
 		this.orientation = map.orientation;
 		this.width = map.width;
 		this.height = map.height;
 	}
 
-	public function loadFromXml(xml:Xml) {
+	function loadFromXml(xml:Xml) {
 		ObjectExt.fromMap(xml, Layer, this);
 	}
 }
