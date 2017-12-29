@@ -1,6 +1,6 @@
 package tmx;
 
-@:enum abstract StaggerIndex(String) from String to String {
+@:enum abstract StaggerIndex(String) {
 	var Odd = "odd";
 	var Event = "even";
 }
