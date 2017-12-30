@@ -20,9 +20,9 @@ class CoordinateSystem implements ICoordinateSystem {
 		return new Coordinates(x, y);
 	}
 
-	public function toPixel(coordX:Int, coordY:Int):Vector2D {
-		var x = Math.floor(coordX * hexWidth + coordY * hexWidth / 2);
-		var y = Math.floor(effectiveHeight * coordY);
+	public function toPixel(coordX:TilesCoord, coordY:TilesCoord):Vector2D {
+		var x = Math.floor(coordX.toInt() * hexWidth + coordY.toInt() * hexWidth / 2);
+		var y = Math.floor(effectiveHeight * coordY.toInt());
 
 		return new Vector2D(x, y);
 	}

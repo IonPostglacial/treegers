@@ -1,6 +1,7 @@
 package game.map;
 
 import grid.Coordinates;
+import grid.TilesCoord;
 import grid.hex.CompactMap as HexMap;
 import grid.Map2D;
 import grid.ortho.CompactMap as OrthoMap;
@@ -57,7 +58,7 @@ class WorldMap {
 		return targetObjects.filter(function(object) return object.groundType == type);
 	}
 
-	public function at(x:Int, y:Int):GroundType {
+	public function at(x:TilesCoord, y:TilesCoord):GroundType {
 		return this.ground.getAt(x, y);
 	}
 

@@ -35,11 +35,12 @@ class Grid implements I2DGrid {
 	inline function distanceBetween(p1:Coordinates, p2:Coordinates):Int {
 		var dx = p1.x - p2.x;
 		var dy = p1.y - p2.y;
-		return dx * dx + dy * dy;
+		return (dx * dx + dy * dy).toInt();
 	}
 
 	function areNeighbors(p1:Coordinates, p2:Coordinates):Bool {
-		return abs(p1.x - p2.x) <= 1 && abs(p1.y - p2.y) <= 1;
+		var dx = (p1.x - p2.x).toInt(), dy = (p1.y - p2.y).toInt();
+		return abs(dx) <= 1 && abs(dy) <= 1;
 	}
 
 	inline function neighborsOf(p:Coordinates):CoordinatesNeighbors {

@@ -18,7 +18,7 @@ class Map2D<T> implements haxe.Constraints.IMap<Coordinates, T> {
 		return 0;
 	}
 
-	public function contains(x:Int, y:Int) {
+	public function contains(x:TilesCoord, y:TilesCoord) {
 		return false;
 	}
 
@@ -38,11 +38,11 @@ class Map2D<T> implements haxe.Constraints.IMap<Coordinates, T> {
 		setAt(coordinates.x, coordinates.y, value);
 	}
 
-	public function getAt(x:Int, y:Int):T {
+	public function getAt(x:TilesCoord, y:TilesCoord):T {
 		return data[indexOf(x, y)];
 	}
 
-	public function setAt(x:Int, y:Int, value:T) {
+	public function setAt(x:TilesCoord, y:TilesCoord, value:T) {
 		data[indexOf(x, y)] = value;
 	}
 

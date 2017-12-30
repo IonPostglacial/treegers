@@ -30,7 +30,7 @@ class CompactMap<T> extends Map2D<T> {
 		return x + width * y;
 	}
 
-	override function contains(x:Int, y:Int):Bool {
+	override function contains(x:TilesCoord, y:TilesCoord):Bool {
 		return x >= 0 && x < width && y >= 0 && y < height;
 	}
 

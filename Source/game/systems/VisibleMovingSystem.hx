@@ -32,8 +32,8 @@ class VisibleMovingSystem extends ListIteratingSystem<VisibleMovingNode> {
 		var pixPosition = this.coordinates.toPixel(node.position.x, node.position.y);
 		if (!node.movement.alreadyMoved) {
 			var movementDelta = deltaTime / node.movement.period;
-			node.visible.tile.x += node.movement.direction.dx() * tileWidth * movementDelta;
-			node.visible.tile.y += node.movement.direction.dy() * tileHeight * movementDelta;
+			node.visible.tile.x += node.movement.direction.dx().toInt() * tileWidth * movementDelta;
+			node.visible.tile.y += node.movement.direction.dy().toInt() * tileHeight * movementDelta;
 		} else {
 			node.visible.tile.x = pixPosition.x;
 			node.visible.tile.y = pixPosition.y;

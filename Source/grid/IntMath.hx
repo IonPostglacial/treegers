@@ -7,7 +7,7 @@ class IntMath {
         return n >= 0 ? n : -n;
     }
 
-    static function max(a:Int, b:Int) {
+    static function max(a:Int, b:Int):Int {
         return a >= b ? a : b;
     }
 }

@@ -2,8 +2,8 @@ package grid;
 
 
 class Coordinates {
-	public var x:Int;
-	public var y:Int;
+	public var x:TilesCoord;
+	public var y:TilesCoord;
 
 	public inline function new(x, y) {
 		this.x = x;

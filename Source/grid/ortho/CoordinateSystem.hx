@@ -18,7 +18,7 @@ class CoordinateSystem implements ICoordinateSystem {
 		return new Coordinates(Std.int(pointX.toFloat()  * widthRatio), Std.int(pointY.toFloat() * heightRatio));
 	}
 
-	public function toPixel(coordX:Int, coordY:Int):Vector2D {
-		return new Vector2D(coordX  * width, coordY * height);
+	public function toPixel(coordX:TilesCoord, coordY:TilesCoord):Vector2D {
+		return new Vector2D(coordX.toInt()  * width, coordY.toInt() * height);
 	}
 }

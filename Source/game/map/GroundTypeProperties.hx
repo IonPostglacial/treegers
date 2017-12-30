@@ -1,5 +1,8 @@
 package game.map;
 
+import grid.TilesDelta;
+
+
 class GroundTypeProperties {
     static var arrowDeltas = [[0, -1], [1, 0], [-1, 0], [0, 1], [1, -1], [-1, 1]];
 
@@ -23,7 +26,7 @@ class GroundTypeProperties {
                     waterTerrainsNumber += 1;
                 case Terrain.Arrow:
                     var dxdy = arrowDeltas[i];
-                    return GroundType.Arrow(dxdy[0], dxdy[1]);
+                    return GroundType.Arrow(new TilesDelta(dxdy[0]), new TilesDelta(dxdy[1]));
                 case Terrain.Pikes:
                     return GroundType.Hurting(1);
                 default: // pass

@@ -12,7 +12,7 @@ abstract Pixel(Float) {
     @:op(A + B) static function add(a:Pixel, b:Pixel):Pixel;
     @:op(A - B) static function sub(a:Pixel, b:Pixel):Pixel;
     @:commutative @:op(A * B) static function mul(a:Pixel, factor:Float):Pixel;
-    @:commutative @:op(A / B) static function mul(a:Pixel, divider:Float):Pixel;
+    @:commutative @:op(A / B) static function div(a:Pixel, divider:Float):Pixel;
 
     public static inline function pixel(n:Float) return new Pixel(n);
     public function toFloat():Float return this;

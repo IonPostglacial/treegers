@@ -6,12 +6,13 @@
 package game.components;
 
 import grid.Coordinates;
+import grid.TilesCoord;
 
 
 @:publicFields
 class Position {
-	var x:Int;
-	var y:Int;
+	var x:TilesCoord;
+	var y:TilesCoord;
 
 	inline function new(x, y) {
 		this.x = x;

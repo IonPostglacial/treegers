@@ -1,6 +1,7 @@
 package tmx;
 
 using grid.Pixel;
+import grid.TilesCoord;
 
 
 @:publicFields
@@ -11,8 +12,8 @@ class TileObject {
 	var gid:Int = 0;
 	var x:Pixel = 0.pixel();
 	var y:Pixel = 0.pixel();
-	var coordX:Int = 0;
-	var coordY:Int = 0;
+	var coordX:TilesCoord = 0;
+	var coordY:TilesCoord = 0;
 	var width:Pixel = 0.pixel();
 	var height:Pixel = 0.pixel();
 	var properties:Map<String, String> = new Map();

@@ -1,5 +1,8 @@
 package game.map;
 
+import grid.TilesDelta;
+
+
 enum GroundType {
 	Unknown;
 	Basic;
@@ -9,5 +12,5 @@ enum GroundType {
 	DigPile;
 	Fatal;
 	Hurting(intensity:Int);
-	Arrow(dx:Int, dy:Int);
+	Arrow(dx:TilesDelta, dy:TilesDelta);
 }
