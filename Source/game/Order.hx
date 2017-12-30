@@ -1,5 +1,7 @@
 package game;
 
+using grid.Pixel;
+
 import openfl.Lib;
 import openfl.events.MouseEvent;
 import openfl.geom.Rectangle;
@@ -28,7 +30,7 @@ class Board {
 		});
 		Lib.current.addEventListener(MouseEvent.MOUSE_MOVE, function(e) {
 			this.mouseMoved = true;
-			var mousePosition = coordinates.fromPixel(e.stageX + camera.x, e.stageY + camera.y);
+			var mousePosition = coordinates.fromPixel((e.stageX + camera.x).pixel(), (e.stageY + camera.y).pixel());
 			this.mousePositionX = mousePosition.x;
 			this.mousePositionY = mousePosition.y;
 		});

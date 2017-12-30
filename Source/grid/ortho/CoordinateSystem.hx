@@ -14,8 +14,8 @@ class CoordinateSystem implements ICoordinateSystem {
 		this.heightRatio = 1 / height;
 	}
 
-	public function fromPixel(pointX:Float, pointY:Float):Coordinates {
-		return new Coordinates(Std.int(pointX  * widthRatio), Std.int(pointY * heightRatio));
+	public function fromPixel(pointX:Pixel, pointY:Pixel):Coordinates {
+		return new Coordinates(Std.int(pointX.toFloat()  * widthRatio), Std.int(pointY.toFloat() * heightRatio));
 	}
 
 	public function toPixel(coordX:Int, coordY:Int):Vector2D {

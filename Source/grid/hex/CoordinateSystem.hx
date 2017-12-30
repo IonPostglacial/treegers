@@ -12,9 +12,10 @@ class CoordinateSystem implements ICoordinateSystem {
 		this.effectiveHeightRatio = 1 / this.effectiveHeight;
 	}
 
-	public function fromPixel(pointX:Float, pointY:Float):Coordinates {
-		var y = Math.floor(pointY  * effectiveHeightRatio);
-		var x = Math.floor((pointX / hexWidth) - y / 2);
+	public function fromPixel(pointX:Pixel, pointY:Pixel):Coordinates {
+		var realHeight = (pointY  * effectiveHeightRatio).toFloat();
+		var y = Math.floor(realHeight);
+		var x = Math.floor((pointX.toFloat() / hexWidth) - y / 2);
 
 		return new Coordinates(x, y);
 	}
