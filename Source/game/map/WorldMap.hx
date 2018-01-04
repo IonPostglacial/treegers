@@ -11,43 +11,33 @@ using Lambda;
 
 class WorldMap {
 	var map:tmx.TiledMap;
-	var ground:Map2D<GroundType>;
+	var groundTypeByCoords:Map2D<GroundType>;
 	var targetObjects:Iterable<TargetObject>;
 
-	public var grids(default,null):Array<WorldGrid> = [];
+	public var grids(default,null):Array<WorldView>;
 	var tileObjectsListeners:Array<ITargetObjectListener> = [];
 
 	public function new(map:tmx.TiledMap) {
 		this.map = map;
-		var targetObjects = [];
-		for (layer in this.map.objectLayers) {
-			for (object in layer.objects) {
-				var tileTerrains = this.map.tilesets[0].terrains.get(object.gid - this.map.tilesets[0].firstGid);
-				targetObjects.push(new TargetObject(object, GroundTypeProperties.fromTerrains(tileTerrains)));
-			}
-		}
-		this.targetObjects = targetObjects;
-		this.ground = if (map.orientation == tmx.Orientation.Hexagonal) {
+		targetObjects = this.map.objectLayers.flatMap(function(layer) {
+			return layer.objects.map(TargetObject.fromMapTileObject.bind(map, _));
+		});
+		groundTypeByCoords = if (map.orientation == tmx.Orientation.Hexagonal) {
 			new HexMap(map.width, map.height);
 		} else {
 			new OrthoMap(map.width, map.height);
 		}
 		for (coords in map.bg.tiles.keys()) {
-			var tileType = map.bg.tiles.get(coords);
-			var groundType = tileTypeToGroundType(tileType);
-			this.ground.set(coords, groundType);
+			groundTypeByCoords.set(coords, tileTypeToGroundType(map, map.bg.tiles.get(coords)));
 		}
 		for (objectLayer in map.objectLayers) {
-			for (tileObject in objectLayer.objects) {
-				var tileType:Int = tileObject.gid;
-				if (tileObject.active) {
-					this.ground.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(tileType));
-				}
-			}
+			objectLayer.objects
+				.filter(function(tileObject) return tileObject.active)
+				.iter(function(tileObject) {
+					groundTypeByCoords.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(map, tileObject.gid));
+				});
 		}
-		for (vehicle in Type.allEnums(Vehicle)) {
-			this.grids.push(new WorldGrid(this.ground, this.map.grid, vehicle));
-		}
+		grids = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, _));
 	}
 
 	public function areNeighbors(c1:Coordinates, c2:Coordinates):Bool {
@@ -59,15 +49,15 @@ class WorldMap {
 	}
 
 	public function at(x:TilesCoord, y:TilesCoord):GroundType {
-		return this.ground.getAt(x, y);
+		return this.groundTypeByCoords.getAt(x, y);
 	}
 
-	function tileTypeToGroundType(tileType:Int):GroundType {
-		var tileTerrains = this.map.tilesets[0].terrains.get(tileType - this.map.tilesets[0].firstGid);
+	static inline function tileTypeToGroundType(map:tmx.TiledMap, tileType:Int):GroundType {
+		var tileTerrains = map.tilesets[0].terrains.get(tileType - map.tilesets[0].firstGid);
 		return GroundTypeProperties.fromTerrains(tileTerrains);
 	}
 
-	public inline function forVehicle(vehicle:Vehicle):WorldGrid {
+	public inline function forVehicle(vehicle:Vehicle):WorldView {
 		return this.grids[Type.enumIndex(vehicle)];
 	}
 
@@ -79,7 +69,7 @@ class WorldMap {
 		} else {
 			tileType = map.bg.tiles.getAt(target.tileObject.coordX, target.tileObject.coordY);
 		}
-		this.ground.setAt(target.tileObject.coordX, target.tileObject.coordY, this.tileTypeToGroundType(tileType));
+		this.groundTypeByCoords.setAt(target.tileObject.coordX, target.tileObject.coordY, tileTypeToGroundType(map, tileType));
 		for (listener in tileObjectsListeners) {
 			listener.targetObjectStatusChanged(target, active);
 		}

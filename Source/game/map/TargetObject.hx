@@ -18,6 +18,11 @@ class TargetObject {
         this.groundType = type;
     }
 
+    static inline function fromMapTileObject(map:tmx.TiledMap, object:tmx.TileObject):TargetObject {
+        var tileTerrains = map.tilesets[0].terrains.get(object.gid - map.tilesets[0].firstGid);
+		return new TargetObject(object, GroundTypeProperties.fromTerrains(tileTerrains));
+    }
+
     function get_isActive():Bool {
         return this.tileObject.active;
     }

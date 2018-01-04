@@ -57,9 +57,10 @@ class TiledMap {
 				coordinateSystem = new HexCoordinateSystem(tileWidth, tileHeight, hexSideLength);
 				grid = new HexGrid(width, height);
 				effectiveTileHeight = Std.int(0.75 * effectiveTileHeight);
-			default:
+			case Orientation.Orthogonal:
 				coordinateSystem = new OrthoCoordinateSystem(tileWidth, tileHeight);
 				grid = new OrthoGrid(width, height);
+			default: // TODO: Unimplemented
 		}
 
 		for (element in root.elements()) {

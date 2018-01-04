@@ -8,7 +8,9 @@ import grid.Map2D;
 using game.map.GroundTypeProperties;
 
 
-class WorldGrid implements IPathfindable<Coordinates> {
+/* A WorldView is a view of the World map for a particular Vehicle
+ */
+class WorldView implements IPathfindable<Coordinates> {
 	public var ground:Map2D<GroundType>;
 	public var grid:I2DGrid;
 	public var vehicle:Vehicle;
@@ -23,8 +25,8 @@ class WorldGrid implements IPathfindable<Coordinates> {
 		return grid.distanceBetween(p1, p2);
 	}
 
-	public function neighborsOf(p:Coordinates):WorldGridNeighborsIterator {
-		return new WorldGridNeighborsIterator(this, p);
+	public function neighborsOf(p:Coordinates):NeighborsIterator {
+		return new NeighborsIterator(this, p);
 	}
 
 	public function nodeIndex(node:Coordinates):Int {
@@ -37,12 +39,12 @@ class WorldGrid implements IPathfindable<Coordinates> {
 }
 
 
-class WorldGridNeighborsIterator {
-	var worldGrid:WorldGrid;
+class NeighborsIterator {
+	var worldGrid:WorldView;
 	var potentialNeighbors:Iterator<Coordinates>;
 	var nextElement:Coordinates;
 
-	public function new(worldGrid:WorldGrid, p:Coordinates) {
+	public function new(worldGrid:WorldView, p:Coordinates) {
 		this.worldGrid = worldGrid;
 		this.potentialNeighbors = worldGrid.grid.neighborsOf(p);
 	}
