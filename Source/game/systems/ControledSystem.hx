@@ -93,20 +93,22 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				node.entity.componentRemoved.remove(updatePotentialTargets);
 			}
 		case PowerOrdered(target):
-			var groundGrid = this.worldMap.forVehicle(node.movement.vehicle);
-			var nearestNeighbor = null;
-			var smallestDistance = 0;
-			for (neighbor in groundGrid.neighborsOf(new Coordinates(target.x, target.y))) {
-				var neighborDistance = groundGrid.distanceBetween(node.position.coords(), neighbor);
-				if (nearestNeighbor == null || neighborDistance < smallestDistance) {
-					nearestNeighbor = neighbor;
-					smallestDistance = neighborDistance;
+			if (node.controled.selected) {
+				var groundGrid = this.worldMap.forVehicle(node.movement.vehicle);
+				var nearestNeighbor = null;
+				var smallestDistance = 0;
+				for (neighbor in groundGrid.neighborsOf(new Coordinates(target.x, target.y))) {
+					var neighborDistance = groundGrid.distanceBetween(node.position.coords(), neighbor);
+					if (nearestNeighbor == null || neighborDistance < smallestDistance) {
+						nearestNeighbor = neighbor;
+						smallestDistance = neighborDistance;
+					}
 				}
-			}
-			if (nearestNeighbor != null) {
-				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
-				if (path.length != 0 || smallestDistance == 0) {
-					node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
+				if (nearestNeighbor != null) {
+					var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
+					if (path.length != 0 || smallestDistance == 0) {
+						node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
+					}
 				}
 			}
 		case Nothing: // Nothing to do.
