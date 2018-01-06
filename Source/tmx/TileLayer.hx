@@ -16,8 +16,14 @@ class TileLayer extends Layer {
 	static inline var COMPRESSION_GZIP = "gzip";
 	static inline var COMPRESSION_ZLIB = "zlib";
 
-	public function new(map) {
+	function new(map) {
 		super(map);
+	}
+
+	public static inline function fromXml(xml, map) {
+		var tileLayer = new TileLayer(map);
+		tileLayer.loadFromXml(xml);
+		return tileLayer;
 	}
 
 	override function loadFromXml(xml:Xml) {

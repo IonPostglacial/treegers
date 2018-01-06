@@ -7,9 +7,15 @@ class ObjectsLayer extends Layer {
 	public var objects(default,null):Array<TileObject> = [];
 	var coordinates:ICoordinateSystem;
 
-	public function new(map) {
+	function new(map) {
 		super(map);
 		this.coordinates = map.coordinateSystem;
+	}
+
+	public static inline function fromXml(xml, map) {
+		var objectsLayer = new ObjectsLayer(map);
+		objectsLayer.loadFromXml(xml);
+		return objectsLayer;
 	}
 
 	override function loadFromXml(xml:Xml) {

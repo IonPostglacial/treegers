@@ -29,10 +29,8 @@ class Stage {
 
 	public function new(mapPath:String, pixelWidth:Int, pixelHeight:Int) {
 		this.engine = new Engine();
-
-		var map = new tmx.TiledMap();
 		var mapXml = openfl.Assets.getText("assets/" + mapPath);
-		map.loadFromXml(Xml.parse(mapXml));
+		var map = tmx.TiledMap.fromXml(Xml.parse(mapXml));
 
 		var entityLoader = new EntityLoader();
 		entityLoader.loadFromMap(this.engine, map);

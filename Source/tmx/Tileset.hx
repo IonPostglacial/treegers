@@ -19,8 +19,14 @@ class Tileset {
 	var animationFramesDurations:Map<Int, Array<Int>> = new Map();
 	var terrainsNumberByTile = 0;
 
-	function new(orientation:Orientation) {
+	private function new(orientation:Orientation) {
 		terrainsNumberByTile = orientation.adjacentTilesNumber();
+	}
+
+	static inline function fromXml(xml, orientation) {
+		var tileset = new Tileset(orientation);
+		tileset.loadFromXml(xml);
+		return tileset;
 	}
 
 	function loadFromXml(xml:Xml) {

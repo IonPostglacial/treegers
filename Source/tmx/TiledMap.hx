@@ -8,11 +8,6 @@ import grid.hex.Grid as HexGrid;
 import grid.ortho.Grid as OrthoGrid;
 
 
-typedef XmlLoadable = {
-	function loadFromXml(xml:Xml):Void;
-}
-
-
 @:publicFields
 class TiledMap {
 	var version(default,null):String = "0.0";
@@ -40,10 +35,16 @@ class TiledMap {
 	var grid:I2DGrid;
 	var bg(get,never):TileLayer;
 
-	function new() {}
+	private inline function new() {}
 
 	function get_bg() {
 		return this.tileLayers[0];
+	}
+
+	public static inline function fromXml(xml:Xml):TiledMap {
+		var tiledMap = new TiledMap();
+		tiledMap.loadFromXml(xml);
+		return tiledMap;
 	}
 
 	function loadFromXml(xml:Xml) {
@@ -60,24 +61,17 @@ class TiledMap {
 			case Orientation.Orthogonal:
 				coordinateSystem = new OrthoCoordinateSystem(tileWidth, tileHeight);
 				grid = new OrthoGrid(width, height);
-			default: // TODO: Unimplemented
+			case Orientation.Isometric | Orientation.Staggered: // TODO: Unimplemented
 		}
 
 		for (element in root.elements()) {
-			var mapElement:Null<XmlLoadable> = null;
 			switch (element.nodeName) {
 			case "tileset":
-				tilesets.push(new Tileset(orientation));
-				mapElement = tilesets[tilesets.length - 1];
+				tilesets.push(Tileset.fromXml(element, orientation));
 			case "layer":
-				tileLayers.push(new TileLayer(this));
-				mapElement = tileLayers[tileLayers.length - 1];
+				tileLayers.push(TileLayer.fromXml(element, this));
 			case "objectgroup":
-				objectLayers.push(new ObjectsLayer(this));
-				mapElement = objectLayers[objectLayers.length - 1];
-			}
-			if (mapElement != null) {
-				mapElement.loadFromXml(element);
+				objectLayers.push(ObjectsLayer.fromXml(element, this));
 			}
 		}
 	}
