@@ -25,8 +25,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	public function new(worldMap:WorldMap, orderBoard:Order.Board) {
 		this.worldMap = worldMap;
 		this.orderBoard = orderBoard;
-		for (groundGrid in this.worldMap.grids) {
-			this.pathfinders.push(new graph.Pathfinder(groundGrid, graph.PathBuildingStrategy.compressed));
+		for (worldView in this.worldMap.views) {
+			this.pathfinders.push(new graph.Pathfinder(worldView, graph.PathBuildingStrategy.compressed));
 		}
 		super(ControledNode, updateNode);
 	}
@@ -75,11 +75,11 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 		node.controled.selectedThisRound = false;
 		switch (this.orderBoard.currentOrder) {
 		case MovementOrdered(x, y):
-			if (node.controled.selected) {
-				var nextCoords = new Coordinates(node.position.x + node.movement.direction.dx(), node.position.y + node.movement.direction.dy());
-				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(nextCoords, new Coordinates(x, y));
-				node.controled.actions = [new Move(node.entity, path)];
-			}
+			if (!node.controled.selected)
+				return;
+			var nextCoords = new Coordinates(node.position.x + node.movement.direction.dx(), node.position.y + node.movement.direction.dy());
+			var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(nextCoords, new Coordinates(x, y));
+			node.controled.actions = [new Move(node.entity, path)];
 		case TargetSelected(x, y):
 			node.controled.selected = node.position.x == x && node.position.y == y && !node.controled.selected;
 			node.controled.selectedThisRound = true;
@@ -93,22 +93,22 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				node.entity.componentRemoved.remove(updatePotentialTargets);
 			}
 		case PowerOrdered(target):
-			if (node.controled.selected) {
-				var groundGrid = this.worldMap.forVehicle(node.movement.vehicle);
-				var nearestNeighbor = null;
-				var smallestDistance = 0;
-				for (neighbor in groundGrid.neighborsOf(new Coordinates(target.x, target.y))) {
-					var neighborDistance = groundGrid.distanceBetween(node.position.coords(), neighbor);
-					if (nearestNeighbor == null || neighborDistance < smallestDistance) {
-						nearestNeighbor = neighbor;
-						smallestDistance = neighborDistance;
-					}
+			if (!node.controled.selected)
+				return;
+			var groundGrid = this.worldMap.viewForVehicle(node.movement.vehicle);
+			var nearestNeighbor = null;
+			var smallestDistance = 0;
+			for (neighbor in groundGrid.neighborsOf(new Coordinates(target.x, target.y))) {
+				var neighborDistance = groundGrid.distanceBetween(node.position.coords(), neighbor);
+				if (nearestNeighbor == null || neighborDistance < smallestDistance) {
+					nearestNeighbor = neighbor;
+					smallestDistance = neighborDistance;
 				}
-				if (nearestNeighbor != null) {
-					var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
-					if (path.length != 0 || smallestDistance == 0) {
-						node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
-					}
+			}
+			if (nearestNeighbor != null) {
+				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
+				if (path.length != 0 || smallestDistance == 0) {
+					node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
 				}
 			}
 		case Nothing: // Nothing to do.

@@ -14,7 +14,7 @@ class WorldMap {
 	var groundTypeByCoords:Map2D<GroundType>;
 	var targetObjects:Iterable<TargetObject>;
 
-	public var grids(default,null):Array<WorldView>;
+	public var views(default,null):Array<WorldView>;
 	var tileObjectsListeners:Array<ITargetObjectListener> = [];
 
 	public function new(map:tmx.TiledMap) {
@@ -37,7 +37,7 @@ class WorldMap {
 					groundTypeByCoords.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(map, tileObject.gid));
 				});
 		}
-		grids = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, _));
+		views = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, _));
 	}
 
 	public function areNeighbors(c1:Coordinates, c2:Coordinates):Bool {
@@ -57,8 +57,8 @@ class WorldMap {
 		return GroundTypeProperties.fromTerrains(tileTerrains);
 	}
 
-	public inline function forVehicle(vehicle:Vehicle):WorldView {
-		return this.grids[Type.enumIndex(vehicle)];
+	public inline function viewForVehicle(vehicle:Vehicle):WorldView {
+		return this.views[Type.enumIndex(vehicle)];
 	}
 
 	public function setTargetStatus(target:TargetObject, active:Bool) {
