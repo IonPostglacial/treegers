@@ -1,12 +1,11 @@
 package grid.hex;
 
 import grid.IntMath.abs;
+import grid.TilesCoord;
 
 
 @:publicFields
 class Grid implements I2DGrid {
-	private static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
-
 	var width:Int;
 	var height:Int;
 	var size(get, never):Int;
@@ -16,11 +15,8 @@ class Grid implements I2DGrid {
 		this.height = height;
 	}
 
-	inline function indexOf(x:Int, y:Int):Int {
-		return x + Std.int(y/2) + width * y;
-	}
-
-	inline function contains(x:Int, y:Int):Bool {
+	inline function contains(tx:TilesCoord, ty:TilesCoord):Bool {
+		var x = tx.toInt(), y = ty.toInt();
 		return x + Std.int(y / 2) >= 0 && x + Std.int(y / 2) < width && y >= 0 && y < height;
 	}
 
@@ -46,6 +42,6 @@ class Grid implements I2DGrid {
 	}
 
 	function nodeIndex(node:Coordinates):Int {
-		return node.x + node.y * width;
+		return node.x.toInt() + node.y.toInt() * width;
 	}
 }

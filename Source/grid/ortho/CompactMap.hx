@@ -1,5 +1,7 @@
 package grid.ortho;
 
+using grid.TilesCoord;
+
 
 class CompactMapIterator<T> {
 	var i:Int;
@@ -26,12 +28,12 @@ class CompactMap<T> extends Map2D<T> {
 		return map;
 	}
 
-	override function indexOf(x:Int, y:Int):Int {
-		return x + width * y;
+	override function indexOf(x:TilesCoord, y:TilesCoord):Int {
+		return x.toInt() + width * y.toInt();
 	}
 
 	override function contains(x:TilesCoord, y:TilesCoord):Bool {
-		return x >= 0 && x < width && y >= 0 && y < height;
+		return x >= 0.tiles() && x < width.tiles() && y >= 0.tiles() && y < height.tiles();
 	}
 
 	override function keys() {

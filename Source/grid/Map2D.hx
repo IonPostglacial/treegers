@@ -14,7 +14,7 @@ class Map2D<T> implements haxe.Constraints.IMap<Coordinates, T> {
 		this.data = [for (i in 0...width * height) value];
 	}
 
-	public function indexOf(x:Int, y:Int) {
+	public function indexOf(x:TilesCoord, y:TilesCoord) {
 		return 0;
 	}
 

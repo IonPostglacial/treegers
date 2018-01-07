@@ -1,5 +1,7 @@
 package grid.hex;
 
+using grid.TilesCoord;
+
 
 class CoordinateSystem implements ICoordinateSystem {
 	var hexWidth:Float;
@@ -17,7 +19,7 @@ class CoordinateSystem implements ICoordinateSystem {
 		var y = Math.floor(realHeight);
 		var x = Math.floor((pointX.toFloat() / hexWidth) - y / 2);
 
-		return new Coordinates(x, y);
+		return new Coordinates(x.tiles(), y.tiles());
 	}
 
 	public function toPixel(coordX:TilesCoord, coordY:TilesCoord):Vector2D {

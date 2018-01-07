@@ -1,5 +1,7 @@
 package grid.ortho;
 
+using grid.TilesCoord;
+
 
 class GridIterator {
 	var width:Int;
@@ -24,6 +26,6 @@ class GridIterator {
 			x = 0;
 			y += 1;
 		}
-		return new Coordinates(x, y);
+		return new Coordinates(x.tiles(), y.tiles());
 	}
 }

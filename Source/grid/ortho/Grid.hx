@@ -2,11 +2,11 @@ package grid.ortho;
 
 import grid.IntMath.abs;
 
+using grid.TilesCoord;
+
 
 @:publicFields
 class Grid implements I2DGrid {
-	private static var deltas = [-1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1];
-
 	var width:Int;
 	var height:Int;
 	var size(get, never):Int;
@@ -16,12 +16,8 @@ class Grid implements I2DGrid {
 		this.height = height;
 	}
 
-	inline function indexOf(x:Int, y:Int):Int {
-		return x + width * y;
-	}
-
-	inline function contains(x:Int, y:Int):Bool {
-		return x >= 0 && x < width && y >= 0 && y < height;
+	inline function contains(x:TilesCoord, y:TilesCoord):Bool {
+		return x >= 0.tiles() && x < width.tiles() && y >= 0.tiles() && y < height.tiles();
 	}
 
 	function cells():Iterator<Coordinates> {
@@ -48,6 +44,6 @@ class Grid implements I2DGrid {
 	}
 
 	function nodeIndex(node:Coordinates):Int {
-		return node.x + node.y * width;
+		return node.x.toInt() + node.y.toInt() * width;
 	}
 }

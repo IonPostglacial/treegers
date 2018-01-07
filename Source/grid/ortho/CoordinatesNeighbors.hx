@@ -1,8 +1,10 @@
 package grid.ortho;
 
+import grid.TilesDelta;
+
 
 class CoordinatesNeighbors {
-    static var deltas = [-1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1];
+    static var deltas = [-1, -1, -1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0, 1, 1].map(TilesDelta.new);
     var grid:Grid;
 	var coord:Coordinates;
 	var i = -1;

@@ -1,6 +1,7 @@
 package game;
 
 using grid.Pixel;
+using grid.TilesCoord;
 
 import openfl.Lib;
 import openfl.events.MouseEvent;
@@ -12,17 +13,17 @@ import grid.ICoordinateSystem;
 
 enum Order {
 	Nothing;
-	MovementOrdered(x:Int, y:Int);
+	MovementOrdered(x:TilesCoord, y:TilesCoord);
 	PowerOrdered(target:TargetObject);
-	TargetSelected(x:Int, y:Int);
+	TargetSelected(x:TilesCoord, y:TilesCoord);
 }
 
 class Board {
 	public var currentOrder:Order = Nothing;
 	public var mouseClicked(default,null):Bool = false;
 	public var mouseMoved(default,null):Bool = false;
-	public var mousePositionX(default,null):Int = 0;
-	public var mousePositionY(default,null):Int = 0;
+	public var mousePositionX(default,null):TilesCoord = 0.tiles();
+	public var mousePositionY(default,null):TilesCoord = 0.tiles();
 
 	public function new(camera:Rectangle, coordinates:ICoordinateSystem) {
 		Lib.current.addEventListener(MouseEvent.CLICK, function(e) {

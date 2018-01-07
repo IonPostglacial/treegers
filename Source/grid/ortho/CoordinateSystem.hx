@@ -1,5 +1,7 @@
 package grid.ortho;
 
+using grid.TilesCoord;
+
 
 class CoordinateSystem implements ICoordinateSystem {
 	var width:Float = 1;
@@ -15,7 +17,7 @@ class CoordinateSystem implements ICoordinateSystem {
 	}
 
 	public function fromPixel(pointX:Pixel, pointY:Pixel):Coordinates {
-		return new Coordinates(Std.int(pointX.toFloat()  * widthRatio), Std.int(pointY.toFloat() * heightRatio));
+		return new Coordinates(Std.int(pointX.toFloat()  * widthRatio).tiles(), Std.int(pointY.toFloat() * heightRatio).tiles());
 	}
 
 	public function toPixel(coordX:TilesCoord, coordY:TilesCoord):Vector2D {

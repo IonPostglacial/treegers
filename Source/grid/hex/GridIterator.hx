@@ -1,5 +1,7 @@
 package grid.hex;
 
+using grid.TilesCoord;
+
 
 class GridIterator {
 	var width:Int;
@@ -24,6 +26,7 @@ class GridIterator {
 			i = 0;
 			y += 1;
 		}
-		return new Coordinates(i - Std.int(y / 2), y);
+		var x = i - Std.int(y / 2);
+		return new Coordinates(x.tiles(), y.tiles());
 	}
 }

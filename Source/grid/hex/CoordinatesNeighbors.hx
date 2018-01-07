@@ -1,8 +1,10 @@
 package grid.hex;
 
+import grid.TilesDelta;
+
 
 class CoordinatesNeighbors {
-    static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0];
+    static var deltas = [-1, 0, -1, 1, 0, -1, 0, 1, 1, -1, 1, 0].map(TilesDelta.new);
     var grid:Grid;
 	var coord:Coordinates;
 	var i = -1;

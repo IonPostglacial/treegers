@@ -1,13 +1,14 @@
 package game.map;
 
-import tmx.TileObject;
+import grid.TilesCoord;
+using tmx.TileObject;
 
 
 @:publicFields
 class TargetObject {
     var objectId(get,never):Int;
-    var x(get,never):Int;
-    var y(get,never):Int;
+    var x(get,never):TilesCoord;
+    var y(get,never):TilesCoord;
     var isActive(get,never):Bool;
     var groundType(default,null):GroundType;
     @:allow(game.map.WorldMap.setTargetStatus)
@@ -31,11 +32,11 @@ class TargetObject {
         return this.tileObject.id;
     }
 
-    function get_x():Int {
+    function get_x() {
         return this.tileObject.coordX;
     }
 
-    function get_y():Int {
+    function get_y() {
         return this.tileObject.coordY;
     }
 }

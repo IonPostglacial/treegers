@@ -1,5 +1,7 @@
 package grid.hex;
 
+import grid.TilesCoord;
+
 
 class CompactMapIterator<T> {
 	var i:Int;
@@ -26,11 +28,12 @@ class CompactMap<T> extends Map2D<T> {
 		return map;
 	}
 
-	override function indexOf(x:Int, y:Int):Int {
-		return x + Std.int(y/2) + width * y;
+	override function indexOf(x:TilesCoord, y:TilesCoord):Int {
+		return x.toInt() + Std.int(y.toInt()/2) + width * y.toInt();
 	}
 
-	override function contains(x:TilesCoord, y:TilesCoord):Bool {
+	override function contains(tx:TilesCoord, ty:TilesCoord):Bool {
+		var x = tx.toInt(), y = ty.toInt();
 		return x + Std.int(y / 2) >= 0 && x + Std.int(y / 2) < width && y >= 0 && y < height;
 	}
 
