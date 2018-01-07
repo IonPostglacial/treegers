@@ -4,6 +4,7 @@ import ash.core.Engine;
 import ash.core.Entity;
 
 import game.components.Button;
+import game.components.Solid;
 import game.components.Controled;
 import game.components.Visible;
 import game.components.Health;
@@ -39,6 +40,7 @@ class EntityLoader {
 		});
 		this.entityBuilders.set("Grunt", function (entity:Entity, id:Int):Void {
 			entity
+				.add(new Solid())
 				.add(new Health())
 				.add(new Mana())
 				.add(new ObjectChanger())

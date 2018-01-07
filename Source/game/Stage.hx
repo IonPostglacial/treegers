@@ -19,6 +19,7 @@ import game.systems.MovementSystem;
 import game.systems.ButtonSystem;
 import game.systems.CollectSystem;
 import game.systems.ManaSystem;
+import game.systems.SolidTrackingSystem;
 import game.map.WorldMap;
 
 
@@ -56,6 +57,7 @@ class Stage {
 			var potentialTargetsSystem = new TargetsRenderingSystem(map.coordinateSystem, selectionWidth, selectionHeight);
 			controledSystem.targetListListeners.push(potentialTargetsSystem);
 
+			this.engine.addSystem(new SolidTrackingSystem(worldMap), 1);
 			this.engine.addSystem(new CameraSystem(camera), 1);
 			this.engine.addSystem(potentialTargetsSystem, 1);
 			this.engine.addSystem(controledSystem, 1);

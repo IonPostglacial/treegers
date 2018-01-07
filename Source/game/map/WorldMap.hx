@@ -5,6 +5,7 @@ import grid.TilesCoord;
 import grid.hex.CompactMap as HexMap;
 import grid.Map2D;
 import grid.ortho.CompactMap as OrthoMap;
+import game.nodes.SolidNode;
 
 using Lambda;
 
@@ -14,6 +15,7 @@ class WorldMap {
 	var groundTypeByCoords:Map2D<GroundType>;
 	var targetObjects:Iterable<TargetObject>;
 
+	public var obstacles(default,null):Array<SolidNode> = [];
 	public var views(default,null):Array<WorldView>;
 	var tileObjectsListeners:Array<ITargetObjectListener> = [];
 
@@ -37,7 +39,7 @@ class WorldMap {
 					groundTypeByCoords.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(map, tileObject.gid));
 				});
 		}
-		views = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, _));
+		views = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, obstacles, _));
 	}
 
 	public function areNeighbors(c1:Coordinates, c2:Coordinates):Bool {

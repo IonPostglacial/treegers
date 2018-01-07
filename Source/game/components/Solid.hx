@@ -1,3 +1,5 @@
 package game.components;
 
-class Solid {}
+class Solid {
+    public inline function new() {}
+}
