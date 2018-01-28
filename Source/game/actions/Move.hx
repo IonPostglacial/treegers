@@ -5,34 +5,31 @@ import ash.core.Entity;
 import game.components.PathWalker;
 import game.map.WorldMap;
 import game.nodes.ActionedNode;
-import grid.Coordinates;
+
+using Lambda;
 
 
 class Move implements IAction {
 	public var done(get, never):Bool;
 	var launched = false;
-	var path:Array<Coordinates>;
+	var pathWalker:PathWalker;
 	var entity:Entity;
 
-	public function new(entity, path) {
+	public function new(entity, pathWalker) {
 		this.entity = entity;
-		this.path = path;
+		this.pathWalker = pathWalker;
 	}
 
 	public function get_done():Bool {
-		var walker = entity.get(PathWalker);
-		return walker == null || walker.path.length == 0;
+		return pathWalker.path.empty();
 	}
 
 	public function execute(worldMap:WorldMap, node:ActionedNode, deltaTime:Float) {
-		var walker = entity.get(PathWalker);
-		if (walker != null && walker.path.length == 0) {
+		if (pathWalker != null && pathWalker.path.empty()) {
 			entity.remove(PathWalker);
 		}
 		if (!launched) {
-			var newWalker = new PathWalker();
-			newWalker.path = path;
-			entity.add(newWalker);
+			entity.add(pathWalker);
 			launched = true;
 		}
 	}

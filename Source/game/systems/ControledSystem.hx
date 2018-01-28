@@ -11,6 +11,7 @@ import game.map.WorldMap;
 
 import game.nodes.ControledNode;
 import game.components.ObjectChanger;
+import game.components.PathWalker;
 
 import grid.Coordinates;
 
@@ -79,7 +80,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				return;
 			var nextCoords = new Coordinates(node.position.x + node.movement.direction.dx(), node.position.y + node.movement.direction.dy());
 			var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(nextCoords, new Coordinates(x, y));
-			node.controled.actions = [new Move(node.entity, path)];
+			node.controled.actions = [new Move(node.entity, new PathWalker(path))];
 		case TargetSelected(x, y):
 			node.controled.selected = node.position.x == x && node.position.y == y && !node.controled.selected;
 			node.controled.selectedThisRound = true;
@@ -108,7 +109,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			if (nearestNeighbor != null) {
 				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
 				if (path.length != 0 || smallestDistance == 0) {
-					node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, path)];
+					node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, new PathWalker(path))];
 				}
 			}
 		case Nothing: // Nothing to do.

@@ -5,7 +5,9 @@ import grid.Coordinates;
 
 @:publicFields
 class PathWalker {
-	var path:Array<Coordinates> = [];
+	var path:Array<Coordinates>;
 
-	function new() {}
+	function new(?path) {
+		this.path = if(path != null) path else [];
+	}
 }

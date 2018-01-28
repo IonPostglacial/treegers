@@ -15,12 +15,10 @@ class WorldView implements IPathfindable<Coordinates> {
 	public var ground:Map2D<GroundType>;
 	public var grid:I2DGrid;
 	public var vehicle:Vehicle;
-	public var obstacles:Array<SolidNode>;
 
-	public inline function new(ground, grid, obstacles, vehicle) {
+	public inline function new(ground, grid, vehicle) {
 		this.ground = ground;
 		this.grid = grid;
-		this.obstacles = obstacles;
 		this.vehicle = vehicle;
 	}
 
@@ -56,17 +54,6 @@ class NeighborsIterator {
 		return this;
 	}
 
-	inline function obstacleDetected(coords:grid.Coordinates) {
-		var isObstacle = false;
-		for (obstacle in worldGrid.obstacles) {
-			trace(coords);
-			trace(obstacle.position);
-			isObstacle = obstacle.position.x == coords.x && obstacle.position.y == coords.y;
-			if (isObstacle) break;
-		}
-		return isObstacle;
-	} 
-
 	public function hasNext():Bool {
 		var hasNext:Bool;
 		var groundType:GroundType = null;
@@ -76,7 +63,7 @@ class NeighborsIterator {
 				nextElement = potentialNeighbors.next();
 				groundType = worldGrid.ground.get(nextElement);
 			}
-		} while (hasNext && (!groundType.crossableWith(worldGrid.vehicle) || obstacleDetected(nextElement)));
+		} while (hasNext && !groundType.crossableWith(worldGrid.vehicle));
 
 		return hasNext;
 	}

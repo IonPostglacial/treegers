@@ -2,6 +2,7 @@ package game.systems;
 
 import ash.tools.ListIteratingSystem;
 import game.actions.Move;
+import game.components.PathWalker;
 import game.nodes.ActionedNode;
 import game.map.GroundType;
 import game.map.WorldMap;
@@ -30,7 +31,7 @@ class ActionSystem extends ListIteratingSystem<ActionedNode> {
 			node.movement.direction = Direction.fromVect(dx, dy);
 			node.movement.alreadyMoved = false;
 			var newPath = [new Coordinates(node.position.x + dx, node.position.y + dy)];
-			node.controled.actions = [new Move(node.entity, newPath)];
+			node.controled.actions = [new Move(node.entity, new PathWalker(newPath))];
 		default: // pass
 		}
 	}

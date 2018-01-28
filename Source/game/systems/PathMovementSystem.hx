@@ -10,6 +10,7 @@ import grid.Direction;
 
 import game.map.WorldMap;
 using game.map.GroundTypeProperties;
+using Lambda;
 
 
 class PathWalkingNode extends Node<PathWalkingNode> {
@@ -27,20 +28,20 @@ class PathMovementSystem extends ListIteratingSystem<PathWalkingNode> {
 	}
 
 	public function nextDirection(node:PathWalkingNode, deltaTime:Float):Direction {
-		if (node.pathWalker.path.length == 0) {
+		if (node.pathWalker.path.empty()) {
 			return Direction.None;
 		}
 		var nextPosition = node.pathWalker.path[node.pathWalker.path.length - 1];
 
 		if (node.position.x == nextPosition.x && node.position.y == nextPosition.y) {
 			node.pathWalker.path.pop();
-			if (node.pathWalker.path.length > 0) {
+			if (!node.pathWalker.path.empty()) {
 				nextPosition = node.pathWalker.path[node.pathWalker.path.length - 1];
 			}
 		}
 
-		if (!this.worldMap.at(nextPosition.x, nextPosition.y).crossableWith(node.movement.vehicle)) {
-			node.pathWalker.path.splice(0, node.pathWalker.path.length);
+		if (!worldMap.at(nextPosition.x, nextPosition.y).crossableWith(node.movement.vehicle)) {
+			node.pathWalker.path = [];
 			return Direction.None;
 		} else {
 			node.movement.alreadyMoved = false;

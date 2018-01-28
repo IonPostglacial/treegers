@@ -39,7 +39,7 @@ class WorldMap {
 					groundTypeByCoords.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(map, tileObject.gid));
 				});
 		}
-		views = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, obstacles, _));
+		views = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, _));
 	}
 
 	public function areNeighbors(c1:Coordinates, c2:Coordinates):Bool {
