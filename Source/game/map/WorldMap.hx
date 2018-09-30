@@ -21,9 +21,10 @@ class WorldMap {
 
 	public function new(map:tmx.TiledMap) {
 		this.map = map;
-		targetObjects = this.map.objectLayers.flatMap(function(layer) {
-			return layer.objects.map(TargetObject.fromMapTileObject.bind(map, _));
-		});
+		targetObjects = map.objectLayers
+							.flatMap((layer) ->
+								layer.objects
+									.map(TargetObject.fromMapTileObject.bind(map, _)));
 		groundTypeByCoords = if (map.orientation == tmx.Orientation.Hexagonal) {
 			new HexMap(map.width, map.height);
 		} else {
@@ -34,10 +35,9 @@ class WorldMap {
 		}
 		for (objectLayer in map.objectLayers) {
 			objectLayer.objects
-				.filter(function(tileObject) return tileObject.active)
-				.iter(function(tileObject) {
-					groundTypeByCoords.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(map, tileObject.gid));
-				});
+				.filter((tileObject) -> tileObject.active)
+				.iter((tileObject) ->
+					groundTypeByCoords.setAt(tileObject.coordX, tileObject.coordY, tileTypeToGroundType(map, tileObject.gid)));
 		}
 		views = Type.allEnums(Vehicle).map(WorldView.new.bind(this.groundTypeByCoords, this.map.grid, _));
 	}
@@ -47,7 +47,7 @@ class WorldMap {
 	}
 
 	public function allTargetsWithType(type:GroundType):Iterable<TargetObject> {
-		return targetObjects.filter(function(object) return object.groundType == type);
+		return targetObjects.filter((object) -> object.groundType == type);
 	}
 
 	public function at(x:TilesCoord, y:TilesCoord):GroundType {
