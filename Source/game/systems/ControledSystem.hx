@@ -26,7 +26,8 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	public function new(worldMap:WorldMap, orderBoard:Order.Board) {
 		this.worldMap = worldMap;
 		this.orderBoard = orderBoard;
-		this.pathfinders = worldMap.views.map((worldView) -> new graph.Pathfinder(worldView, graph.PathBuildingStrategy.compressed));
+		this.pathfinders = worldMap.views.map(function (worldView)
+			return new graph.Pathfinder(worldView, graph.PathBuildingStrategy.compressed));
 
 		super(ControledNode, updateNode);
 	}

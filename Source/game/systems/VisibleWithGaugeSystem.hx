@@ -62,12 +62,12 @@ class VisibleWithGaugeSystem extends System {
 		
 		this.healthies.foreach(creatingGauge("health", HEALTH_COLOR, 2 * GAUGE_HEIGHT, true));
 		this.healthies.nodeAdded.add(creatingGauge("health", HEALTH_COLOR, 2 * GAUGE_HEIGHT, true));
-		this.healthies.nodeRemoved.add((node) ->
+		this.healthies.nodeRemoved.add(function (node) return
 			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("health")));
 		
 		this.mages.foreach(creatingGauge("mana", TOOLED_COLOR, GAUGE_HEIGHT, false));
 		this.mages.nodeAdded.add(creatingGauge("mana", TOOLED_COLOR, GAUGE_HEIGHT, false));
-		this.mages.nodeRemoved.add((node) ->
+		this.mages.nodeRemoved.add(function (node) return
 			node.visible.sprite.removeChild(node.visible.sprite.getChildByName("mana")));
 		
 		super.addToEngine(engine);
