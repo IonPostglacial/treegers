@@ -16,7 +16,7 @@ class WorldMap {
 	var targetObjects:Iterable<TargetObject>;
 
 	public var obstacles(default,null):Array<SolidNode> = [];
-	public var views(default,null):Array<WorldView>;
+	var views(default,null):Array<WorldView>;
 	var tileObjectsListeners:Array<ITargetObjectListener> = [];
 
 	public function new(map:tmx.TiledMap) {

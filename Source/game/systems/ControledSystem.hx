@@ -20,14 +20,13 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 	public var targetListListeners(default,null):Array<ITargetListListener> = [];
 	var worldMap:WorldMap;
 	var orderBoard:Order.Board;
-	var pathfinders:Array<graph.Pathfinder<Coordinates>> = [];
+	var pathfinder:graph.Pathfinder<Coordinates>;
 	var potentialTargets:Iterable<TargetObject> = [];
 
 	public function new(worldMap:WorldMap, orderBoard:Order.Board) {
 		this.worldMap = worldMap;
 		this.orderBoard = orderBoard;
-		this.pathfinders = worldMap.views.map(function (worldView)
-			return new graph.Pathfinder(worldView, graph.PathBuildingStrategy.compressed));
+		this.pathfinder = new graph.Pathfinder<Coordinates>(graph.PathBuildingStrategy.compressed);
 
 		super(ControledNode, updateNode);
 	}
@@ -79,7 +78,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 			if (!node.controled.selected)
 				return;
 			var nextCoords = new Coordinates(node.position.x + node.movement.direction.dx(), node.position.y + node.movement.direction.dy());
-			var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(nextCoords, new Coordinates(x, y));
+			var path = pathfinder.find(worldMap.viewForVehicle(node.movement.vehicle), nextCoords, new Coordinates(x, y));
 			node.controled.actions = [new Move(node.entity, new PathWalker(path))];
 		case TargetSelected(x, y):
 			node.controled.selected = node.position.x == x && node.position.y == y && !node.controled.selected;
@@ -107,7 +106,7 @@ class ControledSystem extends ListIteratingSystem<ControledNode> {
 				}
 			}
 			if (nearestNeighbor != null) {
-				var path = pathfinders[Type.enumIndex(node.movement.vehicle)].find(node.position.coords(), nearestNeighbor);
+				var path = pathfinder.find(worldMap.viewForVehicle(node.movement.vehicle), node.position.coords(), nearestNeighbor);
 				if (path.length != 0 || smallestDistance == 0) {
 					node.controled.actions = [new UseMana(node.mana, node.objectChanger, target), new Move(node.entity, new PathWalker(path))];
 				}
